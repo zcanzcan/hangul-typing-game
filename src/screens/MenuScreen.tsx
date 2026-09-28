@@ -9,6 +9,7 @@ type MenuDestination =
   | 'settings'
   | 'word-rain-setup'
   | 'tower-setup'
+  | 'word-stages'
 
 interface MenuScreenProps {
   profile: Profile
@@ -105,9 +106,9 @@ export function MenuScreen({
           <PracticeCard
             emoji="🍎"
             title="낱말 연습"
-            description="낱말을 치고 뜻 카드도 확인해요."
+            description="받침 없는 글자부터 쌍자음까지 단계별로 익혀요."
             locked={!unlockedModes.word}
-            onClick={() => onNavigate('word')}
+            onClick={() => onNavigate('word-stages')}
           />
           <PracticeCard
             emoji="💬"

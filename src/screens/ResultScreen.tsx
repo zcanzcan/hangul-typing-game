@@ -1,6 +1,7 @@
 import { PageShell } from '../components/PageShell'
 import { ScoreBadge } from '../components/ScoreBadge'
 import type { TypingMode } from '../data/types'
+import { getWordStageDefinition, type WordStage } from '../practice/word-stages'
 import type { StoredRecord } from '../storage/records'
 
 const MODE_LABELS: Readonly<Record<TypingMode, string>> = {
@@ -21,6 +22,7 @@ interface ResultScreenProps {
   onMain: () => void
   onRecords: () => void
   onMistakes: () => void
+  onNextStage?: () => void
 }
 
 export function ResultScreen({
@@ -28,14 +30,16 @@ export function ResultScreen({
   onMain,
   onRecords,
   onMistakes,
+  onNextStage,
 }: ResultScreenProps) {
   const { record } = result
+  const eyebrow =
+    record.mode === 'word' && record.stage >= 1 && record.stage <= 3
+      ? `낱말 연습 · ${record.stage}단계 ${getWordStageDefinition(record.stage as WordStage).title}`
+      : MODE_LABELS[record.mode as TypingMode]
 
   return (
-    <PageShell
-      title="연습 결과"
-      eyebrow={MODE_LABELS[record.mode as TypingMode]}
-    >
+    <PageShell title="연습 결과" eyebrow={eyebrow}>
       <div className="result-layout">
         {record.isBest ? (
           <section className="celebration" aria-live="polite">
@@ -96,7 +100,9 @@ export function ResultScreen({
           </h2>
           <p>
             {result.passed
-              ? '메인 화면에서 다음 연습을 시작할 수 있어요.'
+              ? onNextStage
+                ? '바로 다음 낱말 단계에 도전할 수 있어요.'
+                : '메인 화면에서 다음 연습을 시작할 수 있어요.'
               : '정확도 기준을 넘으면 다음 단계가 열려요.'}
           </p>
         </section>
@@ -120,8 +126,17 @@ export function ResultScreen({
         ) : null}
 
         <div className="button-row">
+          {onNextStage ? (
+            <button
+              className="button button--primary"
+              type="button"
+              onClick={onNextStage}
+            >
+              다음 낱말 단계 연습
+            </button>
+          ) : null}
           <button
-            className="button button--primary"
+            className="button button--secondary"
             type="button"
             onClick={onRecords}
           >

@@ -43,6 +43,7 @@ import {
   type TowerResult,
 } from './screens/TowerResultScreen'
 import { TowerSetupScreen } from './screens/TowerSetupScreen'
+import { WordStageScreen } from './screens/WordStageScreen'
 import {
   WordRainGameScreen,
   type WordRainSummary,
@@ -53,6 +54,11 @@ import {
 } from './screens/WordRainResultScreen'
 import { WordRainSetupScreen } from './screens/WordRainSetupScreen'
 import { validateSlangFields } from './slang/filter'
+import {
+  getWordStageDefinition,
+  getWordStageItems,
+  type WordStage,
+} from './practice/word-stages'
 import { useVisualViewport } from './tablet/use-visual-viewport'
 import { addCustomSlang, getCustomSlang } from './storage/custom-slang'
 import {
@@ -61,7 +67,13 @@ import {
   recordMistakes,
 } from './storage/mistakes'
 import { loadProfile, saveProfile } from './storage/profile'
-import { clearProgress, completeMode, isModeUnlocked } from './storage/progress'
+import {
+  clearProgress,
+  completeMode,
+  completeWordStage,
+  isModeUnlocked,
+  isWordStageUnlocked,
+} from './storage/progress'
 import { clearRecords, savePracticeRecord } from './storage/records'
 import {
   calculatePracticeMetrics,
@@ -89,6 +101,7 @@ type Screen =
   | 'tower-setup'
   | 'tower'
   | 'tower-result'
+  | 'word-stages'
 
 const POSITION_ITEMS: PracticeItem[] = [
   { id: 'position-1', text: 'ㅁ' },
@@ -133,6 +146,7 @@ export function App() {
     mode: TowerMode
   } | null>(null)
   const [towerResult, setTowerResult] = useState<TowerResult | null>(null)
+  const [wordStage, setWordStage] = useState<WordStage>(1)
   const [practiceOverride, setPracticeOverride] = useState<
     PracticeItem[] | null
   >(null)
@@ -192,15 +206,16 @@ export function App() {
     }
 
     if (mode === 'word') {
-      return content.words
-        .filter(({ audience }) => audience.includes(profile.ageGroup))
-        .map(({ id, text, meaning, example, emoji }) => ({
+      return getWordStageItems(content.words, profile.ageGroup, wordStage).map(
+        ({ id, text, meaning, example, emoji, level }) => ({
           id,
           text,
           meaning,
           example,
           emoji,
-        }))
+          stage: level,
+        }),
+      )
     }
 
     return content.sentences
@@ -246,14 +261,18 @@ export function App() {
           })
 
     if (passed && !reviewMode) {
-      completeMode(summary.mode)
+      if (summary.mode === 'word') {
+        completeWordStage(summary.stage as WordStage)
+      } else {
+        completeMode(summary.mode)
+      }
     }
 
     const saveResult = await savePracticeRecord({
       id: crypto.randomUUID(),
       profileId: profile.id,
       mode: summary.mode,
-      stage: 1,
+      stage: summary.stage,
       cpm: metrics.timeLimit ? metrics.cpm : 0,
       accuracy: metrics.accuracy,
       score: metrics.timeLimit ? metrics.score : 0,
@@ -286,9 +305,19 @@ export function App() {
   }
 
   function startReview(item: PracticeItem) {
+    if (item.stage && item.stage >= 1 && item.stage <= 3) {
+      setWordStage(item.stage as WordStage)
+    }
     setPracticeOverride([item])
     setReviewMode(true)
     setScreen(item.id.startsWith('sentence-') ? 'sentence' : 'word')
+  }
+
+  function startWordStage(stage: WordStage) {
+    setPracticeOverride(null)
+    setReviewMode(false)
+    setWordStage(stage)
+    setScreen('word')
   }
 
   async function resetRecords() {
@@ -543,6 +572,11 @@ export function App() {
     word: '낱말 연습',
     sentence: '짧은 문장 연습',
   }
+  const unlockedWordStages: Readonly<Record<WordStage, boolean>> = {
+    1: isWordStageUnlocked(1),
+    2: isWordStageUnlocked(2),
+    3: isWordStageUnlocked(3),
+  }
 
   return (
     <div className="app" data-font-size={profile.settings.fontSize}>
@@ -554,16 +588,40 @@ export function App() {
         />
       ) : null}
 
+      {screen === 'word-stages' ? (
+        <WordStageScreen
+          profile={profile}
+          words={content.words}
+          unlockedStages={unlockedWordStages}
+          onBack={() => navigate('menu')}
+          onStart={startWordStage}
+        />
+      ) : null}
+
       {(['position', 'word', 'sentence'] as const).map((mode) =>
         screen === mode ? (
           <PracticeScreen
-            key={mode}
+            key={`${mode}-${mode === 'word' ? wordStage : 1}`}
             title={practiceTitles[mode]}
+            eyebrow={
+              mode === 'word'
+                ? `${wordStage}단계 · ${getWordStageDefinition(wordStage).title}`
+                : undefined
+            }
             mode={mode}
+            stage={mode === 'word' ? wordStage : 1}
             profile={profile}
             items={getPracticeItems(mode)}
             reviewMode={reviewMode}
-            onBack={() => navigate('menu')}
+            onBack={() =>
+              navigate(
+                reviewMode
+                  ? 'mistakes'
+                  : mode === 'word'
+                    ? 'word-stages'
+                    : 'menu',
+              )
+            }
             onComplete={(summary) => void finishPractice(summary)}
           />
         ) : null,
@@ -575,6 +633,13 @@ export function App() {
           onMain={() => navigate('menu')}
           onRecords={() => navigate('records')}
           onMistakes={() => navigate('mistakes')}
+          onNextStage={
+            result.passed &&
+            result.record.mode === 'word' &&
+            result.record.stage < 3
+              ? () => startWordStage((result.record.stage + 1) as WordStage)
+              : undefined
+          }
         />
       ) : null}
 

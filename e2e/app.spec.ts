@@ -105,9 +105,13 @@ test('자리 연습을 마치면 결과와 기록이 저장되고 다음 단계�
 test('낱말 입력 뒤 뜻을 보고 틀린 낱말을 복습할 수 있다', async ({ page }) => {
   await startProfile(page, '성인', '정확한손')
   await page.getByRole('button', { name: /낱말 연습/ }).click()
+  await expect(
+    page.getByRole('heading', { name: '낱말 단계 고르기' }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: '1단계 받침 없는 글자 시작' }).click()
   await expect(page.getByRole('heading', { name: '낱말 연습' })).toBeVisible()
 
-  const answers = ['다무', '사과', '학교', '까치', '닭']
+  const answers = ['다무', '사과', '바다', '기차', '모자']
   for (const [index, answer] of answers.entries()) {
     await page.getByLabel('입력').fill(answer)
     await page.getByRole('button', { name: '입력 확인' }).click()
@@ -122,6 +126,9 @@ test('낱말 입력 뒤 뜻을 보고 틀린 낱말을 복습할 수 있다', as
   }
 
   await expect(page.getByRole('heading', { name: '연습 결과' })).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: '다음 낱말 단계 연습' }),
+  ).toBeVisible()
   await expect(page.getByText('나무')).toBeVisible()
   await page.getByRole('button', { name: '다시 연습하기' }).click()
   await expect(
@@ -130,6 +137,49 @@ test('낱말 입력 뒤 뜻을 보고 틀린 낱말을 복습할 수 있다', as
   await expect(page.getByText('나무')).toBeVisible()
   await page.getByRole('button', { name: '연습하기' }).click()
   await expect(page.getByText('다시 연습')).toBeVisible()
+})
+
+test('받침 없는 낱말을 통과하면 받침 단계가 열리고 단계별 기록을 남긴다', async ({
+  page,
+}) => {
+  await startProfile(page, '성인', '단계타자')
+  await page.getByRole('button', { name: /낱말 연습/ }).click()
+
+  const firstStage = page.getByRole('button', {
+    name: '1단계 받침 없는 글자 시작',
+  })
+  const secondStage = page.getByRole('button', {
+    name: '2단계 받침 연습 잠김',
+  })
+  const thirdStage = page.getByRole('button', {
+    name: '3단계 쌍자음·겹받침 잠김',
+  })
+
+  await expect(firstStage).toBeEnabled()
+  await expect(secondStage).toBeDisabled()
+  await expect(thirdStage).toBeDisabled()
+  await firstStage.click()
+
+  for (let index = 0; index < 5; index += 1) {
+    const answer = await page
+      .locator('#practice-target')
+      .getAttribute('aria-label')
+    await page.getByLabel('입력').fill(answer ?? '')
+    await page.getByRole('button', { name: '입력 확인' }).click()
+    await page
+      .getByRole('button', {
+        name: index === 4 ? '결과 보기' : '다음 문제',
+      })
+      .click()
+  }
+
+  await expect(page.getByText('낱말 연습 · 1단계 받침 없는 글자')).toBeVisible()
+  await page.getByRole('button', { name: '다음 낱말 단계 연습' }).click()
+  await expect(page.getByText('2단계 · 받침 연습')).toBeVisible()
+  await expect(page.locator('#practice-target')).toHaveAttribute(
+    'aria-label',
+    '학교',
+  )
 })
 
 test('열린 짧은 문장 연습에서 기기 입력과 화면 키보드를 사용할 수 있다', async ({

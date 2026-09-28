@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-28",
+  "version": "2026-09-28-t6",
   "items": [
     {
       "id": "w-0001",
@@ -17,7 +17,7 @@
       "meaning": "사과나무의 열매.",
       "example": "빨간 사과를 먹었다.",
       "emoji": "🍎",
-      "level": 2,
+      "level": 1,
       "tags": ["과일"],
       "audience": ["kid", "adult", "senior"]
     },
@@ -49,6 +49,106 @@
       "emoji": "🐔",
       "level": 3,
       "tags": ["동물"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0006",
+      "text": "바다",
+      "meaning": "넓고 깊게 물이 모여 있는 곳.",
+      "example": "여름에 푸른 바다를 보았다.",
+      "emoji": "🌊",
+      "level": 1,
+      "tags": ["자연"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0007",
+      "text": "기차",
+      "meaning": "철길 위를 달리며 사람이나 짐을 나르는 차.",
+      "example": "기차를 타고 여행을 갔다.",
+      "emoji": "🚆",
+      "level": 1,
+      "tags": ["교통"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0008",
+      "text": "모자",
+      "meaning": "머리에 쓰는 물건.",
+      "example": "햇빛을 가리려고 모자를 썼다.",
+      "emoji": "🧢",
+      "level": 1,
+      "tags": ["생활"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0009",
+      "text": "연필",
+      "meaning": "글씨를 쓰거나 그림을 그리는 도구.",
+      "example": "연필로 이름을 썼다.",
+      "emoji": "✏️",
+      "level": 2,
+      "tags": ["학용품"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0010",
+      "text": "강아지",
+      "meaning": "개의 새끼.",
+      "example": "강아지가 꼬리를 흔들었다.",
+      "emoji": "🐶",
+      "level": 2,
+      "tags": ["동물"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0011",
+      "text": "우산",
+      "meaning": "비를 피하려고 머리 위에 받쳐 쓰는 물건.",
+      "example": "비가 와서 우산을 펼쳤다.",
+      "emoji": "☂️",
+      "level": 2,
+      "tags": ["생활"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0012",
+      "text": "공원",
+      "meaning": "사람들이 쉬거나 산책하도록 꾸민 곳.",
+      "example": "공원에서 천천히 걸었다.",
+      "emoji": "🏞️",
+      "level": 2,
+      "tags": ["장소"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0013",
+      "text": "토끼",
+      "meaning": "귀가 길고 뒷다리가 발달한 동물.",
+      "example": "토끼가 풀밭을 뛰어다녔다.",
+      "emoji": "🐰",
+      "level": 3,
+      "tags": ["동물"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0014",
+      "text": "아빠",
+      "meaning": "자녀가 아버지를 친근하게 부르는 말.",
+      "example": "아빠와 함께 책을 읽었다.",
+      "emoji": "👨",
+      "level": 3,
+      "tags": ["가족"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0015",
+      "text": "꽃",
+      "meaning": "식물의 줄기 끝에서 피어나는 아름다운 부분.",
+      "example": "화단에 노란 꽃이 피었다.",
+      "emoji": "🌼",
+      "level": 3,
+      "tags": ["자연"],
       "audience": ["kid", "adult", "senior"]
     }
   ]

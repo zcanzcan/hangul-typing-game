@@ -35,7 +35,10 @@ export function MistakesScreen({
   }, [profileId])
 
   const practiceItems = [
-    ...content.words,
+    ...content.words.map(({ level, ...word }) => ({
+      ...word,
+      stage: level <= 3 ? level : 3,
+    })),
     ...content.sentences,
     ...content.slang.map(({ id, text, meaning, example }) => ({
       id,

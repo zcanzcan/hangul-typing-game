@@ -17,10 +17,12 @@ export interface PracticeItem {
   meaning?: string
   example?: string
   emoji?: string
+  stage?: number
 }
 
 export interface PracticeSummary {
   mode: TypingMode
+  stage: number
   durationSec: number
   keystrokes: number
   correctCharacters: number
@@ -33,7 +35,9 @@ export interface PracticeSummary {
 
 interface PracticeScreenProps {
   title: string
+  eyebrow?: string
   mode: TypingMode
+  stage?: number
   profile: Profile
   items: PracticeItem[]
   reviewMode?: boolean
@@ -47,7 +51,9 @@ interface Feedback {
 
 export function PracticeScreen({
   title,
+  eyebrow,
   mode,
+  stage = 1,
   profile,
   items,
   reviewMode = false,
@@ -126,6 +132,7 @@ export function PracticeScreen({
 
     onComplete({
       mode,
+      stage,
       durationSec: Math.max((performance.now() - startedAt) / 1_000, 1),
       keystrokes,
       correctCharacters,
@@ -151,6 +158,7 @@ export function PracticeScreen({
     if (itemIndex === items.length - 1 && finalSummary && feedback) {
       onComplete({
         mode,
+        stage,
         durationSec: Math.max((performance.now() - startedAt) / 1_000, 1),
         keystrokes: finalSummary.keystrokes,
         correctCharacters: finalSummary.correctCharacters,
@@ -169,7 +177,7 @@ export function PracticeScreen({
   return (
     <PageShell
       title={title}
-      eyebrow={reviewMode ? '다시 연습' : '1단계'}
+      eyebrow={reviewMode ? '다시 연습' : (eyebrow ?? `${stage}단계`)}
       onBack={onBack}
     >
       <div className="practice-layout">

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { PageShell } from '../components/PageShell'
 import type { Profile, Record as PracticeRecord } from '../data/types'
+import { getWordStageDefinition, type WordStage } from '../practice/word-stages'
 import { getRecords, type StoredRecord } from '../storage/records'
 
 const MODE_LABELS: Readonly<Record<PracticeRecord['mode'], string>> = {
@@ -19,6 +20,11 @@ const PACK_LABELS = {
 } as const
 
 function getRecordLabel(record: StoredRecord) {
+  if (record.mode === 'word' && record.stage >= 1 && record.stage <= 3) {
+    const definition = getWordStageDefinition(record.stage as WordStage)
+    return `낱말 연습 · ${record.stage}단계 ${definition.title}`
+  }
+
   if (record.mode === 'minigame' && record.game === 'wordRain') {
     return `낱말 비 · ${PACK_LABELS[record.pack ?? 'standard']}`
   }
