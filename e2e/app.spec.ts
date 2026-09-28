@@ -354,3 +354,61 @@ test('뜻을 보고 요즘 말을 입력해 스피드 퀴즈 기록을 남긴다
   await page.getByRole('button', { name: '내 기록 보기' }).click()
   await expect(page.getByText('요즘 말 스피드 퀴즈').first()).toBeVisible()
 })
+
+test('낱말 블록을 쌓고 세 번 흔들린 탑의 기록과 뜻을 확인한다', async ({
+  page,
+}) => {
+  await startProfile(page, '성인', '탑쌓기')
+  await page.getByRole('button', { name: '낱말 탑 시작' }).click()
+
+  await expect(
+    page.getByRole('heading', { name: '낱말 탑 쌓기' }),
+  ).toBeVisible()
+  await expect(page.getByRole('button', { name: '60초 도전' })).toBeVisible()
+  await page.getByRole('button', { name: '표준어 꾸러미로 시작' }).click()
+
+  const firstWord = await page.locator('#tower-word').innerText()
+  const input = page.getByLabel('탑 낱말 입력')
+  await input.fill(firstWord)
+  await input.press('Enter')
+  await expect(page.getByRole('status')).toContainText('1층 완성')
+  await page.getByRole('button', { name: `뜻 보기: ${firstWord}` }).click()
+  await expect(page.getByRole('button', { name: '뜻 카드 닫기' })).toBeVisible()
+
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    await input.fill(`오답${attempt}`)
+    await input.press('Enter')
+  }
+
+  await expect(
+    page.getByRole('heading', { name: '낱말 탑 결과' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: '1층까지 쌓았어요!' }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: `1층 ${firstWord} 뜻 보기` }).click()
+  await expect(page.getByText(firstWord).last()).toBeVisible()
+
+  await page.getByRole('button', { name: '내 기록 보기' }).click()
+  await expect(page.getByText('낱말 탑 · 표준어').first()).toBeVisible()
+})
+
+test('성인은 낱말 탑 60초 도전을 별도 기록으로 남긴다', async ({ page }) => {
+  await startProfile(page, '성인', '시간탑')
+  await page.getByRole('button', { name: '낱말 탑 시작' }).click()
+  await page.getByRole('button', { name: '60초 도전' }).click()
+  await page.getByRole('button', { name: '표준어 꾸러미로 시작' }).click()
+
+  await expect(page.getByText('표준어 · 60초 도전')).toBeVisible()
+  const input = page.getByLabel('탑 낱말 입력')
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    await input.fill(`시간오답${attempt}`)
+    await input.press('Enter')
+  }
+
+  await expect(
+    page.getByRole('heading', { name: '낱말 탑 결과' }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: '내 기록 보기' }).click()
+  await expect(page.getByText('낱말 탑 · 표준어 · 60초').first()).toBeVisible()
+})

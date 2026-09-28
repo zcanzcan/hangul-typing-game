@@ -8,6 +8,7 @@ import type {
   Slang,
   TypingMode,
 } from './data/types'
+import { createTowerPool, type TowerMode, type TowerPool } from './games/tower'
 import { createWordRainPool, type WordRainPool } from './games/wordRain'
 import { MenuScreen } from './screens/MenuScreen'
 import { MistakesScreen } from './screens/MistakesScreen'
@@ -36,6 +37,12 @@ import {
   type SlangGameResult,
 } from './screens/SlangResultScreen'
 import { StartScreen } from './screens/StartScreen'
+import { TowerGameScreen, type TowerSummary } from './screens/TowerGameScreen'
+import {
+  TowerResultScreen,
+  type TowerResult,
+} from './screens/TowerResultScreen'
+import { TowerSetupScreen } from './screens/TowerSetupScreen'
 import {
   WordRainGameScreen,
   type WordRainSummary,
@@ -79,6 +86,9 @@ type Screen =
   | 'word-rain-setup'
   | 'word-rain'
   | 'word-rain-result'
+  | 'tower-setup'
+  | 'tower'
+  | 'tower-result'
 
 const POSITION_ITEMS: PracticeItem[] = [
   { id: 'position-1', text: 'ㅁ' },
@@ -118,6 +128,11 @@ export function App() {
   const [wordRainResult, setWordRainResult] = useState<WordRainResult | null>(
     null,
   )
+  const [towerSession, setTowerSession] = useState<{
+    pool: TowerPool
+    mode: TowerMode
+  } | null>(null)
+  const [towerResult, setTowerResult] = useState<TowerResult | null>(null)
   const [practiceOverride, setPracticeOverride] = useState<
     PracticeItem[] | null
   >(null)
@@ -446,6 +461,62 @@ export function App() {
     setScreen('word-rain-result')
   }
 
+  function startTower(pack: MinigamePack, mode: TowerMode) {
+    if (!profile || !content) {
+      return
+    }
+
+    setTowerSession({
+      pool: createTowerPool({
+        pack,
+        ageGroup: profile.ageGroup,
+        words: content.words,
+        slang: content.slang,
+      }),
+      mode,
+    })
+    setScreen('tower')
+  }
+
+  async function finishTower(summary: TowerSummary) {
+    if (!profile) {
+      return
+    }
+
+    const accuracy =
+      summary.totalSubmissions === 0
+        ? 0
+        : (summary.correctSubmissions / summary.totalSubmissions) * 100
+    const cpm = (summary.hitKeystrokes / summary.durationSec) * 60
+    const saveResult = await savePracticeRecord({
+      id: crypto.randomUUID(),
+      profileId: profile.id,
+      mode: 'minigame',
+      stage: 1,
+      game: 'tower',
+      pack: summary.pack,
+      cpm,
+      accuracy,
+      score: summary.score,
+      durationSec: summary.durationSec,
+      playedAt: new Date().toISOString(),
+      timeLimit: summary.timeLimit,
+      completedCount: summary.floor,
+    })
+
+    await recordMistakes(profile.id, summary.wrongItemIds)
+    setTowerResult({
+      record: saveResult.record,
+      difference: saveResult.difference,
+      blocks: summary.blocks,
+      maxStreak: summary.maxStreak,
+      shakes: summary.shakes,
+      recoveredCount: summary.recoveredCount,
+      endReason: summary.endReason,
+    })
+    setScreen('tower-result')
+  }
+
   if (screen === 'start' || !profile) {
     return <StartScreen onStart={startWithProfile} />
   }
@@ -572,6 +643,37 @@ export function App() {
             startWordRain(wordRainResult.record.pack ?? 'standard')
           }
           onRecords={() => navigate('records')}
+        />
+      ) : null}
+
+      {screen === 'tower-setup' ? (
+        <TowerSetupScreen
+          profile={profile}
+          onBack={() => navigate('menu')}
+          onStart={startTower}
+        />
+      ) : null}
+
+      {screen === 'tower' && towerSession ? (
+        <TowerGameScreen
+          key={`tower-${towerSession.pool.pack}-${towerSession.mode}`}
+          profile={profile}
+          pool={towerSession.pool}
+          mode={towerSession.mode}
+          onBack={() => navigate('tower-setup')}
+          onComplete={(summary) => void finishTower(summary)}
+        />
+      ) : null}
+
+      {screen === 'tower-result' && towerResult && towerSession ? (
+        <TowerResultScreen
+          result={towerResult}
+          onMain={() => navigate('menu')}
+          onReplay={() =>
+            startTower(towerResult.record.pack ?? 'standard', towerSession.mode)
+          }
+          onRecords={() => navigate('records')}
+          onMistakes={() => navigate('mistakes')}
         />
       ) : null}
 

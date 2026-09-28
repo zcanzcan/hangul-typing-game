@@ -27,6 +27,10 @@ function getRecordLabel(record: StoredRecord) {
     return '요즘 말 스피드 퀴즈'
   }
 
+  if (record.mode === 'minigame' && record.game === 'tower') {
+    return `낱말 탑 · ${PACK_LABELS[record.pack ?? 'standard']}${record.timeLimit ? ' · 60초' : ''}`
+  }
+
   return MODE_LABELS[record.mode]
 }
 

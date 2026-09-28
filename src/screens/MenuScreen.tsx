@@ -8,6 +8,7 @@ type MenuDestination =
   | 'mistakes'
   | 'settings'
   | 'word-rain-setup'
+  | 'tower-setup'
 
 interface MenuScreenProps {
   profile: Profile
@@ -196,6 +197,24 @@ export function MenuScreen({
           onClick={() => onNavigate('word-rain-setup')}
         >
           낱말 비 시작
+        </button>
+      </section>
+
+      <section
+        className="minigame-menu-section tower-menu-section"
+        aria-labelledby="tower-menu-title"
+      >
+        <div>
+          <p className="eyebrow">차곡차곡 정확하게</p>
+          <h2 id="tower-menu-title">🏗️ 낱말 탑 쌓기</h2>
+          <p>맞게 입력한 낱말 블록으로 구름과 우주까지 올라가요.</p>
+        </div>
+        <button
+          className="button button--primary"
+          type="button"
+          onClick={() => onNavigate('tower-setup')}
+        >
+          낱말 탑 시작
         </button>
       </section>
     </main>
