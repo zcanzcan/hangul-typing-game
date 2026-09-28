@@ -22,6 +22,7 @@ import {
 } from './screens/SlangResultScreen'
 import { StartScreen } from './screens/StartScreen'
 import { validateSlangFields } from './slang/filter'
+import { useVisualViewport } from './tablet/use-visual-viewport'
 import { addCustomSlang, getCustomSlang } from './storage/custom-slang'
 import {
   clearMistakes,
@@ -71,6 +72,8 @@ function getScoreMode(mode: TypingMode): PracticeMode {
 }
 
 export function App() {
+  useVisualViewport()
+
   const [initialProfile] = useState(() => loadProfile())
   const [profile, setProfile] = useState<Profile | null>(initialProfile)
   const [screen, setScreen] = useState<Screen>(

@@ -1,5 +1,5 @@
 .app {
-  min-height: 100vh;
+  min-height: var(--app-viewport-height, 100dvh);
   font-size: calc(1rem * var(--font-scale));
 }
 .app[data-font-size='normal'] {
@@ -108,7 +108,7 @@
   gap: clamp(32px, 7vw, 96px);
   align-items: center;
   width: min(1120px, calc(100% - 40px));
-  min-height: 100vh;
+  min-height: var(--app-viewport-height, 100dvh);
   margin: 0 auto;
   padding: 48px 0;
 }
@@ -216,7 +216,7 @@
 .menu-screen,
 .page-shell {
   width: min(1120px, calc(100% - 32px));
-  min-height: 100vh;
+  min-height: var(--app-viewport-height, 100dvh);
   margin: 0 auto;
   padding: 32px 0 72px;
 }
@@ -457,6 +457,7 @@
 }
 .typing-field input {
   font-size: 1.5em;
+  scroll-margin-block: 22vh;
   text-align: center;
 }
 .practice-stats,
@@ -785,6 +786,7 @@
   border-radius: 0;
   color: #fff;
   background: #161a34;
+  scroll-margin-block: 22vh;
 }
 .pixel-feedback {
   display: grid;
@@ -962,11 +964,90 @@
 }
 .loading-screen {
   display: grid;
-  min-height: 100vh;
+  min-height: var(--app-viewport-height, 100dvh);
   place-items: center;
   align-content: center;
   padding: 24px;
   text-align: center;
+}
+
+body[data-virtual-keyboard='open'] {
+  overflow: auto;
+}
+body[data-virtual-keyboard='open'] .page-shell {
+  min-height: var(--app-viewport-height);
+  padding-top: 12px;
+  padding-bottom: 16px;
+}
+body[data-virtual-keyboard='open'] .page-header {
+  margin-bottom: 12px;
+}
+body[data-virtual-keyboard='open'] .practice-layout,
+body[data-virtual-keyboard='open'] .slang-game-layout {
+  gap: 12px;
+}
+body[data-virtual-keyboard='open'] .practice-card,
+body[data-virtual-keyboard='open'] .slang-card {
+  gap: 12px;
+  padding: 16px;
+}
+body[data-virtual-keyboard='open'] .practice-card__emoji,
+body[data-virtual-keyboard='open'] .practice-card > .eyebrow,
+body[data-virtual-keyboard='open'] .practice-stats,
+body[data-virtual-keyboard='open'] .keyboard,
+body[data-virtual-keyboard='open'] .slang-scoreboard {
+  display: none;
+}
+body[data-virtual-keyboard='open'] .typing-target {
+  min-height: 48px;
+  font-size: clamp(2rem, 9vh, 3.5rem);
+}
+body[data-virtual-keyboard='open'] .slang-card > h2 {
+  margin-bottom: 12px;
+  font-size: clamp(2.2rem, 11vh, 4rem);
+}
+
+@media (min-width: 821px) and (max-width: 1280px) and (min-height: 600px) and (orientation: landscape) {
+  .menu-screen,
+  .page-shell {
+    width: min(1040px, calc(100% - 32px));
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .page-header,
+  .menu-header {
+    margin-bottom: 20px;
+  }
+  .practice-layout,
+  .slang-game-layout {
+    gap: 16px;
+  }
+  .practice-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(560px, 1.2fr);
+    align-items: start;
+    max-width: 1040px;
+  }
+  .practice-layout > .progress {
+    grid-column: 1 / -1;
+  }
+  .practice-card {
+    gap: 10px;
+    padding: 16px;
+  }
+  .practice-stats {
+    display: none;
+  }
+  .typing-target {
+    min-height: 54px;
+    font-size: clamp(2.2rem, 7vh, 4rem);
+  }
+  .keyboard__key {
+    width: 48px;
+    min-height: 52px;
+  }
+  .keyboard__key--wide {
+    width: min(240px, 42%);
+  }
 }
 .loading-screen > span {
   font-size: 4rem;

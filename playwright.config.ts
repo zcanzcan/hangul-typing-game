@@ -14,7 +14,28 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
+      testIgnore: [/tablet\.spec\.ts/, /pwa\.spec\.ts/],
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'iPad 세로',
+      testMatch: /tablet\.spec\.ts/,
+      use: { ...devices['iPad Pro 11'], browserName: 'chromium' },
+    },
+    {
+      name: 'iPad 가로',
+      testMatch: /tablet\.spec\.ts/,
+      use: { ...devices['iPad Pro 11 landscape'], browserName: 'chromium' },
+    },
+    {
+      name: '안드로이드 태블릿 세로',
+      testMatch: /tablet\.spec\.ts/,
+      use: { ...devices['Galaxy Tab S9'], browserName: 'chromium' },
+    },
+    {
+      name: '안드로이드 태블릿 가로',
+      testMatch: /tablet\.spec\.ts/,
+      use: { ...devices['Galaxy Tab S9 landscape'], browserName: 'chromium' },
     },
   ],
   webServer: {

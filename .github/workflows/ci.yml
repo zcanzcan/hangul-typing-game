@@ -29,3 +29,5 @@ jobs:
         run: npm run test:e2e
       - name: 프로덕션 빌드
         run: npm run build
+      - name: PWA 설치와 오프라인 검사
+        run: npm run test:pwa
