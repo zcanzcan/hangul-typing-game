@@ -100,3 +100,27 @@ Jev는 널리 알려진 사실(법령, WCAG, 유행어 뜻, 패키지)에는 높
 - 1회차(5건): 모순 확률은 낮았지만 누락 가능성이 높게 나와 원본과 한 줄씩 대조했다. 빠진 것을 채웠다: 정확도 공식, 30초 50타 = 타수 100 예시, 어르신 "시간 제한 없음" 기록 방식, 최고 기록 저장 단위와 "+12점" 차이 표시, 카드게임·미니게임 점수 숫자.
 - 2회차(4건): 일치 확률 0.64~0.85로 올랐다. 1단계에 남은 누락 신호를 다시 대조해 화면 키보드용 자모 조합과 `input` 이벤트 기반 판정을 추가했다.
 - Jev 호출 9건, 비용 약 $0.0009.
+
+## 12번 문서(낱말 비) 검증 (Jev)
+
+2026-09-28, [12. 낱말 비](12-word-rain.md)를 추가하면서 새 사실 주장 4건을 Jev로 판정하고, 12번 문서가 02·04·06·11과 모순이 없는지 검사했다. 사실 확률 0.6 미만이거나 정확도 3 미만인 항목은 출처로 다시 확인했다. 질문 목록은 [jev-2026-09-28-word-rain-claims.json](verification/jev-2026-09-28-word-rain-claims.json), 응답 원본은 [jev-2026-09-28-word-rain.jsonl](verification/jev-2026-09-28-word-rain.jsonl).
+
+| # | 주장 (요약) | Jev 사실 | Jev 근거 | Jev 정확도 | 재확인 | 최종 |
+|---|---|---|---|---|---|---|
+| W1 | 한컴타자 "산성비": 떨어지는 낱말을 입력해 없애고, 바닥에 닿으면 pH가 떨어져 0이면 끝 | 0.69 | 0.69 | 3.11 | 필요 없음 ([브런치 사용방법](https://brunch.co.kr/@e4b62e77210a457/82), [한컴 미니 산성비 안내](https://support.hancom.com/fff35e42-02fe-805c-a37c-c70e64abeb6d)) | ✅ |
+| W2 | 조합 중 Enter: 크롬·파이어폭스는 `isComposing: true`, 사파리는 `compositionend` 먼저 + `keyCode 229` | 0.47 | 0.47 | 2.52 | 크롬 한글 입력에서 Enter `keydown`이 두 번(첫 번째 `isComposing` true, 두 번째 false) 오는 것 확인 ([velog](https://velog.io/@seongyeon/%ED%95%9C%EA%B5%AD%EC%96%B4-%EC%9E%85%EB%A0%A5%EC%97%90%EC%84%9C-isComposing%EC%9D%84-%ED%86%B5%ED%95%B4-keyDown-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A4%91%EB%B3%B5-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0), [witch.work](https://witch.work/en/posts/fix-input-double-enter-issue)). 사파리는 `compositionend`가 먼저 오고 Enter가 `isComposing: false`, `keyCode 229`로 오는 것 확인 ([assistant-ui #8199](https://github.com/assistant-ui/assistant-ui/issues/8199), [MDN keydown](https://developer.mozilla.org/en-US/docs/Web/API/Element/keydown_event)). 12번 문서는 "두 번 와도 한 번만 제출"하는 규칙으로 정리 | ✅ |
+| W3 | `requestAnimationFrame`은 대부분 브라우저에서 백그라운드 탭에서 멈추고, `visibilitychange`로 알 수 있다 | 0.66 | 0.72 | 2.93 | MDN 원문 "paused in most browsers when running in background tabs or hidden iframes" 확인 ([rAF](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame), [Page Visibility API](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API)) | ✅ |
+| W4 | `prefers-reduced-motion`으로 "동작 줄이기" 설정을 알 수 있다 | 0.94 | 0.93 | 3.86 | 필요 없음 | ✅ |
+
+문서 일치 검사 (12번 문서 기준):
+
+| 비교 | 모순 없음 | 빠뜨림 있음 | 구현 쉬움(0~4) | 처리 |
+|---|---|---|---|---|
+| 12 vs 02 | 0.88 | 0.62 | 2.65 | 02 한 줄씩 대조. 속도 조절(A-4), 효과음(A-6), 유행어 모드(S-1) 모두 12에 있음 |
+| 12 vs 04 | 0.76 | 0.51 | 2.50 | 최고 기록 갱신 축하와 "+12점" 차이 표시가 빠져 12번 3절에 추가 |
+| 12 vs 06 | 0.91 | 0.67 | 2.70 | 금칙어 필터, `kidSafe`, 옛 유행어, 월 1회 업데이트 모두 12에 있음. 카드게임 오답 보기는 낱말 비와 무관 |
+| 12 vs 11 | 0.83 | 0.53 | 2.55 | 11의 5단계 1번과 완료 기준을 12와 맞춤. 나머지는 단계 공통 규칙(브랜치, PR) |
+
+- 2회차: 12번 3절을 고친 뒤 같은 비교 4건을 다시 돌렸다. 모순 없음 0.75~0.91로 그대로였고, 빠뜨림 신호(0.47~0.70)는 위 표처럼 한 줄씩 대조해 더 빠진 것이 없음을 확인했다 (Jev가 확신하지 못하는 값에 가까움).
+- **Jev 호출 12건, 비용 약 $0.0019.**
+- **설계 결정(사실 주장 아님):** "산성비" 이름과 pH 설정을 쓰지 않고 새싹 3개로 바꿈 (CLAUDE.md, 09 상표 항목), 연령대별 낙하 시간·동시 낱말 수, 2.5배 속도 상한, 꾸러미 비율 70:30. 모두 사용자 테스트 후 조정할 출발값이다.

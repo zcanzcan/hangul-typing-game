@@ -30,6 +30,7 @@
 | [09. 확인할 것](docs/09-open-questions.md) | 데이터 출처, 개인정보, 상표 등 남은 질문 |
 | [10. 사실 검증 결과](docs/10-verification.md) | 법령, 데이터 출처, 라이선스 등 1~3차 검증 결과 (3차 Jev) |
 | [11. 단계별 개발 지시서](docs/11-dev-steps.md) | AI 코딩 도구에 한 단계씩 개발을 맡기는 방법과 단계별 완료 기준 |
+| [12. 낱말 비](docs/12-word-rain.md) | 떨어지는 낱말 막기 미니게임 규칙, 요즘 말 꾸러미, 점수, 구현 메모 |
 
 예시 데이터는 [`data/samples/`](data/samples)에 있어요.
 AI 코딩 도구로 개발할 때 참고할 규칙은 [`CLAUDE.md`](CLAUDE.md)에 정리했어요 (Codex는 [`AGENTS.md`](AGENTS.md)에서 시작).
