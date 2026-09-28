@@ -1,16 +1,27 @@
+@import './app.css';
+
 :root {
-  font-family:
-    Pretendard,
-    'Noto Sans KR',
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
-  color: #172033;
-  background: #fff8f0;
+  font-family: Pretendard, 'Noto Sans KR', system-ui, sans-serif;
+  color: #24304a;
+  background: #fff8ec;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  --color-bg: #fff8ec;
+  --color-surface: #ffffff;
+  --color-text: #24304a;
+  --color-muted: #5e6678;
+  --color-primary: #6ec1ff;
+  --color-primary-strong: #1477b8;
+  --color-sun: #ffd84d;
+  --color-success: #7be0b5;
+  --color-success-strong: #146846;
+  --color-danger: #ff8a80;
+  --color-danger-strong: #9b2c2c;
+  --color-border: #d8dde8;
+  --radius-button: 16px;
+  --radius-card: 24px;
+  --shadow-card: 0 16px 40px rgb(36 48 74 / 10%);
+  --font-scale: 1;
 }
 
 * {
@@ -21,18 +32,38 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  background:
+    radial-gradient(circle at 10% 10%, rgb(255 216 77 / 24%), transparent 30%),
+    radial-gradient(circle at 90% 20%, rgb(110 193 255 / 24%), transparent 32%),
+    var(--color-bg);
 }
 
-#root {
-  display: grid;
-  min-height: 100vh;
-  place-items: center;
-  padding: 24px;
-  text-align: center;
+button,
+input,
+select {
+  font: inherit;
 }
 
-h1 {
-  margin: 0;
-  font-size: clamp(2rem, 7vw, 4rem);
-  line-height: 1.2;
+button {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 4px solid #2b6f9f;
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2 {
+  font-family: 'Arial Rounded MT Bold', Pretendard, 'Noto Sans KR', sans-serif;
 }

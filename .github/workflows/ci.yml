@@ -23,5 +23,9 @@ jobs:
         run: npm run lint
       - name: 단위 테스트
         run: npm test
+      - name: Playwright 브라우저 설치
+        run: npx playwright install --with-deps chromium
+      - name: 화면 흐름 테스트
+        run: npm run test:e2e
       - name: 프로덕션 빌드
         run: npm run build

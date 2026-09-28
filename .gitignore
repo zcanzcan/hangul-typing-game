@@ -5,4 +5,5 @@ dist
 *.tsbuildinfo
 coverage
 playwright-report
+blob-report
 test-results

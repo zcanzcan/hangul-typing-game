@@ -1,0 +1,23 @@
+{
+  "version": "2026-09-28",
+  "items": [
+    {
+      "id": "sentence-0001",
+      "text": "오늘도 힘차게 시작해요.",
+      "kind": "short",
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "sentence-0002",
+      "text": "맑은 하늘을 바라보아요.",
+      "kind": "short",
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "sentence-0003",
+      "text": "천천히 또박또박 입력해요.",
+      "kind": "short",
+      "audience": ["kid", "adult", "senior"]
+    }
+  ]
+}

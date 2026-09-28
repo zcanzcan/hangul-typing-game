@@ -1,0 +1,55 @@
+{
+  "version": "2026-09-28",
+  "items": [
+    {
+      "id": "w-0001",
+      "text": "나무",
+      "meaning": "줄기와 가지가 단단한 여러해살이 식물.",
+      "example": "마당에 나무를 심었다.",
+      "emoji": "🌳",
+      "level": 1,
+      "tags": ["자연"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0002",
+      "text": "사과",
+      "meaning": "사과나무의 열매.",
+      "example": "빨간 사과를 먹었다.",
+      "emoji": "🍎",
+      "level": 2,
+      "tags": ["과일"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0003",
+      "text": "학교",
+      "meaning": "학생을 가르치는 곳.",
+      "example": "아침마다 학교에 간다.",
+      "emoji": "🏫",
+      "level": 2,
+      "tags": ["생활"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0004",
+      "text": "까치",
+      "meaning": "검은색과 흰색 깃털을 가진 새.",
+      "example": "아침에 까치가 울었다.",
+      "emoji": "🐦",
+      "level": 3,
+      "tags": ["동물"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0005",
+      "text": "닭",
+      "meaning": "알을 낳는 집에서 기르는 새.",
+      "example": "닭이 새벽에 운다.",
+      "emoji": "🐔",
+      "level": 3,
+      "tags": ["동물"],
+      "audience": ["kid", "adult", "senior"]
+    }
+  ]
+}

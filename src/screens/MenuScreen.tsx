@@ -1,0 +1,138 @@
+import type { Profile, TypingMode } from '../data/types'
+
+type MenuDestination = TypingMode | 'records' | 'mistakes' | 'settings'
+
+interface MenuScreenProps {
+  profile: Profile
+  unlockedModes: Readonly<Record<TypingMode, boolean>>
+  onNavigate: (destination: MenuDestination) => void
+}
+
+interface PracticeCardProps {
+  emoji: string
+  title: string
+  description: string
+  locked?: boolean
+  onClick: () => void
+}
+
+function PracticeCard({
+  emoji,
+  title,
+  description,
+  locked = false,
+  onClick,
+}: PracticeCardProps) {
+  return (
+    <button
+      className="menu-card"
+      type="button"
+      onClick={onClick}
+      disabled={locked}
+    >
+      <span className="menu-card__emoji" aria-hidden="true">
+        {locked ? '🔒' : emoji}
+      </span>
+      <span>
+        <strong>{title}</strong>
+        <small>{locked ? '앞 단계를 먼저 완료해 주세요.' : description}</small>
+      </span>
+      <span aria-hidden="true">→</span>
+    </button>
+  )
+}
+
+export function MenuScreen({
+  profile,
+  unlockedModes,
+  onNavigate,
+}: MenuScreenProps) {
+  return (
+    <main className="menu-screen" data-theme="candy">
+      <header className="menu-header">
+        <div>
+          <p className="eyebrow">오늘도 한 글자씩</p>
+          <h1>{profile.nickname}님, 반가워요!</h1>
+        </div>
+        <button
+          className="button button--ghost"
+          type="button"
+          onClick={() => onNavigate('settings')}
+        >
+          ⚙ 설정
+        </button>
+      </header>
+
+      <section className="journey-card" aria-labelledby="journey-title">
+        <div>
+          <p className="eyebrow">나의 연습 길</p>
+          <h2 id="journey-title">자리 → 낱말 → 문장</h2>
+        </div>
+        <div className="journey-steps" aria-label="단계 진행 상태">
+          {(['position', 'word', 'sentence'] as const).map((mode, index) => (
+            <span
+              className={unlockedModes[mode] ? 'is-unlocked' : ''}
+              key={mode}
+            >
+              {unlockedModes[mode] ? '✓' : '🔒'} {index + 1}단계
+            </span>
+          ))}
+        </div>
+      </section>
+
+      <section className="menu-section" aria-labelledby="practice-title">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">차근차근 올라가요</p>
+            <h2 id="practice-title">타자 연습</h2>
+          </div>
+        </div>
+        <div className="menu-grid">
+          <PracticeCard
+            emoji="⌨️"
+            title="자리 연습"
+            description="기본 자판 자리를 한 글자씩 익혀요."
+            onClick={() => onNavigate('position')}
+          />
+          <PracticeCard
+            emoji="🍎"
+            title="낱말 연습"
+            description="낱말을 치고 뜻 카드도 확인해요."
+            locked={!unlockedModes.word}
+            onClick={() => onNavigate('word')}
+          />
+          <PracticeCard
+            emoji="💬"
+            title="짧은 문장 연습"
+            description="쉬운 문장을 또박또박 입력해요."
+            locked={!unlockedModes.sentence}
+            onClick={() => onNavigate('sentence')}
+          />
+        </div>
+      </section>
+
+      <section className="menu-section" aria-labelledby="record-title">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">어제보다 한 걸음</p>
+            <h2 id="record-title">나의 기록</h2>
+          </div>
+        </div>
+        <div className="quick-actions">
+          <button type="button" onClick={() => onNavigate('records')}>
+            🏆 최고 기록과 최근 기록
+          </button>
+          <button type="button" onClick={() => onNavigate('mistakes')}>
+            🔁 틀린 낱말 다시 연습
+          </button>
+        </div>
+      </section>
+
+      <section className="coming-soon" aria-label="다음 단계 기능">
+        <span>🎮 미니게임</span>
+        <span>🔥 유행어 카드게임</span>
+        <small>다음 개발 단계에서 만나요!</small>
+      </section>
+    </main>
+  )
+}
