@@ -130,6 +130,6 @@ interface Mistake {
 - 점수 수정과 삭제는 해당 기록의 임의 토큰을 가진 브라우저만 허용
 
 SQL 원본은
-[`supabase/migrations/20260928154029_create_typing_game_class_scoreboard.sql`](../supabase/migrations/20260928154029_create_typing_game_class_scoreboard.sql)에 있다.
+[`supabase/migrations/20260928161038_create_typing_game_class_scoreboard.sql`](../supabase/migrations/20260928161038_create_typing_game_class_scoreboard.sql)에 있다.
 
 예시 데이터: [`data/samples/words.sample.json`](../data/samples/words.sample.json), [`data/samples/slang.sample.json`](../data/samples/slang.sample.json)
