@@ -35,6 +35,14 @@ function getRecordLabel(record: StoredRecord) {
     return '헷갈리는 맞춤법'
   }
 
+  if (record.mode === 'sentence' && record.stage === 4) {
+    return '틀린 맞춤법 고치기'
+  }
+
+  if (record.mode === 'sentence' && record.stage === 5) {
+    return '속담·사자성어 뜻 퀴즈'
+  }
+
   if (record.mode === 'minigame' && record.game === 'wordRain') {
     return `낱말 비 · ${PACK_LABELS[record.pack ?? 'standard']}`
   }

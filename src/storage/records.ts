@@ -1,6 +1,7 @@
 import { createStore, del, get, set } from 'idb-keyval'
 
 import type { Record } from '../data/types'
+import { recordPracticeTime } from '../goals'
 
 const recordStore = createStore('hangul-typing-game-records', 'records')
 const RECORDS_KEY = 'items'
@@ -65,6 +66,7 @@ export async function savePracticeRecord(
 
   updatedRecords.push(record)
   await set(RECORDS_KEY, updatedRecords, recordStore)
+  recordPracticeTime(record.profileId, record.durationSec, record.playedAt)
 
   const previousBest = previousBestRecord?.score ?? null
 

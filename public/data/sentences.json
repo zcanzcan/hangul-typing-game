@@ -88,6 +88,48 @@
       "meaning": "어찌 된 일을 뜻할 때는 ‘웬일’이라고 적어요.",
       "wrongForm": "왠일로 일찍 왔어요?",
       "audience": ["adult"]
+    },
+    {
+      "id": "sentence-proverb-0001",
+      "text": "가는 말이 고와야 오는 말이 곱다.",
+      "kind": "proverb",
+      "meaning": "남에게 좋게 말해야 자신도 좋은 말을 들을 수 있다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0002",
+      "text": "티끌 모아 태산",
+      "kind": "proverb",
+      "meaning": "아주 작은 것도 꾸준히 모으면 큰 것이 된다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0003",
+      "text": "백지장도 맞들면 낫다.",
+      "kind": "proverb",
+      "meaning": "쉬운 일도 서로 도우면 더 수월하다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0004",
+      "text": "우공이산",
+      "kind": "proverb",
+      "meaning": "꾸준히 노력하면 아무리 어려운 일도 이룰 수 있다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0005",
+      "text": "일석이조",
+      "kind": "proverb",
+      "meaning": "한 가지 일을 하여 두 가지 이익을 얻는다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0006",
+      "text": "전화위복",
+      "kind": "proverb",
+      "meaning": "나쁜 일이 바뀌어 오히려 좋은 일이 된다는 뜻.",
+      "audience": ["adult", "senior"]
     }
   ]
 }

@@ -1,5 +1,6 @@
 import type { Profile, TypingMode, Word } from '../data/types'
 import { buildSpeechText, useKoreanSpeech } from '../speech'
+import { DAILY_GOAL_SECONDS } from '../goals'
 
 type MenuDestination =
   | TypingMode
@@ -14,11 +15,15 @@ type MenuDestination =
   | 'word-chain-setup'
   | 'long-sentence'
   | 'spelling'
+  | 'daily-goal'
+  | 'spelling-correction'
+  | 'meaning-quiz'
 
 interface MenuScreenProps {
   profile: Profile
   unlockedModes: Readonly<Record<TypingMode, boolean>>
   dailyWord: Word | null
+  dailyPracticeSec: number
   onNavigate: (destination: MenuDestination) => void
 }
 
@@ -60,6 +65,7 @@ export function MenuScreen({
   profile,
   unlockedModes,
   dailyWord,
+  dailyPracticeSec,
   onNavigate,
 }: MenuScreenProps) {
   const speech = useKoreanSpeech()
@@ -134,6 +140,32 @@ export function MenuScreen({
         </section>
       ) : null}
 
+      <section className="daily-goal-card" aria-labelledby="daily-goal-title">
+        <span aria-hidden="true">
+          {dailyPracticeSec >= DAILY_GOAL_SECONDS ? '🏅' : '⏱️'}
+        </span>
+        <div>
+          <p className="eyebrow">하루 10분 목표</p>
+          <h2 id="daily-goal-title">
+            {dailyPracticeSec >= DAILY_GOAL_SECONDS
+              ? '오늘 도장을 받았어요!'
+              : `${Math.floor(dailyPracticeSec / 60)}분 연습했어요`}
+          </h2>
+          <progress
+            aria-label="오늘 연습 목표"
+            max={DAILY_GOAL_SECONDS}
+            value={Math.min(dailyPracticeSec, DAILY_GOAL_SECONDS)}
+          />
+        </div>
+        <button
+          className="button button--secondary"
+          type="button"
+          onClick={() => onNavigate('daily-goal')}
+        >
+          도장 달력 보기
+        </button>
+      </section>
+
       <section className="menu-section" aria-labelledby="practice-title">
         <div className="section-heading">
           <div>
@@ -206,6 +238,28 @@ export function MenuScreen({
               description="되/돼, 안/않처럼 자주 헷갈리는 표현을 익혀요."
               onClick={() => onNavigate('spelling')}
             />
+            <PracticeCard
+              emoji="🛠️"
+              title="틀린 맞춤법 고치기"
+              description="틀린 문장을 보고 바른 문장으로 직접 고쳐요."
+              onClick={() => onNavigate('spelling-correction')}
+            />
+          </div>
+        </section>
+      ) : null}
+
+      {profile.ageGroup !== 'kid' ? (
+        <section className="menu-section" aria-labelledby="meaning-quiz-title">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">뜻으로 기억해요</p>
+              <h2 id="meaning-quiz-title">속담·사자성어</h2>
+            </div>
+          </div>
+          <div className="quick-actions">
+            <button type="button" onClick={() => onNavigate('meaning-quiz')}>
+              💡 뜻 퀴즈 시작
+            </button>
           </div>
         </section>
       ) : null}

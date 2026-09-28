@@ -12,6 +12,10 @@ import type {
 import { createTowerPool, type TowerMode, type TowerPool } from './games/tower'
 import { createWordRainPool, type WordRainPool } from './games/wordRain'
 import { MenuScreen } from './screens/MenuScreen'
+import {
+  MeaningQuizScreen,
+  type MeaningQuizSummary,
+} from './screens/MeaningQuizScreen'
 import { MistakesScreen } from './screens/MistakesScreen'
 import {
   PracticeScreen,
@@ -21,6 +25,7 @@ import {
 import { RecordsScreen } from './screens/RecordsScreen'
 import { ResultScreen, type PracticeResult } from './screens/ResultScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
+import { SpellingCorrectionScreen } from './screens/SpellingCorrectionScreen'
 import {
   SpellingLessonScreen,
   type SpellingLessonSummary,
@@ -79,6 +84,8 @@ import {
   type WordStage,
 } from './practice/word-stages'
 import { useVisualViewport } from './tablet/use-visual-viewport'
+import { getPracticeTime } from './goals'
+import { DailyGoalScreen } from './screens/DailyGoalScreen'
 import {
   addCustomSlang,
   getCustomSlang,
@@ -138,6 +145,9 @@ type Screen =
   | 'word-chain-result'
   | 'long-sentence'
   | 'spelling'
+  | 'daily-goal'
+  | 'spelling-correction'
+  | 'meaning-quiz'
 
 const POSITION_ITEMS: PracticeItem[] = [
   { id: 'position-1', text: 'ㅁ' },
@@ -765,6 +775,40 @@ export function App() {
     setScreen('result')
   }
 
+  async function finishMeaningQuiz(summary: MeaningQuizSummary) {
+    if (!profile) {
+      return
+    }
+
+    const accuracy =
+      summary.questionCount === 0
+        ? 0
+        : (summary.correctCount / summary.questionCount) * 100
+    const saveResult = await savePracticeRecord({
+      id: crypto.randomUUID(),
+      profileId: profile.id,
+      mode: 'sentence',
+      stage: 5,
+      cpm: 0,
+      accuracy,
+      score: summary.correctCount * 100,
+      durationSec: summary.durationSec,
+      playedAt: new Date().toISOString(),
+      timeLimit: false,
+      completedCount: summary.correctCount,
+    })
+    await recordMistakes(profile.id, summary.wrongItemIds)
+    setResult({
+      record: saveResult.record,
+      difference: saveResult.difference,
+      passed: accuracy >= 80,
+      wrongLabels: summary.wrongItemIds.map(
+        (itemId) => summary.itemLabels[itemId] ?? itemId,
+      ),
+    })
+    setScreen('result')
+  }
+
   if (screen === 'start' || !profile) {
     return <StartScreen onStart={startWithProfile} />
   }
@@ -804,6 +848,7 @@ export function App() {
           profile={profile}
           unlockedModes={unlockedModes}
           dailyWord={getDailyWord(content.words, profile.ageGroup)}
+          dailyPracticeSec={getPracticeTime(profile.id)}
           onNavigate={navigate}
         />
       ) : null}
@@ -815,6 +860,14 @@ export function App() {
           unlockedStages={unlockedWordStages}
           onBack={() => navigate('menu')}
           onStart={startWordStage}
+        />
+      ) : null}
+
+      {screen === 'daily-goal' ? (
+        <DailyGoalScreen
+          profileId={profile.id}
+          nickname={profile.nickname}
+          onBack={() => navigate('menu')}
         />
       ) : null}
 
@@ -869,6 +922,27 @@ export function App() {
           )}
           onBack={() => navigate('menu')}
           onComplete={(summary) => void finishSpellingLesson(summary)}
+        />
+      ) : null}
+
+      {screen === 'spelling-correction' ? (
+        <SpellingCorrectionScreen
+          items={content.sentences.filter(
+            ({ kind, audience }) =>
+              kind === 'spelling' && audience.includes(profile.ageGroup),
+          )}
+          onBack={() => navigate('menu')}
+          onComplete={(summary) => void finishPractice(summary)}
+        />
+      ) : null}
+
+      {screen === 'meaning-quiz' ? (
+        <MeaningQuizScreen
+          items={content.sentences.filter(({ audience }) =>
+            audience.includes(profile.ageGroup),
+          )}
+          onBack={() => navigate('menu')}
+          onComplete={(summary) => void finishMeaningQuiz(summary)}
         />
       ) : null}
 

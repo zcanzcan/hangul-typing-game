@@ -193,6 +193,75 @@ test('성인 긴 문장과 맞춤법 연습을 하고 속도 설정을 저장한
   )
 })
 
+test('틀린 맞춤법을 고치고 속담 뜻을 맞힌 뒤 하루 목표 도장을 확인한다', async ({
+  page,
+}) => {
+  await startProfile(page, '성인', '배움이')
+  await page.getByRole('button', { name: /틀린 맞춤법 고치기/ }).click()
+  for (const answer of [
+    '이제 준비가 돼요.',
+    '오늘은 비가 안 와요.',
+    '학생으로서 책임을 다해요.',
+    '며칠 뒤에 다시 만나요.',
+    '웬일로 일찍 왔어요?',
+  ]) {
+    await page.getByLabel('바른 문장').fill(answer)
+    await page.getByRole('button', { name: '고치기 확인' }).click()
+    await expect(page.getByRole('status')).toContainText('바르게 고쳤어요')
+    await page
+      .getByRole('button', {
+        name: answer.startsWith('웬일') ? '결과 보기' : '다음 문장',
+      })
+      .click()
+  }
+  await expect(page.getByText('틀린 맞춤법 고치기')).toBeVisible()
+  await page.getByRole('button', { name: '메인으로' }).click()
+
+  await page.getByRole('button', { name: '💡 뜻 퀴즈 시작' }).click()
+  for (const meaning of [
+    '남에게 좋게 말해야 자신도 좋은 말을 들을 수 있다는 뜻.',
+    '아주 작은 것도 꾸준히 모으면 큰 것이 된다는 뜻.',
+    '쉬운 일도 서로 도우면 더 수월하다는 뜻.',
+    '꾸준히 노력하면 아무리 어려운 일도 이룰 수 있다는 뜻.',
+    '한 가지 일을 하여 두 가지 이익을 얻는다는 뜻.',
+    '나쁜 일이 바뀌어 오히려 좋은 일이 된다는 뜻.',
+  ]) {
+    await page.getByRole('button', { name: meaning, exact: true }).click()
+    await expect(page.getByRole('status')).toContainText('뜻을 맞혔어요')
+    await page
+      .getByRole('button', {
+        name: meaning.startsWith('나쁜 일이') ? '결과 보기' : '다음 문제',
+      })
+      .click()
+  }
+  await expect(page.getByText('속담·사자성어 뜻 퀴즈')).toBeVisible()
+  await page.getByRole('button', { name: '메인으로' }).click()
+
+  await page.evaluate(() => {
+    const stored = JSON.parse(
+      localStorage.getItem('hangul-game:profile:v1') ?? '{}',
+    )
+    const now = new Date()
+    const dateKey = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, '0'),
+      String(now.getDate()).padStart(2, '0'),
+    ].join('-')
+    localStorage.setItem(
+      'hangul-game:daily-goals:v1',
+      JSON.stringify({
+        version: 1,
+        profiles: { [stored.profile.id]: { [dateKey]: 600 } },
+      }),
+    )
+  })
+  await page.reload()
+  await expect(page.getByText('오늘 도장을 받았어요!')).toBeVisible()
+  await page.getByRole('button', { name: '도장 달력 보기' }).click()
+  await expect(page.getByText('오늘 목표를 채웠어요!')).toBeVisible()
+  await expect(page.getByLabel(/일 목표 달성/)).toBeVisible()
+})
+
 test('자리 연습을 마치면 결과와 기록이 저장되고 다음 단계가 열린다', async ({
   page,
 }) => {

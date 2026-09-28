@@ -40,7 +40,11 @@ export function ResultScreen({
         ? '긴 문장 연습'
         : record.mode === 'sentence' && record.stage === 3
           ? '헷갈리는 맞춤법'
-          : MODE_LABELS[record.mode as TypingMode]
+          : record.mode === 'sentence' && record.stage === 4
+            ? '틀린 맞춤법 고치기'
+            : record.mode === 'sentence' && record.stage === 5
+              ? '속담·사자성어 뜻 퀴즈'
+              : MODE_LABELS[record.mode as TypingMode]
 
   return (
     <PageShell title="연습 결과" eyebrow={eyebrow}>

@@ -300,6 +300,139 @@
   margin-top: 7px;
   color: var(--color-muted);
 }
+.daily-goal-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 20px 24px;
+  border: 2px solid #7be0b5;
+  border-radius: var(--radius-card);
+  background: #effcf6;
+}
+.daily-goal-card > span {
+  font-size: 2.8rem;
+}
+.daily-goal-card h2,
+.daily-goal-card p {
+  margin: 0;
+}
+.daily-goal-card progress,
+.daily-goal-hero progress {
+  width: 100%;
+  height: 16px;
+  margin-top: 10px;
+  accent-color: #217254;
+}
+.daily-goal-screen,
+.correction-layout,
+.meaning-quiz-layout {
+  display: grid;
+  gap: 24px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+.daily-goal-hero,
+.goal-calendar,
+.correction-card,
+.meaning-quiz-card {
+  padding: clamp(24px, 5vw, 40px);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+.daily-goal-hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: center;
+}
+.daily-goal-hero > span {
+  font-size: 4rem;
+}
+.daily-goal-hero progress {
+  grid-column: 1 / -1;
+}
+.goal-calendar__weekdays,
+.goal-calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+.goal-calendar__weekdays span {
+  padding: 8px;
+  color: var(--color-muted);
+  text-align: center;
+  font-weight: 800;
+}
+.goal-calendar__days article,
+.goal-calendar__days .is-empty {
+  min-height: 68px;
+  padding: 8px;
+  border-radius: 12px;
+}
+.goal-calendar__days article {
+  display: grid;
+  align-content: space-between;
+  border: 1px solid #d8e2ee;
+  background: #f8fbff;
+}
+.goal-calendar__days article.is-complete {
+  border-color: #efb700;
+  background: #fff3bf;
+}
+.goal-calendar__days article b {
+  text-align: center;
+}
+.correction-card,
+.meaning-quiz-card {
+  display: grid;
+  gap: 20px;
+}
+.correction-card > h2 {
+  padding: 18px;
+  border: 2px dashed #a72e44;
+  border-radius: 16px;
+  color: #7b2031;
+  background: #fff1f3;
+}
+.correction-card textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+.correction-card .feedback small {
+  display: block;
+  margin-top: 8px;
+}
+.meaning-quiz-card {
+  text-align: center;
+}
+.meaning-quiz-card > span {
+  font-size: 4rem;
+}
+.meaning-quiz-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.meaning-quiz-choices button {
+  min-height: 100px;
+  padding: 16px;
+  border: 3px solid #c4d7ec;
+  border-radius: 18px;
+  background: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.meaning-quiz-choices button.is-correct {
+  border-color: #217254;
+  background: #dff8ed;
+}
+.meaning-quiz-choices button.is-wrong {
+  border-color: #a72e44;
+  background: #ffe2e6;
+}
 .journey-card h2 {
   margin-bottom: 0;
 }
@@ -2501,6 +2634,14 @@ body[data-virtual-keyboard='open'] .tower-input {
   }
   .daily-word-card {
     grid-template-columns: auto 1fr;
+  }
+  .daily-goal-card,
+  .daily-goal-hero,
+  .meaning-quiz-choices {
+    grid-template-columns: 1fr;
+  }
+  .daily-goal-card .button {
+    width: 100%;
   }
   .daily-word-card .button {
     grid-column: 1 / -1;
