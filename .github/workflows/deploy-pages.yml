@@ -31,6 +31,9 @@ jobs:
         run: npm ci
       - name: 프로덕션 빌드
         run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
       - name: 배포 파일 업로드
         uses: actions/upload-pages-artifact@v3
         with:
