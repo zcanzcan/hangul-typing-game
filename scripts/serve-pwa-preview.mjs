@@ -4,7 +4,7 @@ import { extname, resolve, sep } from 'node:path'
 
 const host = '127.0.0.1'
 const port = Number(process.env.PWA_PREVIEW_PORT ?? 4175)
-const basePath = '/hangul-typing-game/'
+const basePath = process.env.VITE_BASE_PATH ?? '/'
 const distributionDirectory = resolve('dist')
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',

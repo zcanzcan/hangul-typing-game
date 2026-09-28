@@ -1,10 +1,12 @@
 import { expect, test } from '@playwright/test'
 
+const basePath = process.env.VITE_BASE_PATH ?? '/'
+
 test('설치 manifest와 서비스 워커로 오프라인 연습 데이터를 제공한다', async ({
   context,
   page,
 }) => {
-  await page.goto('/hangul-typing-game/')
+  await page.goto(basePath)
   await expect(
     page.getByRole('heading', { name: '한글 타자 놀이터' }),
   ).toBeVisible()

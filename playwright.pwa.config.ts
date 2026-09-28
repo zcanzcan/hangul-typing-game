@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
+const basePath = process.env.VITE_BASE_PATH ?? '/'
+
 export default defineConfig({
   testDir: './e2e',
   testMatch: /pwa\.spec\.ts/,
@@ -18,7 +20,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'node scripts/serve-pwa-preview.mjs',
-    url: 'http://127.0.0.1:4175/hangul-typing-game/',
+    url: `http://127.0.0.1:4175${basePath}`,
     reuseExistingServer: false,
   },
 })
