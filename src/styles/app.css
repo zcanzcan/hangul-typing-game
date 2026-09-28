@@ -261,6 +261,45 @@
   background: linear-gradient(135deg, #fff, #e9f7ff);
   box-shadow: var(--shadow-card);
 }
+.daily-word-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: clamp(20px, 4vw, 32px);
+  border: 3px solid #efb700;
+  border-radius: var(--radius-card);
+  background: linear-gradient(135deg, #fff3bf, #fff);
+  box-shadow: 8px 8px 0 #ffc7b2;
+}
+.daily-word-card__emoji,
+.daily-word-card__letter {
+  display: grid;
+  width: 84px;
+  height: 84px;
+  place-items: center;
+  border-radius: 24px;
+  background: #fff;
+  font-size: 3rem;
+}
+.daily-word-card__letter {
+  color: #173954;
+  background: #e8f6ff;
+  font-weight: 900;
+}
+.daily-word-card h2,
+.daily-word-card p {
+  margin: 0;
+}
+.daily-word-card h2 {
+  margin: 3px 0 6px;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+.daily-word-card small {
+  display: block;
+  margin-top: 7px;
+  color: var(--color-muted);
+}
 .journey-card h2 {
   margin-bottom: 0;
 }
@@ -2327,6 +2366,12 @@ body[data-virtual-keyboard='open'] .tower-input {
   .word-chain-turn,
   .word-chain-input {
     grid-template-columns: 1fr;
+  }
+  .daily-word-card {
+    grid-template-columns: auto 1fr;
+  }
+  .daily-word-card .button {
+    grid-column: 1 / -1;
   }
   .slang-menu-section {
     grid-template-columns: 1fr;

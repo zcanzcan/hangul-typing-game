@@ -186,7 +186,7 @@ export function PracticeScreen({
         <ProgressBar current={itemIndex + 1} total={items.length} />
 
         <section className="practice-card" aria-labelledby="practice-target">
-          {currentItem.emoji ? (
+          {profile.ageGroup === 'kid' && currentItem.emoji ? (
             <span className="practice-card__emoji" aria-hidden="true">
               {currentItem.emoji}
             </span>

@@ -67,6 +67,7 @@ import {
 } from './screens/WordRainResultScreen'
 import { WordRainSetupScreen } from './screens/WordRainSetupScreen'
 import { validateSlangFields } from './slang/filter'
+import { getDailyWord } from './words'
 import {
   getWordStageDefinition,
   getWordStageItems,
@@ -676,6 +677,7 @@ export function App() {
         <MenuScreen
           profile={profile}
           unlockedModes={unlockedModes}
+          dailyWord={getDailyWord(content.words, profile.ageGroup)}
           onNavigate={navigate}
         />
       ) : null}

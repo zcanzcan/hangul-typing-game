@@ -116,6 +116,31 @@ test('한국어 목소리가 있는 기기에서 낱말과 뜻을 읽어 준다'
   await expect(page.getByRole('button', { name: '🔊 읽는 중' })).toBeVisible()
 })
 
+test('메인에 오늘의 낱말을 보여주고 초등학생 연습에는 그림 카드를 붙인다', async ({
+  page,
+}) => {
+  await startProfile(page, '초등학생', '그림새싹')
+  const dailyWord = page.locator('.daily-word-card')
+  await expect(dailyWord).toBeVisible()
+  await expect(dailyWord.getByText('오늘의 낱말', { exact: true })).toBeVisible()
+  await expect(dailyWord.locator('.daily-word-card__emoji')).toBeVisible()
+
+  await page.getByRole('button', { name: /자리 연습/ }).click()
+  for (const character of ['ㅁ', 'ㄴ', 'ㅇ', 'ㄹ', 'ㅓ', 'ㅏ', 'ㅣ']) {
+    await page.getByLabel('입력').fill(character)
+    await page.getByRole('button', { name: '입력 확인' }).click()
+    await page
+      .getByRole('button', {
+        name: character === 'ㅣ' ? '결과 보기' : '다음 문제',
+      })
+      .click()
+  }
+  await page.getByRole('button', { name: '메인으로' }).click()
+  await page.getByRole('button', { name: /낱말 연습/ }).click()
+  await page.getByRole('button', { name: '1단계 받침 없는 글자 시작' }).click()
+  await expect(page.locator('.practice-card__emoji')).toContainText('🌳')
+})
+
 test('자리 연습을 마치면 결과와 기록이 저장되고 다음 단계가 열린다', async ({
   page,
 }) => {

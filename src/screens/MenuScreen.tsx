@@ -1,4 +1,5 @@
-import type { Profile, TypingMode } from '../data/types'
+import type { Profile, TypingMode, Word } from '../data/types'
+import { buildSpeechText, useKoreanSpeech } from '../speech'
 
 type MenuDestination =
   | TypingMode
@@ -15,6 +16,7 @@ type MenuDestination =
 interface MenuScreenProps {
   profile: Profile
   unlockedModes: Readonly<Record<TypingMode, boolean>>
+  dailyWord: Word | null
   onNavigate: (destination: MenuDestination) => void
 }
 
@@ -55,8 +57,11 @@ function PracticeCard({
 export function MenuScreen({
   profile,
   unlockedModes,
+  dailyWord,
   onNavigate,
 }: MenuScreenProps) {
+  const speech = useKoreanSpeech()
+
   return (
     <main className="menu-screen" data-theme="candy">
       <header className="menu-header">
@@ -89,6 +94,43 @@ export function MenuScreen({
           ))}
         </div>
       </section>
+
+      {dailyWord ? (
+        <section className="daily-word-card" aria-labelledby="daily-word-title">
+          {profile.ageGroup === 'kid' && dailyWord.emoji ? (
+            <span className="daily-word-card__emoji" aria-hidden="true">
+              {dailyWord.emoji}
+            </span>
+          ) : (
+            <span className="daily-word-card__letter" aria-hidden="true">
+              가
+            </span>
+          )}
+          <div>
+            <p className="eyebrow">오늘의 낱말</p>
+            <h2 id="daily-word-title">{dailyWord.text}</h2>
+            <p>{dailyWord.meaning}</p>
+            {dailyWord.example ? <small>예) {dailyWord.example}</small> : null}
+          </div>
+          {profile.settings.speech && speech.supported ? (
+            <button
+              className="button button--ghost"
+              type="button"
+              onClick={() =>
+                speech.speak(
+                  buildSpeechText(
+                    dailyWord.text,
+                    dailyWord.meaning,
+                    dailyWord.example,
+                  ),
+                )
+              }
+            >
+              {speech.speaking ? '🔊 읽는 중' : '🔈 오늘의 낱말 듣기'}
+            </button>
+          ) : null}
+        </section>
+      ) : null}
 
       <section className="menu-section" aria-labelledby="practice-title">
         <div className="section-heading">
