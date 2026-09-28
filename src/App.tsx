@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { loadPracticeContent } from './data/practice-content'
 import type {
+  AgeGroup,
   MinigamePack,
   PracticeContent,
   Profile,
@@ -66,7 +67,13 @@ import {
   recordCorrectReview,
   recordMistakes,
 } from './storage/mistakes'
-import { loadProfile, saveProfile } from './storage/profile'
+import {
+  activateProfile,
+  addProfile,
+  createProfile,
+  loadProfile,
+  saveProfile,
+} from './storage/profile'
 import {
   clearProgress,
   completeMode,
@@ -328,6 +335,21 @@ export function App() {
   function updateProfile(nextProfile: Profile) {
     saveProfile(nextProfile)
     setProfile(nextProfile)
+  }
+
+  function addFamilyProfile(nickname: string, ageGroup: AgeGroup) {
+    const member = createProfile(nickname, ageGroup)
+    addProfile(member)
+    return member
+  }
+
+  function selectFamilyProfile(profileId: string) {
+    const nextProfile = activateProfile(profileId)
+
+    if (nextProfile) {
+      setProfile(nextProfile)
+      navigate('menu')
+    }
   }
 
   async function addSlang(fields: {
@@ -747,6 +769,8 @@ export function App() {
           profile={profile}
           onBack={() => navigate('menu')}
           onMistakes={() => navigate('mistakes')}
+          onAddProfile={addFamilyProfile}
+          onSelectProfile={selectFamilyProfile}
         />
       ) : null}
 

@@ -129,7 +129,7 @@ export function MenuScreen({
         </div>
         <div className="quick-actions">
           <button type="button" onClick={() => onNavigate('records')}>
-            🏆 최고 기록과 최근 기록
+            🏆 내 기록과 가족 점수판
           </button>
           <button type="button" onClick={() => onNavigate('mistakes')}>
             🔁 틀린 낱말 다시 연습

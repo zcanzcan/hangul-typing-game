@@ -1356,6 +1356,130 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
+.scoreboard-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 6px;
+  border: 2px solid #3de0ff;
+  background: #252b51;
+}
+.scoreboard-tabs button {
+  min-height: 52px;
+  border: 0;
+  color: #d3d9ff;
+  background: transparent;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.scoreboard-tabs button[aria-selected='true'] {
+  color: #1b1f3b;
+  background: #ffe45e;
+  box-shadow: 4px 4px 0 #ff5da2;
+}
+.scoreboard-panel {
+  display: grid;
+  gap: 24px;
+}
+.family-scoreboard {
+  display: grid;
+  gap: 24px;
+}
+.family-scoreboard__heading,
+.family-add-form {
+  padding: clamp(22px, 4vw, 36px);
+  border: 3px solid #3de0ff;
+  background: #252b51;
+  box-shadow: 8px 8px 0 #ff5da2;
+}
+.family-scoreboard__heading p:last-child,
+.family-add-form > div p:last-child {
+  color: #d3d9ff;
+}
+.family-ranking {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+}
+.family-ranking > li {
+  display: grid;
+  grid-template-columns: auto minmax(130px, 1fr) minmax(280px, 2fr) auto;
+  gap: 16px;
+  align-items: center;
+  min-height: 94px;
+  padding: 16px;
+  border: 2px solid #3de0ff;
+  background: #252b51;
+}
+.family-ranking > li.is-active {
+  border-color: #ffe45e;
+  box-shadow: 6px 6px 0 #ff5da2;
+}
+.family-ranking__rank {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  color: #1b1f3b;
+  background: #ffe45e;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+.family-ranking strong,
+.family-ranking small {
+  display: block;
+}
+.family-ranking small,
+.family-ranking dt {
+  color: #d3d9ff;
+}
+.family-ranking dl {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0;
+}
+.family-ranking dt {
+  font-size: 0.78em;
+}
+.family-ranking dd {
+  margin: 3px 0 0;
+  color: #ffe45e;
+  font-weight: 900;
+}
+.family-ranking__active {
+  color: #7be0b5;
+  font-weight: 900;
+}
+.family-add-form {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 1fr) minmax(180px, 1fr) minmax(150px, 0.7fr)
+    auto;
+  gap: 16px;
+  align-items: end;
+}
+.family-add-form > div,
+.family-add-form > p {
+  grid-column: 1 / -1;
+}
+.family-add-form .field input,
+.family-add-form .field select {
+  border-color: #3de0ff;
+  color: #fff;
+  background: #343b68;
+}
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .record-card {
   display: grid;
   gap: 8px;
@@ -2006,6 +2130,17 @@ body[data-virtual-keyboard='open'] .tower-input {
   .menu-grid,
   .record-grid,
   .slang-choices {
+    grid-template-columns: 1fr;
+  }
+  .family-ranking > li {
+    grid-template-columns: auto 1fr;
+  }
+  .family-ranking dl,
+  .family-ranking > li .button,
+  .family-ranking__active {
+    grid-column: 1 / -1;
+  }
+  .family-add-form {
     grid-template-columns: 1fr;
   }
   .slang-menu-section {

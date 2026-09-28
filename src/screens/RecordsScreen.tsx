@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { PageShell } from '../components/PageShell'
-import type { Profile, Record as PracticeRecord } from '../data/types'
+import type { AgeGroup, Profile, Record as PracticeRecord } from '../data/types'
 import { getWordStageDefinition, type WordStage } from '../practice/word-stages'
-import { getRecords, type StoredRecord } from '../storage/records'
+import { buildFamilyStandings } from '../records/family-scoreboard'
+import { getProfiles } from '../storage/profile'
+import { getAllRecords, type StoredRecord } from '../storage/records'
 
 const MODE_LABELS: Readonly<Record<PracticeRecord['mode'], string>> = {
   position: '자리 연습',
@@ -44,6 +46,8 @@ interface RecordsScreenProps {
   profile: Profile
   onBack: () => void
   onMistakes: () => void
+  onAddProfile: (nickname: string, ageGroup: AgeGroup) => Profile
+  onSelectProfile: (profileId: string) => void
 }
 
 function sortByPlayedAt(records: StoredRecord[]) {
@@ -54,15 +58,23 @@ export function RecordsScreen({
   profile,
   onBack,
   onMistakes,
+  onAddProfile,
+  onSelectProfile,
 }: RecordsScreenProps) {
-  const [records, setRecords] = useState<StoredRecord[] | null>(null)
+  const [allRecords, setAllRecords] = useState<StoredRecord[] | null>(null)
+  const [profiles, setProfiles] = useState(() => getProfiles())
+  const [tab, setTab] = useState<'mine' | 'family'>('mine')
+  const [nickname, setNickname] = useState('')
+  const [ageGroup, setAgeGroup] = useState<AgeGroup>('kid')
+  const [familyMessage, setFamilyMessage] = useState('')
 
   useEffect(() => {
     let cancelled = false
 
-    void getRecords(profile.id).then((savedRecords) => {
+    void getAllRecords().then((savedRecords) => {
       if (!cancelled) {
-        setRecords(sortByPlayedAt(savedRecords))
+        setAllRecords(sortByPlayedAt(savedRecords))
+        setProfiles(getProfiles())
       }
     })
 
@@ -71,9 +83,42 @@ export function RecordsScreen({
     }
   }, [profile.id])
 
-  if (!records) {
+  const records = useMemo(
+    () => allRecords?.filter(({ profileId }) => profileId === profile.id) ?? [],
+    [allRecords, profile.id],
+  )
+  const standings = useMemo(
+    () => buildFamilyStandings(profiles, allRecords ?? []),
+    [allRecords, profiles],
+  )
+
+  function addFamilyMember(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const trimmedNickname = nickname.trim()
+
+    if (trimmedNickname === '') {
+      return
+    }
+
+    if (
+      profiles.some(
+        (member) =>
+          member.nickname.toLowerCase() === trimmedNickname.toLowerCase(),
+      )
+    ) {
+      setFamilyMessage('같은 별명이 이미 있어요.')
+      return
+    }
+
+    const member = onAddProfile(trimmedNickname, ageGroup)
+    setProfiles((current) => [...current, member])
+    setNickname('')
+    setFamilyMessage(`${member.nickname} 가족을 추가했어요.`)
+  }
+
+  if (!allRecords) {
     return (
-      <PageShell title="내 기록" onBack={onBack} theme="pixel">
+      <PageShell title="점수판" onBack={onBack} theme="pixel">
         <p className="loading-message">기록을 불러오는 중이에요…</p>
       </PageShell>
     )
@@ -93,60 +138,187 @@ export function RecordsScreen({
 
   return (
     <PageShell
-      title="내 기록"
+      title="점수판"
       eyebrow={profile.nickname}
       onBack={onBack}
       theme="pixel"
     >
       <div className="records-layout">
-        {records.length === 0 ? (
-          <section className="empty-state">
-            <span aria-hidden="true">🏁</span>
-            <h2>아직 기록이 없어요</h2>
-            <p>연습 한 판을 마치면 여기에 기록이 쌓여요.</p>
+        <div
+          className="scoreboard-tabs"
+          role="tablist"
+          aria-label="점수판 종류"
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === 'mine'}
+            onClick={() => setTab('mine')}
+          >
+            내 기록
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === 'family'}
+            onClick={() => setTab('family')}
+          >
+            가족 점수판
+          </button>
+        </div>
+
+        {tab === 'mine' ? (
+          <section className="scoreboard-panel" role="tabpanel">
+            <h2 className="visually-hidden">내 기록</h2>
+            {records.length === 0 ? (
+              <div className="empty-state">
+                <span aria-hidden="true">🏁</span>
+                <h3>아직 기록이 없어요</h3>
+                <p>연습 한 판을 마치면 여기에 기록이 쌓여요.</p>
+              </div>
+            ) : (
+              <>
+                <section className="records-section">
+                  <p className="eyebrow">BEST SCORE</p>
+                  <h2>모드별 최고 기록</h2>
+                  <div className="record-grid">
+                    {bestRecords.map((record) => (
+                      <article className="record-card" key={record.id}>
+                        <strong>{getRecordLabel(record)}</strong>
+                        <span>{Math.round(record.accuracy)}% 정확도</span>
+                        <b>
+                          {record.timeLimit
+                            ? `${Math.round(record.score)}점`
+                            : `${record.completedCount}개 완료`}
+                        </b>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+
+                <RecordList
+                  title="최근 기록 · 시간 제한 있음"
+                  records={timedRecords}
+                />
+                <RecordList
+                  title="최근 기록 · 시간 제한 없음"
+                  records={untimedRecords}
+                />
+                <RecordList title="게임 점수" records={gameRecords} />
+              </>
+            )}
+
+            <button
+              className="button button--pixel"
+              type="button"
+              onClick={onMistakes}
+            >
+              틀린 낱말 다시 연습
+            </button>
           </section>
         ) : (
-          <>
-            <section className="records-section">
-              <p className="eyebrow">BEST SCORE</p>
-              <h2>모드별 최고 기록</h2>
-              <div className="record-grid">
-                {bestRecords.map((record) => (
-                  <article className="record-card" key={record.id}>
-                    <strong>{getRecordLabel(record)}</strong>
-                    <span>{Math.round(record.accuracy)}% 정확도</span>
-                    <b>
-                      {record.timeLimit
-                        ? `${Math.round(record.score)}점`
-                        : `${record.completedCount}개 완료`}
-                    </b>
-                  </article>
-                ))}
+          <section className="family-scoreboard" role="tabpanel">
+            <div className="family-scoreboard__heading">
+              <div>
+                <p className="eyebrow">한 기기에서 함께</p>
+                <h2>가족 최고 기록</h2>
+                <p>각자 별명으로 연습하고 최고 점수와 정확도를 비교해요.</p>
               </div>
-            </section>
+            </div>
 
-            <RecordList
-              title="최근 기록 · 시간 제한 있음"
-              records={timedRecords}
-            />
-            <RecordList
-              title="최근 기록 · 시간 제한 없음"
-              records={untimedRecords}
-            />
-            <RecordList title="게임 점수" records={gameRecords} />
-          </>
+            <ol className="family-ranking">
+              {standings.map((standing, index) => (
+                <li
+                  className={
+                    standing.profile.id === profile.id ? 'is-active' : ''
+                  }
+                  key={standing.profile.id}
+                >
+                  <span className="family-ranking__rank">{index + 1}</span>
+                  <div>
+                    <strong>{standing.profile.nickname}</strong>
+                    <small>
+                      {AGE_LABELS[standing.profile.ageGroup]} ·{' '}
+                      {standing.playCount}판
+                    </small>
+                  </div>
+                  <dl>
+                    <div>
+                      <dt>최고 점수</dt>
+                      <dd>{Math.round(standing.bestScore)}점</dd>
+                    </div>
+                    <div>
+                      <dt>최고 정확도</dt>
+                      <dd>{Math.round(standing.bestAccuracy)}%</dd>
+                    </div>
+                    <div>
+                      <dt>최고 타수</dt>
+                      <dd>{Math.round(standing.bestCpm)}타</dd>
+                    </div>
+                  </dl>
+                  {standing.profile.id === profile.id ? (
+                    <span className="family-ranking__active">현재 사용자</span>
+                  ) : (
+                    <button
+                      className="button button--pixel"
+                      type="button"
+                      onClick={() => onSelectProfile(standing.profile.id)}
+                    >
+                      이 별명으로 시작
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ol>
+
+            <form className="family-add-form" onSubmit={addFamilyMember}>
+              <div>
+                <p className="eyebrow">NEW PLAYER</p>
+                <h2>가족 추가</h2>
+                <p>실명 대신 이 기기에서 사용할 별명을 적어 주세요.</p>
+              </div>
+              <label className="field">
+                <span>별명</span>
+                <input
+                  value={nickname}
+                  onChange={(event) => setNickname(event.target.value)}
+                  maxLength={12}
+                  autoComplete="off"
+                  required
+                />
+              </label>
+              <label className="field">
+                <span>연령대</span>
+                <select
+                  aria-label="가족 연령대"
+                  value={ageGroup}
+                  onChange={(event) =>
+                    setAgeGroup(event.target.value as AgeGroup)
+                  }
+                >
+                  {(Object.keys(AGE_LABELS) as AgeGroup[]).map((value) => (
+                    <option value={value} key={value}>
+                      {AGE_LABELS[value]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button className="button button--pixel" type="submit">
+                가족 추가하기
+              </button>
+              {familyMessage ? <p role="status">{familyMessage}</p> : null}
+            </form>
+          </section>
         )}
-
-        <button
-          className="button button--pixel"
-          type="button"
-          onClick={onMistakes}
-        >
-          틀린 낱말 다시 연습
-        </button>
       </div>
     </PageShell>
   )
+}
+
+const AGE_LABELS: Readonly<Record<AgeGroup, string>> = {
+  kid: '초등학생',
+  adult: '성인',
+  senior: '어르신',
 }
 
 function RecordList({

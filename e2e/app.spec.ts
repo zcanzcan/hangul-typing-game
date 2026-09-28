@@ -102,6 +102,39 @@ test('자리 연습을 마치면 결과와 기록이 저장되고 다음 단계�
   await expect(page.getByRole('button', { name: /낱말 연습/ })).toBeEnabled()
 })
 
+test('가족을 추가하고 별명별 기록 사용자로 전환한다', async ({ page }) => {
+  await startProfile(page, '성인', '첫주자')
+  await page.getByRole('button', { name: /가족 점수판/ }).click()
+  await expect(page.getByRole('heading', { name: '점수판' })).toBeVisible()
+
+  await page.getByRole('tab', { name: '가족 점수판' }).click()
+  await expect(
+    page.getByRole('heading', { name: '가족 최고 기록' }),
+  ).toBeVisible()
+  await expect(
+    page.locator('.family-ranking li').filter({ hasText: '첫주자' }),
+  ).toBeVisible()
+
+  await page.getByLabel('별명').fill('느린손')
+  await page.getByLabel('가족 연령대').selectOption('senior')
+  await page.getByRole('button', { name: '가족 추가하기' }).click()
+  await expect(page.getByRole('status')).toContainText('느린손 가족을 추가')
+
+  const newMember = page.locator('.family-ranking li').filter({
+    hasText: '느린손',
+  })
+  await expect(newMember).toContainText('어르신')
+  await newMember.getByRole('button', { name: '이 별명으로 시작' }).click()
+  await expect(
+    page.getByRole('heading', { name: '느린손님, 반가워요!' }),
+  ).toBeVisible()
+
+  await page.reload()
+  await expect(
+    page.getByRole('heading', { name: '느린손님, 반가워요!' }),
+  ).toBeVisible()
+})
+
 test('낱말 입력 뒤 뜻을 보고 틀린 낱말을 복습할 수 있다', async ({ page }) => {
   await startProfile(page, '성인', '정확한손')
   await page.getByRole('button', { name: /낱말 연습/ }).click()

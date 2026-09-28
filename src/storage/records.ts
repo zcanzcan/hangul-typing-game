@@ -16,7 +16,7 @@ export interface SaveRecordResult {
   difference: number | null
 }
 
-async function getAllRecords() {
+export async function getAllRecords() {
   return (await get<StoredRecord[]>(RECORDS_KEY, recordStore)) ?? []
 }
 
