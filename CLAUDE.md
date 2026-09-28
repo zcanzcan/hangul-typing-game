@@ -8,6 +8,7 @@ AI 코딩 도구(Claude Code 등)가 이 저장소에서 개발할 때 따르는
 2. `docs/04-typing-and-scoring.md`: 한글 입력 판정과 점수 규칙. 타자 엔진은 이 문서대로 구현한다.
 3. `docs/05-data-model.md`: 데이터 형식. 타입 이름과 필드를 그대로 쓴다.
 4. `docs/08-tech-and-roadmap.md`: 기술 스택, 폴더 구조, 개발 순서.
+5. `docs/11-dev-steps.md`: 단계별 개발 지시서. **요청받은 단계 하나만** 개발하고, 완료 기준과 PR 규칙을 따른다.
 
 ## 규칙
 

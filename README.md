@@ -28,10 +28,12 @@
 | [07. 디자인 가이드](docs/07-design.md) | 색, 글꼴, 접근성 규칙 |
 | [08. 기술 구성과 개발 순서](docs/08-tech-and-roadmap.md) | 기술 스택, MVP 범위, 단계별 개발 계획 |
 | [09. 확인할 것](docs/09-open-questions.md) | 데이터 출처, 개인정보, 상표 등 남은 질문 |
-| [10. 사실 검증 결과](docs/10-verification.md) | 법령, 데이터 출처, 라이선스 등 1차·2차 검증 결과 |
+| [10. 사실 검증 결과](docs/10-verification.md) | 법령, 데이터 출처, 라이선스 등 1~3차 검증 결과 (3차 Jev) |
+| [11. 단계별 개발 지시서](docs/11-dev-steps.md) | AI 코딩 도구에 한 단계씩 개발을 맡기는 방법과 단계별 완료 기준 |
 
 예시 데이터는 [`data/samples/`](data/samples)에 있어요.
-AI 코딩 도구로 개발할 때 참고할 규칙은 [`CLAUDE.md`](CLAUDE.md)에 정리했어요.
+AI 코딩 도구로 개발할 때 참고할 규칙은 [`CLAUDE.md`](CLAUDE.md)에 정리했어요 (Codex는 [`AGENTS.md`](AGENTS.md)에서 시작).
+개발을 시킬 때는 AI에게 `docs/11-dev-steps.md를 읽고 0단계를 개발해 줘`처럼 단계 번호만 바꿔 말하면 돼요.
 
 ## 기획 원본
 
