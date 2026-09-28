@@ -1,7 +1,11 @@
 import { useState } from 'react'
 
 import { PageShell } from '../components/PageShell'
-import type { AgeGroup, FontSize, Profile } from '../data/types'
+import type { AgeGroup, FontSize, Profile, Slang } from '../data/types'
+import {
+  buildCustomSlangExport,
+  parseCustomSlangImport,
+} from '../slang/lifecycle'
 import { applyAgePreset } from '../storage/profile'
 import { useKoreanSpeech } from '../speech'
 
@@ -25,6 +29,8 @@ const SPEED_LABELS = {
 
 interface SettingsScreenProps {
   profile: Profile
+  slangItems: Slang[]
+  slangVersion: string
   onBack: () => void
   onSave: (profile: Profile) => void
   onResetRecords: () => Promise<void>
@@ -33,14 +39,22 @@ interface SettingsScreenProps {
     meaning: string
     example: string
   }) => Promise<{ ok: boolean; message: string }>
+  onSetSlangStatus: (itemId: string, status: Slang['status']) => Promise<string>
+  onRefreshSlang: () => Promise<string>
+  onImportSlang: (items: Slang[]) => Promise<{ ok: boolean; message: string }>
 }
 
 export function SettingsScreen({
   profile,
+  slangItems,
+  slangVersion,
   onBack,
   onSave,
   onResetRecords,
   onAddSlang,
+  onSetSlangStatus,
+  onRefreshSlang,
+  onImportSlang,
 }: SettingsScreenProps) {
   const [draft, setDraft] = useState(profile)
   const [message, setMessage] = useState('')
@@ -48,6 +62,7 @@ export function SettingsScreen({
   const [slangMeaning, setSlangMeaning] = useState('')
   const [slangExample, setSlangExample] = useState('')
   const [isAddingSlang, setIsAddingSlang] = useState(false)
+  const [isRefreshingSlang, setIsRefreshingSlang] = useState(false)
   const speech = useKoreanSpeech()
 
   function changeAgeGroup(ageGroup: AgeGroup) {
@@ -85,6 +100,59 @@ export function SettingsScreen({
       setSlangExample('')
     }
   }
+
+  async function refreshSlang() {
+    setIsRefreshingSlang(true)
+    try {
+      const version = await onRefreshSlang()
+      setMessage(
+        version === slangVersion
+          ? `이미 최신 유행어 목록이에요. (${version})`
+          : `유행어 목록을 ${version} 버전으로 바꿨어요.`,
+      )
+    } catch {
+      setMessage(
+        '최신 유행어 목록을 확인하지 못했어요. 잠시 뒤 다시 시도해 주세요.',
+      )
+    } finally {
+      setIsRefreshingSlang(false)
+    }
+  }
+
+  function exportSlang() {
+    const exported = buildCustomSlangExport(slangItems)
+    const blob = new Blob([JSON.stringify(exported, null, 2)], {
+      type: 'application/json',
+    })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = `hangul-slang-${new Date().toISOString().slice(0, 10)}.json`
+    anchor.click()
+    URL.revokeObjectURL(url)
+    setMessage(`${exported.items.length}개 직접 만든 유행어를 내보냈어요.`)
+  }
+
+  async function importSlangFile(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) {
+      return
+    }
+
+    try {
+      const items = parseCustomSlangImport(await file.text())
+      const result = await onImportSlang(items)
+      setMessage(result.message)
+    } catch (error) {
+      setMessage(
+        error instanceof Error ? error.message : '파일을 읽지 못했어요.',
+      )
+    }
+  }
+
+  const customSlang = slangItems.filter(({ origin }) => origin === 'custom')
+  const archivedSlang = slangItems.filter(({ status }) => status === 'archived')
 
   return (
     <PageShell title="설정" eyebrow={profile.nickname} onBack={onBack}>
@@ -133,50 +201,149 @@ export function SettingsScreen({
           </label>
 
           {draft.settings.slangMode ? (
-            <div className="custom-slang-form">
-              <div>
-                <p className="eyebrow">나만의 카드 만들기</p>
-                <h2>유행어 직접 추가</h2>
-                <p>추가한 카드는 이 기기에만 저장돼요.</p>
+            <div className="slang-management">
+              <div className="custom-slang-form">
+                <div>
+                  <p className="eyebrow">나만의 카드 만들기</p>
+                  <h2>유행어 직접 추가</h2>
+                  <p>추가한 카드는 이 기기에만 저장돼요.</p>
+                </div>
+                <label className="field">
+                  <span>유행어</span>
+                  <input
+                    value={slangText}
+                    onChange={(event) => setSlangText(event.target.value)}
+                    maxLength={30}
+                    required
+                  />
+                </label>
+                <label className="field">
+                  <span>뜻</span>
+                  <input
+                    value={slangMeaning}
+                    onChange={(event) => setSlangMeaning(event.target.value)}
+                    maxLength={100}
+                    required
+                  />
+                </label>
+                <label className="field">
+                  <span>예문 (선택)</span>
+                  <input
+                    value={slangExample}
+                    onChange={(event) => setSlangExample(event.target.value)}
+                    maxLength={120}
+                  />
+                </label>
+                <button
+                  className="button button--secondary"
+                  type="button"
+                  disabled={
+                    isAddingSlang ||
+                    slangText.trim() === '' ||
+                    slangMeaning.trim() === ''
+                  }
+                  onClick={() => void addSlang()}
+                >
+                  {isAddingSlang ? '검사 중…' : '유행어 추가'}
+                </button>
               </div>
-              <label className="field">
-                <span>유행어</span>
-                <input
-                  value={slangText}
-                  onChange={(event) => setSlangText(event.target.value)}
-                  maxLength={30}
-                  required
-                />
-              </label>
-              <label className="field">
-                <span>뜻</span>
-                <input
-                  value={slangMeaning}
-                  onChange={(event) => setSlangMeaning(event.target.value)}
-                  maxLength={100}
-                  required
-                />
-              </label>
-              <label className="field">
-                <span>예문 (선택)</span>
-                <input
-                  value={slangExample}
-                  onChange={(event) => setSlangExample(event.target.value)}
-                  maxLength={120}
-                />
-              </label>
-              <button
-                className="button button--secondary"
-                type="button"
-                disabled={
-                  isAddingSlang ||
-                  slangText.trim() === '' ||
-                  slangMeaning.trim() === ''
-                }
-                onClick={() => void addSlang()}
-              >
-                {isAddingSlang ? '검사 중…' : '유행어 추가'}
-              </button>
+
+              <section className="slang-update-card">
+                <div>
+                  <p className="eyebrow">REMOTE UPDATE</p>
+                  <h2>기본 목록 업데이트</h2>
+                  <p>현재 버전: {slangVersion}</p>
+                </div>
+                <button
+                  className="button button--secondary"
+                  type="button"
+                  disabled={isRefreshingSlang}
+                  onClick={() => void refreshSlang()}
+                >
+                  {isRefreshingSlang ? '확인 중…' : '최신 목록 확인'}
+                </button>
+              </section>
+
+              <section className="slang-transfer-card">
+                <div>
+                  <p className="eyebrow">JSON</p>
+                  <h2>직접 만든 유행어 나누기</h2>
+                  <p>파일로 내보내 다른 기기에서 가져올 수 있어요.</p>
+                </div>
+                <div className="button-row">
+                  <button
+                    className="button button--secondary"
+                    type="button"
+                    onClick={exportSlang}
+                  >
+                    JSON 내보내기
+                  </button>
+                  <label className="button button--ghost slang-file-button">
+                    JSON 가져오기
+                    <input
+                      type="file"
+                      accept="application/json,.json"
+                      onChange={(event) => void importSlangFile(event)}
+                    />
+                  </label>
+                </div>
+              </section>
+
+              {customSlang.length > 0 ? (
+                <section className="slang-library">
+                  <h2>내가 만든 유행어</h2>
+                  <ul>
+                    {customSlang.map((item) => (
+                      <li key={item.id}>
+                        <div>
+                          <strong>{item.text}</strong>
+                          <small>
+                            {item.addedAt} ·{' '}
+                            {item.status === 'active'
+                              ? '현재 유행어'
+                              : '옛 유행어'}
+                          </small>
+                        </div>
+                        <button
+                          className="button button--ghost"
+                          type="button"
+                          onClick={async () =>
+                            setMessage(
+                              await onSetSlangStatus(
+                                item.id,
+                                item.status === 'active'
+                                  ? 'archived'
+                                  : 'active',
+                              ),
+                            )
+                          }
+                        >
+                          {item.status === 'active'
+                            ? '옛 유행어로 이동'
+                            : '현재 목록으로 복원'}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+
+              {archivedSlang.length > 0 ? (
+                <section className="slang-library slang-library--archive">
+                  <h2>옛 유행어 모음</h2>
+                  <ul>
+                    {archivedSlang.map((item) => (
+                      <li key={`archive-${item.id}`}>
+                        <div>
+                          <strong>{item.text}</strong>
+                          <small>{item.meaning}</small>
+                        </div>
+                        <span>{item.addedAt} 등록</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
             </div>
           ) : null}
         </fieldset>

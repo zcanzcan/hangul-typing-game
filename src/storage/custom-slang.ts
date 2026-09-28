@@ -18,3 +18,33 @@ export async function addCustomSlang(item: Slang) {
   await set(CUSTOM_SLANG_KEY, updatedItems, customSlangStore)
   return updatedItems
 }
+
+export async function setCustomSlangStatus(
+  itemId: string,
+  status: Slang['status'],
+) {
+  const items = await getCustomSlang()
+  const updatedItems = items.map((item) =>
+    item.id === itemId ? { ...item, status } : item,
+  )
+  await set(CUSTOM_SLANG_KEY, updatedItems, customSlangStore)
+  return updatedItems
+}
+
+export async function importCustomSlang(items: readonly Slang[]) {
+  const current = await getCustomSlang()
+  const imported = items.map((item) => ({
+    ...item,
+    id: item.id.startsWith('custom-')
+      ? item.id
+      : `custom-${crypto.randomUUID()}`,
+    origin: 'custom' as const,
+  }))
+  const importedIds = new Set(imported.map(({ id }) => id))
+  const updatedItems = [
+    ...imported,
+    ...current.filter(({ id }) => !importedIds.has(id)),
+  ]
+  await set(CUSTOM_SLANG_KEY, updatedItems, customSlangStore)
+  return updatedItems
+}

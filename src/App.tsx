@@ -71,6 +71,7 @@ import {
 } from './screens/WordRainResultScreen'
 import { WordRainSetupScreen } from './screens/WordRainSetupScreen'
 import { validateSlangFields } from './slang/filter'
+import { fetchLatestSlang } from './slang/lifecycle'
 import { getDailyWord } from './words'
 import {
   getWordStageDefinition,
@@ -78,7 +79,12 @@ import {
   type WordStage,
 } from './practice/word-stages'
 import { useVisualViewport } from './tablet/use-visual-viewport'
-import { addCustomSlang, getCustomSlang } from './storage/custom-slang'
+import {
+  addCustomSlang,
+  getCustomSlang,
+  importCustomSlang,
+  setCustomSlangStatus,
+} from './storage/custom-slang'
 import {
   clearMistakes,
   recordCorrectReview,
@@ -422,6 +428,82 @@ export function App() {
     )
 
     return { ok: true, message: `“${text}” 카드를 추가했어요.` }
+  }
+
+  async function changeCustomSlangStatus(
+    itemId: string,
+    status: Slang['status'],
+  ) {
+    const customItems = await setCustomSlangStatus(itemId, status)
+    setContent((current) =>
+      current
+        ? {
+            ...current,
+            slang: [
+              ...customItems,
+              ...current.slang.filter(({ origin }) => origin === 'official'),
+            ],
+          }
+        : current,
+    )
+    return status === 'archived'
+      ? '옛 유행어 모음으로 옮겼어요.'
+      : '현재 유행어로 다시 가져왔어요.'
+  }
+
+  async function refreshSlang() {
+    const latest = await fetchLatestSlang()
+    const customItems =
+      content?.slang.filter(({ origin }) => origin === 'custom') ?? []
+    setContent((current) =>
+      current
+        ? {
+            ...current,
+            slang: [
+              ...customItems,
+              ...latest.items.filter(({ origin }) => origin === 'official'),
+            ],
+            slangVersion: latest.version,
+          }
+        : current,
+    )
+    return latest.version
+  }
+
+  async function importSlangItems(items: Slang[]) {
+    if (!content) {
+      return { ok: false, message: '연습 데이터를 먼저 불러와 주세요.' }
+    }
+
+    const safeItems = items.filter((item) =>
+      validateSlangFields(
+        [item.text, item.meaning, item.example ?? ''],
+        content.blockedPatterns,
+      ),
+    )
+    if (safeItems.length !== items.length) {
+      return {
+        ok: false,
+        message: '학생에게 알맞지 않은 말이 있어 가져오지 않았어요.',
+      }
+    }
+
+    const customItems = await importCustomSlang(safeItems)
+    setContent((current) =>
+      current
+        ? {
+            ...current,
+            slang: [
+              ...customItems,
+              ...current.slang.filter(({ origin }) => origin === 'official'),
+            ],
+          }
+        : current,
+    )
+    return {
+      ok: true,
+      message: `${safeItems.length}개 유행어를 가져왔어요.`,
+    }
   }
 
   async function finishSlangGame(summary: SlangGameSummary) {
@@ -810,6 +892,7 @@ export function App() {
         <SlangGameScreen
           key={`slang-${content.slang.length}`}
           items={content.slang}
+          ageGroup={profile.ageGroup}
           onBack={() => navigate('menu')}
           onComplete={(summary) => void finishSlangGame(summary)}
         />
@@ -958,10 +1041,15 @@ export function App() {
       {screen === 'settings' ? (
         <SettingsScreen
           profile={profile}
+          slangItems={content.slang}
+          slangVersion={content.slangVersion}
           onBack={() => navigate('menu')}
           onSave={updateProfile}
           onResetRecords={resetRecords}
           onAddSlang={addSlang}
+          onSetSlangStatus={changeCustomSlangStatus}
+          onRefreshSlang={refreshSlang}
+          onImportSlang={importSlangItems}
         />
       ) : null}
     </div>

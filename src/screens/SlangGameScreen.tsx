@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { PageShell } from '../components/PageShell'
 import { ProgressBar } from '../components/ProgressBar'
-import type { Slang } from '../data/types'
+import type { AgeGroup, Slang } from '../data/types'
 import { buildSlangQuestions, calculateSlangScore } from '../slang/game'
 
 export interface SlangGameSummary {
@@ -14,6 +14,7 @@ export interface SlangGameSummary {
 
 interface SlangGameScreenProps {
   items: Slang[]
+  ageGroup: AgeGroup
   onBack: () => void
   onComplete: (summary: SlangGameSummary) => void
 }
@@ -22,10 +23,13 @@ type Phase = 'meaning' | 'typing' | 'feedback'
 
 export function SlangGameScreen({
   items,
+  ageGroup,
   onBack,
   onComplete,
 }: SlangGameScreenProps) {
-  const [questions] = useState(() => buildSlangQuestions(items))
+  const [questions] = useState(() =>
+    buildSlangQuestions(items, 10, Math.random, ageGroup),
+  )
   const [startedAt] = useState(() => performance.now())
   const [questionIndex, setQuestionIndex] = useState(0)
   const [phase, setPhase] = useState<Phase>('meaning')
@@ -144,6 +148,22 @@ export function SlangGameScreen({
         <section className="slang-card" aria-labelledby="slang-word">
           <p className="eyebrow">이 말은 무슨 뜻일까요?</p>
           <h2 id="slang-word">{question.slang.text}</h2>
+          <p className="slang-source-line">
+            등록 {question.slang.addedAt}
+            {question.slang.popularFrom
+              ? ` · 유행 시작 ${question.slang.popularFrom}`
+              : ''}
+            {' · '}
+            {question.slang.source ? (
+              <a href={question.slang.source} target="_blank" rel="noreferrer">
+                출처 보기
+              </a>
+            ) : question.slang.origin === 'custom' ? (
+              '직접 추가'
+            ) : (
+              '앱 검수 목록'
+            )}
+          </p>
 
           <div className="slang-choices">
             {question.choices.map((choice, index) => {

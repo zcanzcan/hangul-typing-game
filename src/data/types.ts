@@ -102,5 +102,6 @@ export interface PracticeContent {
   words: Word[]
   sentences: Sentence[]
   slang: Slang[]
+  slangVersion: string
   blockedPatterns: string[]
 }

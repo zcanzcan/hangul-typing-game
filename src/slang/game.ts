@@ -1,4 +1,4 @@
-import type { Slang } from '../data/types'
+import type { AgeGroup, Slang } from '../data/types'
 
 const FALLBACK_MEANINGS = [
   '마음이 편안하고 걱정이 없는 상태.',
@@ -57,9 +57,11 @@ export function buildSlangQuestions(
   items: readonly Slang[],
   count = 10,
   random: () => number = Math.random,
+  ageGroup: AgeGroup = 'kid',
 ): SlangQuestion[] {
   const activeItems = items.filter(
-    ({ kidSafe, status }) => kidSafe && status === 'active',
+    ({ kidSafe, status }) =>
+      status === 'active' && (ageGroup !== 'kid' || kidSafe),
   )
 
   if (activeItems.length === 0) {

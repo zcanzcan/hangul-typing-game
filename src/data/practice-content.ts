@@ -28,9 +28,8 @@ export async function loadPracticeContent(): Promise<PracticeContent> {
   return {
     words: wordCollection.items,
     sentences: sentenceCollection.items,
-    slang: slangCollection.items.filter(
-      ({ kidSafe, status }) => kidSafe && status === 'active',
-    ),
+    slang: slangCollection.items,
+    slangVersion: slangCollection.version,
     blockedPatterns: blocklist.patterns,
   }
 }

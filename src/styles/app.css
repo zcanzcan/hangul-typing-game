@@ -1823,6 +1823,75 @@
 .slang-settings-card {
   border: 3px solid #8d76eb;
 }
+.slang-management {
+  display: grid;
+  gap: 18px;
+}
+.slang-update-card,
+.slang-transfer-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 18px;
+  border: 2px solid #c4d7ec;
+  border-radius: 16px;
+  background: #fff;
+}
+.slang-update-card h2,
+.slang-update-card p,
+.slang-transfer-card h2,
+.slang-transfer-card p {
+  margin: 0;
+}
+.slang-file-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.slang-file-button input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.slang-library {
+  padding: 18px;
+  border-radius: 16px;
+  background: #f4f9ff;
+}
+.slang-library ul {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  list-style: none;
+}
+.slang-library li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 64px;
+  padding: 12px 14px;
+  border: 1px solid #c4d7ec;
+  border-radius: 12px;
+  background: #fff;
+}
+.slang-library strong,
+.slang-library small {
+  display: block;
+}
+.slang-library small,
+.slang-library li > span,
+.slang-source-line {
+  color: var(--color-muted);
+}
+.slang-library--archive {
+  background: #f5f1e8;
+}
+.slang-source-line a {
+  color: var(--color-accent);
+}
 .custom-slang-form {
   display: grid;
   gap: 16px;
@@ -2437,6 +2506,11 @@ body[data-virtual-keyboard='open'] .tower-input {
     grid-column: 1 / -1;
   }
   .spelling-choices {
+    grid-template-columns: 1fr;
+  }
+  .slang-update-card,
+  .slang-transfer-card,
+  .slang-library li {
     grid-template-columns: 1fr;
   }
   .slang-menu-section {

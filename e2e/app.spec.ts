@@ -391,6 +391,19 @@ test('유행어 모드를 켜고 검수된 사용자 카드를 게임에서 플�
   await page.getByRole('button', { name: '유행어 추가' }).click()
   await expect(page.getByRole('status')).toContainText('카드를 추가')
 
+  const customSlang = page
+    .locator('.slang-library li')
+    .filter({ hasText: '말빛' })
+    .first()
+  await expect(customSlang).toContainText('현재 유행어')
+  await customSlang.getByRole('button', { name: '옛 유행어로 이동' }).click()
+  await expect(page.getByRole('status')).toContainText('옛 유행어 모음')
+  await customSlang.getByRole('button', { name: '현재 목록으로 복원' }).click()
+  await expect(page.getByRole('status')).toContainText('현재 유행어로 다시')
+
+  await page.getByRole('button', { name: '최신 목록 확인' }).click()
+  await expect(page.getByRole('status')).toContainText('최신 유행어 목록')
+
   await page.getByRole('button', { name: '설정 저장' }).click()
   await page.getByRole('button', { name: /메인으로/ }).click()
   await page.reload()
@@ -400,6 +413,7 @@ test('유행어 모드를 켜고 검수된 사용자 카드를 게임에서 플�
     page.getByRole('heading', { name: '유행어 카드게임' }),
   ).toBeVisible()
   await expect(page.getByRole('heading', { name: '말빛' })).toBeVisible()
+  await expect(page.getByText(/등록 .*직접 추가/)).toBeVisible()
 
   await page.getByRole('button', { name: '말로 전하는 밝은 기운.' }).click()
   await page.getByLabel('유행어 입력').fill('말빛')
