@@ -23,6 +23,10 @@ function getRecordLabel(record: StoredRecord) {
     return `낱말 비 · ${PACK_LABELS[record.pack ?? 'standard']}`
   }
 
+  if (record.mode === 'minigame' && record.game === 'slangQuiz') {
+    return '요즘 말 스피드 퀴즈'
+  }
+
   return MODE_LABELS[record.mode]
 }
 

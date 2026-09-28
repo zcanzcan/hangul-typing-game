@@ -34,7 +34,16 @@ export function MistakesScreen({
     }
   }, [profileId])
 
-  const practiceItems = [...content.words, ...content.sentences]
+  const practiceItems = [
+    ...content.words,
+    ...content.sentences,
+    ...content.slang.map(({ id, text, meaning, example }) => ({
+      id,
+      text,
+      meaning,
+      example,
+    })),
+  ]
 
   return (
     <PageShell title="틀린 낱말 다시 연습" eyebrow="복습 상자" onBack={onBack}>

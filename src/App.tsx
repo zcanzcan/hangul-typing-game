@@ -24,6 +24,14 @@ import {
   type SlangGameSummary,
 } from './screens/SlangGameScreen'
 import {
+  SlangQuizGameScreen,
+  type SlangQuizSummary,
+} from './screens/SlangQuizGameScreen'
+import {
+  SlangQuizResultScreen,
+  type SlangQuizResult,
+} from './screens/SlangQuizResultScreen'
+import {
   SlangResultScreen,
   type SlangGameResult,
 } from './screens/SlangResultScreen'
@@ -62,6 +70,8 @@ type Screen =
   | 'sentence'
   | 'slang'
   | 'slang-result'
+  | 'slang-quiz'
+  | 'slang-quiz-result'
   | 'result'
   | 'records'
   | 'mistakes'
@@ -102,6 +112,8 @@ export function App() {
   const [contentError, setContentError] = useState('')
   const [result, setResult] = useState<PracticeResult | null>(null)
   const [slangResult, setSlangResult] = useState<SlangGameResult | null>(null)
+  const [slangQuizResult, setSlangQuizResult] =
+    useState<SlangQuizResult | null>(null)
   const [wordRainPool, setWordRainPool] = useState<WordRainPool | null>(null)
   const [wordRainResult, setWordRainResult] = useState<WordRainResult | null>(
     null,
@@ -342,6 +354,44 @@ export function App() {
     setScreen('slang-result')
   }
 
+  async function finishSlangQuiz(summary: SlangQuizSummary) {
+    if (!profile) {
+      return
+    }
+
+    const accuracy =
+      summary.questionCount === 0
+        ? 0
+        : (summary.correctCount / summary.questionCount) * 100
+    const cpm = (summary.hitKeystrokes / summary.durationSec) * 60
+    const saveResult = await savePracticeRecord({
+      id: crypto.randomUUID(),
+      profileId: profile.id,
+      mode: 'minigame',
+      stage: 1,
+      game: 'slangQuiz',
+      pack: 'slang',
+      cpm,
+      accuracy,
+      score: summary.score,
+      durationSec: summary.durationSec,
+      playedAt: new Date().toISOString(),
+      timeLimit: profile.ageGroup !== 'senior',
+      completedCount: summary.correctCount,
+    })
+
+    await recordMistakes(profile.id, summary.wrongItemIds)
+    setSlangQuizResult({
+      record: saveResult.record,
+      difference: saveResult.difference,
+      correctCount: summary.correctCount,
+      questionCount: summary.questionCount,
+      maxStreak: summary.maxStreak,
+      hintCount: summary.hintCount,
+    })
+    setScreen('slang-quiz-result')
+  }
+
   function startWordRain(pack: MinigamePack) {
     if (!profile || !content) {
       return
@@ -472,6 +522,27 @@ export function App() {
           onMain={() => navigate('menu')}
           onReplay={() => navigate('slang')}
           onRecords={() => navigate('records')}
+        />
+      ) : null}
+
+      {screen === 'slang-quiz' ? (
+        <SlangQuizGameScreen
+          key={`slang-quiz-${content.slang.length}-${profile.ageGroup}`}
+          profile={profile}
+          items={content.slang}
+          onBack={() => navigate('menu')}
+          onNeedMore={() => navigate('settings')}
+          onComplete={(summary) => void finishSlangQuiz(summary)}
+        />
+      ) : null}
+
+      {screen === 'slang-quiz-result' && slangQuizResult ? (
+        <SlangQuizResultScreen
+          result={slangQuizResult}
+          onMain={() => navigate('menu')}
+          onReplay={() => navigate('slang-quiz')}
+          onRecords={() => navigate('records')}
+          onMistakes={() => navigate('mistakes')}
         />
       ) : null}
 

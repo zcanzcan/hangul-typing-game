@@ -1,7 +1,13 @@
 import type { Profile, TypingMode } from '../data/types'
 
 type MenuDestination =
-  TypingMode | 'slang' | 'records' | 'mistakes' | 'settings' | 'word-rain-setup'
+  | TypingMode
+  | 'slang'
+  | 'slang-quiz'
+  | 'records'
+  | 'mistakes'
+  | 'settings'
+  | 'word-rain-setup'
 
 interface MenuScreenProps {
   profile: Profile
@@ -153,6 +159,27 @@ export function MenuScreen({
           {profile.settings.slangMode ? '게임 시작' : '설정에서 켜기'}
         </button>
       </section>
+
+      {profile.settings.slangMode ? (
+        <section
+          className="slang-menu-section slang-quiz-menu-section"
+          data-theme="pixel"
+          aria-labelledby="slang-quiz-title"
+        >
+          <div>
+            <p className="eyebrow">PIXEL SPEED QUIZ</p>
+            <h2 id="slang-quiz-title">⚡ 요즘 말 스피드 퀴즈</h2>
+            <p>뜻과 표준어를 보고 알맞은 요즘 말을 빠르게 입력해요.</p>
+          </div>
+          <button
+            className="button button--pixel"
+            type="button"
+            onClick={() => onNavigate('slang-quiz')}
+          >
+            스피드 퀴즈 시작
+          </button>
+        </section>
+      ) : null}
 
       <section
         className="minigame-menu-section"

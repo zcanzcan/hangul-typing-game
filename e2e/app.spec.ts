@@ -284,3 +284,73 @@ test('유행어 모드를 켜면 요즘 말 낱말 비와 화면 확인 키를 �
     '빗방울을 없앴어요',
   )
 })
+
+test('뜻을 보고 요즘 말을 입력해 스피드 퀴즈 기록을 남긴다', async ({
+  page,
+}) => {
+  await startProfile(page, '성인', '번개타자')
+  await expect(
+    page.getByRole('heading', { name: '⚡ 요즘 말 스피드 퀴즈' }),
+  ).toHaveCount(0)
+
+  await page.getByRole('button', { name: '⚙ 설정' }).click()
+  await page.getByRole('checkbox', { name: '유행어 모드' }).check()
+  await page.getByRole('button', { name: '설정 저장' }).click()
+  await page.getByRole('button', { name: /메인으로/ }).click()
+  await page.getByRole('button', { name: '스피드 퀴즈 시작' }).click()
+
+  await expect(
+    page.getByRole('heading', { name: '요즘 말 스피드 퀴즈' }),
+  ).toBeVisible()
+  await expect(page.getByText('문제 1/10')).toBeVisible()
+
+  const slangItems = await page.evaluate(async () => {
+    const response = await fetch('/data/slang.json')
+    return (await response.json()).items as Array<{
+      text: string
+      meaning: string
+    }>
+  })
+  const firstMeaning = await page.locator('#slang-quiz-meaning').innerText()
+  const firstAnswer = slangItems.find(
+    ({ meaning }) => meaning === firstMeaning,
+  )?.text
+  expect(firstAnswer).toBeTruthy()
+
+  await page.getByLabel('요즘 말 입력').fill(firstAnswer!.split('').join(' '))
+  await page.getByLabel('요즘 말 입력').press('Enter')
+  await expect(page.getByText(/정답이에요|콤보 보너스/)).toBeVisible()
+  await page.getByRole('button', { name: '다음 문제' }).click()
+
+  for (let question = 2; question <= 10; question += 1) {
+    const input = page.getByLabel('요즘 말 입력')
+    await input.fill('없는답')
+    await input.press('Enter')
+    await expect(
+      page.getByText('아쉬워요. 두 번 더 입력할 수 있어요.'),
+    ).toBeVisible()
+    await input.fill('다시오답')
+    await input.press('Enter')
+    await expect(
+      page.getByText('아쉬워요. 한 번 더 입력할 수 있어요.'),
+    ).toBeVisible()
+    await input.fill('또오답')
+    await input.press('Enter')
+    await expect(
+      page.getByText('다시 두 번 시도했어요. 정답을 확인해요.'),
+    ).toBeVisible()
+
+    await page
+      .getByRole('button', {
+        name: question === 10 ? '결과 보기' : '다음 문제',
+      })
+      .click()
+  }
+
+  await expect(
+    page.getByRole('heading', { name: '요즘 말 스피드 퀴즈 결과' }),
+  ).toBeVisible()
+  await expect(page.getByText('1/10')).toBeVisible()
+  await page.getByRole('button', { name: '내 기록 보기' }).click()
+  await expect(page.getByText('요즘 말 스피드 퀴즈').first()).toBeVisible()
+})
