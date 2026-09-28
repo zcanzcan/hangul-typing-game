@@ -1,10 +1,10 @@
 # 한글 타자 게임 (가칭)
 
-학생들이 **한글과 표준어를 타자로 치면서 뜻까지 익히는 웹앱**의 기획 문서 저장소입니다.
+학생들이 **한글과 표준어를 타자로 치면서 뜻까지 익히는 웹앱**입니다.
 한컴타자연습처럼 단계별로 연습하고, 설정에서 **유행어 모드**를 켜면 최신 유행어를 카드게임으로 배울 수 있어요.
 초등학생을 기본으로 쉽게 만들고, 성인과 80세 어르신까지 쓸 수 있게 넓힙니다.
 
-> 이 저장소는 아직 코드가 없는 **기획 단계**입니다. 문서를 그대로 바이브코딩(AI 코딩 도구)에 넣어 개발을 시작할 수 있도록 정리했어요.
+React, TypeScript, Vite로 개발하며 PC와 태블릿에서 설치 가능한 PWA로 동작합니다.
 
 ## 핵심 5가지
 
@@ -37,6 +37,25 @@
 예시 데이터는 [`data/samples/`](data/samples)에 있어요.
 AI 코딩 도구로 개발할 때 참고할 규칙은 [`CLAUDE.md`](CLAUDE.md)에 정리했어요 (Codex는 [`AGENTS.md`](AGENTS.md)에서 시작).
 개발을 시킬 때는 AI에게 `docs/11-dev-steps.md를 읽고 0단계를 개발해 줘`처럼 단계 번호만 바꿔 말하면 돼요.
+
+## 로컬 실행
+
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
+
+반 점수판을 사용하려면 `.env.local`에 `VITE_SUPABASE_URL`과
+`VITE_SUPABASE_PUBLISHABLE_KEY`를 설정합니다. 브라우저에는 공개 가능한 publishable key만
+사용하며 secret 또는 service role key는 넣지 않습니다. 데이터베이스 구조는
+[`supabase/migrations/`](supabase/migrations)에 있습니다.
+
+```bash
+npm test
+npm run test:e2e
+npm run test:pwa
+```
 
 ## 기획 원본
 

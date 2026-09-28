@@ -1,0 +1,135 @@
+{
+  "version": "2026-09-29-p1-adult",
+  "items": [
+    {
+      "id": "sentence-0001",
+      "text": "오늘도 힘차게 시작해요.",
+      "kind": "short",
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "sentence-0002",
+      "text": "맑은 하늘을 바라보아요.",
+      "kind": "short",
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "sentence-0003",
+      "text": "천천히 또박또박 입력해요.",
+      "kind": "short",
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "sentence-long-0001",
+      "text": "새로운 일을 배울 때에는 빠르게 끝내려 하기보다 작은 목표를 정하고 꾸준히 이어 가는 태도가 중요합니다.",
+      "kind": "long",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-long-0002",
+      "text": "서로 다른 생각을 차분히 듣고 자신의 의견을 분명하게 설명하면 함께 더 나은 답을 찾을 수 있습니다.",
+      "kind": "long",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-long-0003",
+      "text": "잠시 창문을 열어 맑은 공기를 마시고 멀리 바라보는 습관은 지친 눈과 마음을 쉬게 해 줍니다.",
+      "kind": "long",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-long-0004",
+      "text": "기록은 완벽해야 하는 결과가 아니라 오늘 무엇을 배웠는지 내일의 나에게 전하는 다정한 편지입니다.",
+      "kind": "long",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-long-0005",
+      "text": "익숙한 길에서도 계절에 따라 달라지는 나무와 하늘을 살펴보면 평범한 하루에서 새로운 모습을 발견하게 됩니다.",
+      "kind": "long",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-spelling-0001",
+      "text": "이제 준비가 돼요.",
+      "kind": "spelling",
+      "meaning": "‘돼’는 ‘되어’의 준말이에요. ‘되어요’가 자연스러우므로 ‘돼요’가 맞아요.",
+      "wrongForm": "이제 준비가 되요.",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-spelling-0002",
+      "text": "오늘은 비가 안 와요.",
+      "kind": "spelling",
+      "meaning": "‘안’은 ‘아니’의 준말이고, ‘않’은 ‘아니하다’의 준말이에요.",
+      "wrongForm": "오늘은 비가 않 와요.",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-spelling-0003",
+      "text": "학생으로서 책임을 다해요.",
+      "kind": "spelling",
+      "meaning": "자격이나 지위를 나타낼 때는 ‘로서’를 써요. 도구나 수단은 ‘로써’를 써요.",
+      "wrongForm": "학생으로써 책임을 다해요.",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-spelling-0004",
+      "text": "며칠 뒤에 다시 만나요.",
+      "kind": "spelling",
+      "meaning": "날짜의 수를 물을 때는 소리 나는 대로 ‘며칠’이라고 적어요.",
+      "wrongForm": "몇일 뒤에 다시 만나요.",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-spelling-0005",
+      "text": "웬일로 일찍 왔어요?",
+      "kind": "spelling",
+      "meaning": "어찌 된 일을 뜻할 때는 ‘웬일’이라고 적어요.",
+      "wrongForm": "왠일로 일찍 왔어요?",
+      "audience": ["adult"]
+    },
+    {
+      "id": "sentence-proverb-0001",
+      "text": "가는 말이 고와야 오는 말이 곱다.",
+      "kind": "proverb",
+      "meaning": "남에게 좋게 말해야 자신도 좋은 말을 들을 수 있다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0002",
+      "text": "티끌 모아 태산",
+      "kind": "proverb",
+      "meaning": "아주 작은 것도 꾸준히 모으면 큰 것이 된다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0003",
+      "text": "백지장도 맞들면 낫다.",
+      "kind": "proverb",
+      "meaning": "쉬운 일도 서로 도우면 더 수월하다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0004",
+      "text": "우공이산",
+      "kind": "proverb",
+      "meaning": "꾸준히 노력하면 아무리 어려운 일도 이룰 수 있다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0005",
+      "text": "일석이조",
+      "kind": "proverb",
+      "meaning": "한 가지 일을 하여 두 가지 이익을 얻는다는 뜻.",
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "sentence-proverb-0006",
+      "text": "전화위복",
+      "kind": "proverb",
+      "meaning": "나쁜 일이 바뀌어 오히려 좋은 일이 된다는 뜻.",
+      "audience": ["adult", "senior"]
+    }
+  ]
+}

@@ -1,0 +1,511 @@
+{
+  "version": "2026-09-29-t9",
+  "items": [
+    {
+      "id": "w-0001",
+      "text": "나무",
+      "meaning": "줄기와 가지가 단단한 여러해살이 식물.",
+      "example": "마당에 나무를 심었다.",
+      "emoji": "🌳",
+      "level": 1,
+      "tags": ["자연"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0002",
+      "text": "사과",
+      "meaning": "사과나무의 열매.",
+      "example": "빨간 사과를 먹었다.",
+      "emoji": "🍎",
+      "level": 1,
+      "tags": ["과일"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0003",
+      "text": "학교",
+      "meaning": "학생을 가르치는 곳.",
+      "example": "아침마다 학교에 간다.",
+      "emoji": "🏫",
+      "level": 2,
+      "tags": ["생활"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0004",
+      "text": "까치",
+      "meaning": "검은색과 흰색 깃털을 가진 새.",
+      "example": "아침에 까치가 울었다.",
+      "emoji": "🐦",
+      "level": 3,
+      "tags": ["동물"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0005",
+      "text": "닭",
+      "meaning": "알을 낳는 집에서 기르는 새.",
+      "example": "닭이 새벽에 운다.",
+      "emoji": "🐔",
+      "level": 3,
+      "tags": ["동물"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0006",
+      "text": "바다",
+      "meaning": "넓고 깊게 물이 모여 있는 곳.",
+      "example": "여름에 푸른 바다를 보았다.",
+      "emoji": "🌊",
+      "level": 1,
+      "tags": ["자연"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0007",
+      "text": "기차",
+      "meaning": "철길 위를 달리며 사람이나 짐을 나르는 차.",
+      "example": "기차를 타고 여행을 갔다.",
+      "emoji": "🚆",
+      "level": 1,
+      "tags": ["교통"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0008",
+      "text": "모자",
+      "meaning": "머리에 쓰는 물건.",
+      "example": "햇빛을 가리려고 모자를 썼다.",
+      "emoji": "🧢",
+      "level": 1,
+      "tags": ["생활"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0009",
+      "text": "연필",
+      "meaning": "글씨를 쓰거나 그림을 그리는 도구.",
+      "example": "연필로 이름을 썼다.",
+      "emoji": "✏️",
+      "level": 2,
+      "tags": ["학용품"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0010",
+      "text": "강아지",
+      "meaning": "개의 새끼.",
+      "example": "강아지가 꼬리를 흔들었다.",
+      "emoji": "🐶",
+      "level": 2,
+      "tags": ["동물"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0011",
+      "text": "우산",
+      "meaning": "비를 피하려고 머리 위에 받쳐 쓰는 물건.",
+      "example": "비가 와서 우산을 펼쳤다.",
+      "emoji": "☂️",
+      "level": 2,
+      "tags": ["생활"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0012",
+      "text": "공원",
+      "meaning": "사람들이 쉬거나 산책하도록 꾸민 곳.",
+      "example": "공원에서 천천히 걸었다.",
+      "emoji": "🏞️",
+      "level": 2,
+      "tags": ["장소"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0013",
+      "text": "토끼",
+      "meaning": "귀가 길고 뒷다리가 발달한 동물.",
+      "example": "토끼가 풀밭을 뛰어다녔다.",
+      "emoji": "🐰",
+      "level": 3,
+      "tags": ["동물"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0014",
+      "text": "아빠",
+      "meaning": "자녀가 아버지를 친근하게 부르는 말.",
+      "example": "아빠와 함께 책을 읽었다.",
+      "emoji": "👨",
+      "level": 3,
+      "tags": ["가족"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0015",
+      "text": "꽃",
+      "meaning": "식물의 줄기 끝에서 피어나는 아름다운 부분.",
+      "example": "화단에 노란 꽃이 피었다.",
+      "emoji": "🌼",
+      "level": 3,
+      "tags": ["자연"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0016",
+      "text": "과자",
+      "meaning": "밀가루나 곡물 등에 단맛을 더해 만든 간식.",
+      "example": "친구와 과자를 나누어 먹었다.",
+      "emoji": "🍪",
+      "level": 2,
+      "tags": ["음식", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0017",
+      "text": "자동차",
+      "meaning": "엔진의 힘으로 길 위를 달리는 차.",
+      "example": "자동차가 천천히 출발했다.",
+      "emoji": "🚗",
+      "level": 2,
+      "tags": ["교통", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0018",
+      "text": "차표",
+      "meaning": "차를 타기 위해 사는 표.",
+      "example": "기차역에서 차표를 샀다.",
+      "emoji": "🎫",
+      "level": 2,
+      "tags": ["교통", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0019",
+      "text": "표정",
+      "meaning": "마음이나 느낌이 얼굴에 드러난 모습.",
+      "example": "기쁜 표정을 지었다.",
+      "emoji": "😊",
+      "level": 2,
+      "tags": ["사람", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0020",
+      "text": "정보",
+      "meaning": "어떤 일이나 대상에 관한 소식이나 자료.",
+      "example": "필요한 정보를 찾아보았다.",
+      "emoji": "ℹ️",
+      "level": 2,
+      "tags": ["생활", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0021",
+      "text": "보리",
+      "meaning": "알곡을 식량으로 쓰는 곡식.",
+      "example": "들판에서 보리가 자란다.",
+      "emoji": "🌾",
+      "level": 1,
+      "tags": ["식물", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0022",
+      "text": "리본",
+      "meaning": "장식하거나 묶을 때 쓰는 가늘고 긴 천.",
+      "example": "선물 상자에 리본을 묶었다.",
+      "emoji": "🎀",
+      "level": 2,
+      "tags": ["생활", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0023",
+      "text": "본보기",
+      "meaning": "배우거나 따라 할 만한 좋은 예.",
+      "example": "친구에게 좋은 본보기가 되었다.",
+      "emoji": "⭐",
+      "level": 2,
+      "tags": ["배움", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0024",
+      "text": "교실",
+      "meaning": "학교에서 공부하는 방.",
+      "example": "교실 창문을 활짝 열었다.",
+      "emoji": "🏫",
+      "level": 2,
+      "tags": ["학교", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0025",
+      "text": "실내",
+      "meaning": "건물이나 방의 안쪽.",
+      "example": "비가 와서 실내에서 놀았다.",
+      "emoji": "🏠",
+      "level": 2,
+      "tags": ["장소", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0026",
+      "text": "내일",
+      "meaning": "오늘의 바로 다음 날.",
+      "example": "내일 다시 만나기로 했다.",
+      "emoji": "📅",
+      "level": 2,
+      "tags": ["시간", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0027",
+      "text": "일기",
+      "meaning": "하루 동안 겪은 일과 생각을 적은 글.",
+      "example": "잠들기 전에 일기를 썼다.",
+      "emoji": "📔",
+      "level": 2,
+      "tags": ["글", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0028",
+      "text": "필통",
+      "meaning": "연필과 지우개 등을 넣는 통.",
+      "example": "필통에 연필을 넣었다.",
+      "emoji": "🖍️",
+      "level": 2,
+      "tags": ["학용품", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0029",
+      "text": "통나무",
+      "meaning": "베어 낸 나무의 줄기.",
+      "example": "통나무로 의자를 만들었다.",
+      "emoji": "🪵",
+      "level": 2,
+      "tags": ["자연", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0030",
+      "text": "무지개",
+      "meaning": "비가 갠 뒤 하늘에 보이는 여러 빛깔의 둥근 띠.",
+      "example": "비가 그치자 무지개가 떴다.",
+      "emoji": "🌈",
+      "level": 1,
+      "tags": ["자연", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0031",
+      "text": "개나리",
+      "meaning": "봄에 노란 꽃이 피는 나무.",
+      "example": "담장 옆에 개나리가 피었다.",
+      "emoji": "🌼",
+      "level": 1,
+      "tags": ["식물", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0032",
+      "text": "산책",
+      "meaning": "기분 전환이나 운동을 위해 천천히 걷는 일.",
+      "example": "저녁에 공원을 산책했다.",
+      "emoji": "🚶",
+      "level": 2,
+      "tags": ["생활", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0033",
+      "text": "책상",
+      "meaning": "책을 읽거나 글을 쓸 때 쓰는 상.",
+      "example": "책상 위를 깨끗이 정리했다.",
+      "emoji": "🪑",
+      "level": 2,
+      "tags": ["가구", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0034",
+      "text": "상자",
+      "meaning": "물건을 담도록 네모나게 만든 그릇.",
+      "example": "상자에 장난감을 담았다.",
+      "emoji": "📦",
+      "level": 2,
+      "tags": ["생활", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0035",
+      "text": "원숭이",
+      "meaning": "손발을 잘 쓰고 나무를 잘 타는 동물.",
+      "example": "원숭이가 나무 위로 올라갔다.",
+      "emoji": "🐒",
+      "level": 2,
+      "tags": ["동물", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0036",
+      "text": "이마",
+      "meaning": "눈썹 위에서 머리카락 아래까지의 얼굴 부분.",
+      "example": "이마에 땀이 맺혔다.",
+      "emoji": "🙂",
+      "level": 1,
+      "tags": ["몸", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0037",
+      "text": "마차",
+      "meaning": "말이 끄는 수레.",
+      "example": "말이 마차를 끌고 갔다.",
+      "emoji": "🐴",
+      "level": 1,
+      "tags": ["교통", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0038",
+      "text": "자녀",
+      "meaning": "아들과 딸을 함께 이르는 말.",
+      "example": "부모와 자녀가 함께 웃었다.",
+      "emoji": "👨‍👩‍👧",
+      "level": 2,
+      "tags": ["가족", "끝말잇기"],
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "w-0039",
+      "text": "여행",
+      "meaning": "다른 곳으로 가서 구경하거나 쉬는 일.",
+      "example": "가족과 바다로 여행을 갔다.",
+      "emoji": "🧳",
+      "level": 2,
+      "tags": ["생활", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0040",
+      "text": "행운",
+      "meaning": "좋은 일이 생기는 운수.",
+      "example": "네잎클로버가 행운을 가져다주었다.",
+      "emoji": "🍀",
+      "level": 2,
+      "tags": ["마음", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0041",
+      "text": "운동",
+      "meaning": "몸을 튼튼하게 하려고 움직이는 일.",
+      "example": "아침마다 가볍게 운동한다.",
+      "emoji": "🏃",
+      "level": 2,
+      "tags": ["건강", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0042",
+      "text": "동물",
+      "meaning": "사람을 포함해 스스로 움직이며 살아가는 생물.",
+      "example": "동물의 발자국을 관찰했다.",
+      "emoji": "🐾",
+      "level": 2,
+      "tags": ["자연", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0043",
+      "text": "물감",
+      "meaning": "그림을 그릴 때 색을 내는 재료.",
+      "example": "파란 물감으로 하늘을 그렸다.",
+      "emoji": "🎨",
+      "level": 2,
+      "tags": ["미술", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0044",
+      "text": "감자",
+      "meaning": "땅속줄기를 먹는 둥근 작물.",
+      "example": "밭에서 감자를 캤다.",
+      "emoji": "🥔",
+      "level": 2,
+      "tags": ["음식", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0045",
+      "text": "경력",
+      "meaning": "어떤 일을 해 온 경험과 이력.",
+      "example": "그는 오랜 경력을 차근차근 쌓았다.",
+      "level": 3,
+      "tags": ["일", "끝말잇기"],
+      "audience": ["adult", "senior"]
+    },
+    {
+      "id": "w-0046",
+      "text": "역사",
+      "meaning": "사람과 사회가 지나온 과정과 기록.",
+      "example": "마을의 역사를 배웠다.",
+      "emoji": "📜",
+      "level": 2,
+      "tags": ["배움", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0047",
+      "text": "쾌락",
+      "meaning": "기분이 매우 좋고 즐거운 느낌.",
+      "level": 4,
+      "tags": ["마음", "끝말잇기"],
+      "audience": ["adult"]
+    },
+    {
+      "id": "w-0048",
+      "text": "낙엽",
+      "meaning": "가을에 나무에서 떨어지는 잎.",
+      "example": "길 위에 낙엽이 쌓였다.",
+      "emoji": "🍂",
+      "level": 3,
+      "tags": ["자연", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0049",
+      "text": "엽서",
+      "meaning": "짧은 글을 적어 우편으로 보내는 두꺼운 종이.",
+      "example": "여행지에서 엽서를 보냈다.",
+      "emoji": "💌",
+      "level": 3,
+      "tags": ["글", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0050",
+      "text": "서랍",
+      "meaning": "책상이나 장 안에 넣었다 빼는 수납칸.",
+      "example": "서랍에 편지를 넣었다.",
+      "emoji": "🗄️",
+      "level": 3,
+      "tags": ["가구", "끝말잇기"],
+      "audience": ["kid", "adult", "senior"]
+    },
+    {
+      "id": "w-0051",
+      "text": "압력",
+      "meaning": "물체를 누르는 힘.",
+      "example": "공기 압력을 측정했다.",
+      "level": 3,
+      "tags": ["과학", "끝말잇기"],
+      "audience": ["adult", "senior"]
+    }
+  ]
+}

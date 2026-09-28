@@ -1,0 +1,115 @@
+{
+  "version": "2026-09-28",
+  "items": [
+    {
+      "id": "s-2026-0001",
+      "text": "갓생",
+      "meaning": "부지런하고 알차게 사는 삶.",
+      "example": "이번 방학에는 운동하며 갓생을 살아 볼래.",
+      "standardForm": "부지런한 생활",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    },
+    {
+      "id": "s-2026-0002",
+      "text": "알잘딱깔센",
+      "meaning": "알아서 잘, 딱 깔끔하고 센스 있게.",
+      "example": "발표 자료를 알잘딱깔센으로 정리했어.",
+      "standardForm": "알아서 깔끔하게",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    },
+    {
+      "id": "s-2026-0003",
+      "text": "소확행",
+      "meaning": "작지만 확실한 행복.",
+      "example": "따뜻한 코코아 한 잔이 나의 소확행이야.",
+      "standardForm": "작고 확실한 행복",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    },
+    {
+      "id": "s-2026-0004",
+      "text": "갑분싸",
+      "meaning": "갑자기 분위기가 어색하고 조용해짐.",
+      "example": "농담 뒤에 갑분싸가 되어 다른 이야기를 꺼냈어.",
+      "standardForm": "갑자기 분위기가 어색해짐",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    },
+    {
+      "id": "s-2026-0005",
+      "text": "내돈내산",
+      "meaning": "내 돈으로 직접 사서 사용함.",
+      "example": "이 연필은 내돈내산 후기야.",
+      "standardForm": "직접 구매함",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    },
+    {
+      "id": "s-2026-0006",
+      "text": "취향저격",
+      "meaning": "어떤 것이 자신의 취향에 꼭 맞음.",
+      "example": "이 색연필 세트는 완전히 내 취향저격이야.",
+      "standardForm": "취향에 꼭 맞음",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    },
+    {
+      "id": "s-2026-0007",
+      "text": "웃프다",
+      "meaning": "웃기면서도 슬픈 느낌이 함께 듦.",
+      "example": "지각할 뻔한 이야기가 웃프게 들렸어.",
+      "standardForm": "웃기고도 슬프다",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    },
+    {
+      "id": "s-2026-0008",
+      "text": "케미",
+      "meaning": "사람들이 함께할 때 잘 어울리는 모습.",
+      "example": "두 친구의 케미가 좋아서 발표가 즐거웠어.",
+      "standardForm": "잘 어울림",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    },
+    {
+      "id": "s-2026-0009",
+      "text": "플렉스",
+      "meaning": "자신의 성취나 가진 것을 드러내며 뽐냄.",
+      "example": "용돈을 모아 산 가방을 플렉스했어.",
+      "standardForm": "뽐내다",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    },
+    {
+      "id": "s-2026-0010",
+      "text": "티엠아이",
+      "meaning": "필요한 것보다 너무 자세한 정보.",
+      "example": "오늘 아침 메뉴까지 말한 건 티엠아이였나 봐.",
+      "standardForm": "지나치게 자세한 정보",
+      "addedAt": "2026-09-28",
+      "status": "active",
+      "kidSafe": true,
+      "origin": "official"
+    }
+  ]
+}
