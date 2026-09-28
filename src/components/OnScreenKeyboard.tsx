@@ -40,6 +40,7 @@ interface OnScreenKeyboardProps {
   input: string
   onJamo: (jamo: string) => void
   onBackspace: () => void
+  onSubmit?: () => void
 }
 
 export function OnScreenKeyboard({
@@ -47,6 +48,7 @@ export function OnScreenKeyboard({
   input,
   onJamo,
   onBackspace,
+  onSubmit,
 }: OnScreenKeyboardProps) {
   const targetKeys = getKeySequence(target)
   const inputKeys = getKeySequence(input)
@@ -77,19 +79,28 @@ export function OnScreenKeyboard({
       ))}
       <div className="keyboard__row">
         <button
-          className="keyboard__key keyboard__key--wide"
+          className={`keyboard__key keyboard__key--wide ${onSubmit ? 'keyboard__key--compact' : ''}`}
           type="button"
           onClick={() => onJamo(' ')}
         >
           띄어쓰기
         </button>
         <button
-          className="keyboard__key keyboard__key--wide"
+          className={`keyboard__key keyboard__key--wide ${onSubmit ? 'keyboard__key--compact' : ''}`}
           type="button"
           onClick={onBackspace}
         >
           한 글자 지우기
         </button>
+        {onSubmit ? (
+          <button
+            className="keyboard__key keyboard__key--compact keyboard__key--submit"
+            type="button"
+            onClick={onSubmit}
+          >
+            입력 확인
+          </button>
+        ) : null}
       </div>
     </section>
   )

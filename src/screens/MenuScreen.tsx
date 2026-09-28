@@ -1,7 +1,7 @@
 import type { Profile, TypingMode } from '../data/types'
 
 type MenuDestination =
-  TypingMode | 'slang' | 'records' | 'mistakes' | 'settings'
+  TypingMode | 'slang' | 'records' | 'mistakes' | 'settings' | 'word-rain-setup'
 
 interface MenuScreenProps {
   profile: Profile
@@ -154,9 +154,22 @@ export function MenuScreen({
         </button>
       </section>
 
-      <section className="coming-soon" aria-label="다음 단계 기능">
-        <span>🎮 미니게임</span>
-        <small>다음 개발 단계에서 만나요!</small>
+      <section
+        className="minigame-menu-section"
+        aria-labelledby="minigame-title"
+      >
+        <div>
+          <p className="eyebrow">새싹 지키기</p>
+          <h2 id="minigame-title">☔ 낱말 비</h2>
+          <p>떨어지는 낱말을 입력해 새싹 3개를 지켜요.</p>
+        </div>
+        <button
+          className="button button--primary"
+          type="button"
+          onClick={() => onNavigate('word-rain-setup')}
+        >
+          낱말 비 시작
+        </button>
       </section>
     </main>
   )

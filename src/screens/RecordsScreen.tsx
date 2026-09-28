@@ -12,6 +12,20 @@ const MODE_LABELS: Readonly<Record<PracticeRecord['mode'], string>> = {
   slang: '유행어 카드게임',
 }
 
+const PACK_LABELS = {
+  standard: '표준어',
+  slang: '요즘 말',
+  mixed: '섞어서',
+} as const
+
+function getRecordLabel(record: StoredRecord) {
+  if (record.mode === 'minigame' && record.game === 'wordRain') {
+    return `낱말 비 · ${PACK_LABELS[record.pack ?? 'standard']}`
+  }
+
+  return MODE_LABELS[record.mode]
+}
+
 interface RecordsScreenProps {
   profile: Profile
   onBack: () => void
@@ -85,7 +99,7 @@ export function RecordsScreen({
               <div className="record-grid">
                 {bestRecords.map((record) => (
                   <article className="record-card" key={record.id}>
-                    <strong>{MODE_LABELS[record.mode]}</strong>
+                    <strong>{getRecordLabel(record)}</strong>
                     <span>{Math.round(record.accuracy)}% 정확도</span>
                     <b>
                       {record.timeLimit
@@ -138,7 +152,7 @@ function RecordList({
       <ol className="record-list">
         {records.slice(0, 8).map((record) => (
           <li key={record.id}>
-            <span>{MODE_LABELS[record.mode]}</span>
+            <span>{getRecordLabel(record)}</span>
             <strong>
               {['minigame', 'slang'].includes(record.mode)
                 ? `${Math.round(record.score)}점`

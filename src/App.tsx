@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import { loadPracticeContent } from './data/practice-content'
-import type { PracticeContent, Profile, Slang, TypingMode } from './data/types'
+import type {
+  MinigamePack,
+  PracticeContent,
+  Profile,
+  Slang,
+  TypingMode,
+} from './data/types'
+import { createWordRainPool, type WordRainPool } from './games/wordRain'
 import { MenuScreen } from './screens/MenuScreen'
 import { MistakesScreen } from './screens/MistakesScreen'
 import {
@@ -21,6 +28,15 @@ import {
   type SlangGameResult,
 } from './screens/SlangResultScreen'
 import { StartScreen } from './screens/StartScreen'
+import {
+  WordRainGameScreen,
+  type WordRainSummary,
+} from './screens/WordRainGameScreen'
+import {
+  WordRainResultScreen,
+  type WordRainResult,
+} from './screens/WordRainResultScreen'
+import { WordRainSetupScreen } from './screens/WordRainSetupScreen'
 import { validateSlangFields } from './slang/filter'
 import { useVisualViewport } from './tablet/use-visual-viewport'
 import { addCustomSlang, getCustomSlang } from './storage/custom-slang'
@@ -50,6 +66,9 @@ type Screen =
   | 'records'
   | 'mistakes'
   | 'settings'
+  | 'word-rain-setup'
+  | 'word-rain'
+  | 'word-rain-result'
 
 const POSITION_ITEMS: PracticeItem[] = [
   { id: 'position-1', text: 'ㅁ' },
@@ -83,6 +102,10 @@ export function App() {
   const [contentError, setContentError] = useState('')
   const [result, setResult] = useState<PracticeResult | null>(null)
   const [slangResult, setSlangResult] = useState<SlangGameResult | null>(null)
+  const [wordRainPool, setWordRainPool] = useState<WordRainPool | null>(null)
+  const [wordRainResult, setWordRainResult] = useState<WordRainResult | null>(
+    null,
+  )
   const [practiceOverride, setPracticeOverride] = useState<
     PracticeItem[] | null
   >(null)
@@ -319,6 +342,60 @@ export function App() {
     setScreen('slang-result')
   }
 
+  function startWordRain(pack: MinigamePack) {
+    if (!profile || !content) {
+      return
+    }
+
+    setWordRainPool(
+      createWordRainPool({
+        pack,
+        ageGroup: profile.ageGroup,
+        words: content.words,
+        slang: content.slang,
+      }),
+    )
+    setScreen('word-rain')
+  }
+
+  async function finishWordRain(summary: WordRainSummary) {
+    if (!profile) {
+      return
+    }
+
+    const accuracy =
+      summary.totalSubmissions === 0
+        ? 0
+        : (summary.correctSubmissions / summary.totalSubmissions) * 100
+    const cpm = (summary.hitKeystrokes / summary.durationSec) * 60
+    const saveResult = await savePracticeRecord({
+      id: crypto.randomUUID(),
+      profileId: profile.id,
+      mode: 'minigame',
+      stage: 1,
+      game: 'wordRain',
+      pack: summary.pack,
+      cpm,
+      accuracy,
+      score: summary.score,
+      durationSec: summary.durationSec,
+      playedAt: new Date().toISOString(),
+      timeLimit: true,
+      completedCount: summary.removedCount,
+    })
+
+    await recordMistakes(profile.id, summary.missedItemIds)
+    setWordRainResult({
+      record: saveResult.record,
+      difference: saveResult.difference,
+      removedCount: summary.removedCount,
+      missedCount: summary.missedCount,
+      maxCombo: summary.maxCombo,
+      slangItems: summary.slangItems,
+    })
+    setScreen('word-rain-result')
+  }
+
   if (screen === 'start' || !profile) {
     return <StartScreen onStart={startWithProfile} />
   }
@@ -394,6 +471,35 @@ export function App() {
           result={slangResult}
           onMain={() => navigate('menu')}
           onReplay={() => navigate('slang')}
+          onRecords={() => navigate('records')}
+        />
+      ) : null}
+
+      {screen === 'word-rain-setup' ? (
+        <WordRainSetupScreen
+          profile={profile}
+          onBack={() => navigate('menu')}
+          onStart={startWordRain}
+        />
+      ) : null}
+
+      {screen === 'word-rain' && wordRainPool ? (
+        <WordRainGameScreen
+          key={`word-rain-${wordRainPool.pack}`}
+          profile={profile}
+          pool={wordRainPool}
+          onBack={() => navigate('word-rain-setup')}
+          onComplete={(summary) => void finishWordRain(summary)}
+        />
+      ) : null}
+
+      {screen === 'word-rain-result' && wordRainResult ? (
+        <WordRainResultScreen
+          result={wordRainResult}
+          onMain={() => navigate('menu')}
+          onReplay={() =>
+            startWordRain(wordRainResult.record.pack ?? 'standard')
+          }
           onRecords={() => navigate('records')}
         />
       ) : null}

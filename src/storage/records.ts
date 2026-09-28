@@ -40,6 +40,8 @@ export async function savePracticeRecord(
       record.profileId === nextRecord.profileId &&
       record.mode === nextRecord.mode &&
       record.stage === nextRecord.stage &&
+      record.game === nextRecord.game &&
+      record.pack === nextRecord.pack &&
       record.timeLimit === nextRecord.timeLimit,
   )
   const previousBestRecord = sameStageRecords.reduce<StoredRecord | null>(

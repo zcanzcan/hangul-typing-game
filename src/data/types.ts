@@ -1,6 +1,8 @@
 export type AgeGroup = 'kid' | 'adult' | 'senior'
 export type FontSize = 'normal' | 'large' | 'xlarge'
 export type TypingMode = 'position' | 'word' | 'sentence'
+export type Minigame = 'wordRain' | 'wordChain' | 'tower' | 'slangQuiz'
+export type MinigamePack = 'standard' | 'slang' | 'mixed'
 
 export interface Word {
   id: string
@@ -57,6 +59,8 @@ export interface Record {
   profileId: string
   mode: 'position' | 'word' | 'sentence' | 'minigame' | 'slang'
   stage: number
+  game?: Minigame
+  pack?: MinigamePack
   cpm: number
   accuracy: number
   score: number

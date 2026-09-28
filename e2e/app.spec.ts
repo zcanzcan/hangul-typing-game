@@ -217,3 +217,70 @@ test('유행어 모드를 켜고 검수된 사용자 카드를 게임에서 플�
   await page.getByRole('button', { name: '점수판 보기' }).click()
   await expect(page.getByText('유행어 카드게임').first()).toBeVisible()
 })
+
+test('낱말 비에서 꾸러미를 고르고 새싹을 지킨 기록을 남긴다', async ({
+  page,
+}) => {
+  await startProfile(page, '성인', '비구름')
+  await page.getByRole('button', { name: '낱말 비 시작' }).click()
+  await expect(
+    page.getByRole('heading', { name: '낱말 비', exact: true }),
+  ).toBeVisible()
+  await expect(page.getByRole('button', { name: /표준어/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: /요즘 말/ })).toHaveCount(0)
+
+  await page.clock.install()
+  await page.getByRole('button', { name: /표준어/ }).click()
+  const firstDrop = page.locator('.rain-word').first()
+  await expect(firstDrop).toBeVisible()
+  const word = await firstDrop.innerText()
+
+  await page.getByLabel('내리는 낱말 입력').fill(word)
+  await page.getByRole('button', { name: '입력 확인' }).click()
+  await expect(page.getByRole('status')).toContainText('빗방울을 없앴어요')
+
+  await page.getByRole('button', { name: /일시정지/ }).click()
+  await expect(
+    page.getByText('잠깐 쉬고 있어요.', { exact: true }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: '계속하기', exact: true }).click()
+
+  await page.clock.runFor(15_000)
+  await expect(
+    page.getByRole('heading', { name: '낱말 비 결과' }),
+  ).toBeVisible()
+  await expect(page.getByText('없앤 낱말')).toBeVisible()
+  await page.getByRole('button', { name: '내 기록 보기' }).click()
+  await expect(page.getByText('낱말 비 · 표준어').first()).toBeVisible()
+})
+
+test('유행어 모드를 켜면 요즘 말 낱말 비와 화면 확인 키를 쓸 수 있다', async ({
+  page,
+}) => {
+  await startProfile(page, '초등학생', '말비')
+  await page.getByRole('button', { name: '⚙ 설정' }).click()
+  await page.getByRole('checkbox', { name: '유행어 모드' }).check()
+  await page.getByLabel('입력 키보드').selectOption('app')
+  await page.getByRole('button', { name: '설정 저장' }).click()
+  await page.getByRole('button', { name: /메인으로/ }).click()
+
+  await page.getByRole('button', { name: '낱말 비 시작' }).click()
+  await expect(page.getByRole('button', { name: /^요즘 말/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: /섞어서/ })).toBeVisible()
+  await page.getByRole('button', { name: /^요즘 말/ }).click()
+
+  await expect(page.locator('.page-shell')).toHaveAttribute(
+    'data-theme',
+    'pixel',
+  )
+  const firstDrop = page.locator('.rain-word').first()
+  const word = await firstDrop.innerText()
+  await page.getByLabel('내리는 낱말 입력').fill(word)
+  await page
+    .getByRole('button', { name: '입력 확인', exact: true })
+    .last()
+    .click()
+  await expect(page.getByRole('status').last()).toContainText(
+    '빗방울을 없앴어요',
+  )
+})
