@@ -1,0 +1,6 @@
+[
+["W1","한컴타자연습에는 '산성비'라는 게임이 있고, 화면 위에서 떨어지는 낱말을 바닥에 닿기 전에 입력해서 없애는 방식이다. 낱말이 바닥에 닿으면 산성도(pH)가 떨어지고 0이 되면 끝난다.","한컴 고객지원 '[한컴타자] 타자 실험실 - 미니 산성비 오픈 안내', 브런치 '한컴타자연습 산성비 게임 사용방법', 위키백과 '한컴 타자연습'"],
+["W2","웹 브라우저에서 한글 등 IME 조합 중 Enter를 누르면 크롬·파이어폭스는 keydown이 isComposing true로 오고, 사파리(WebKit)는 compositionend가 먼저 오고 Enter keydown이 isComposing false, keyCode 229로 온다.","MDN Element: keydown event, witch.work '한글 입력 중 Enter 중복 실행 막기(isComposing)', assistant-ui 이슈 #8199·#8319"],
+["W3","requestAnimationFrame 콜백은 대부분의 브라우저에서 백그라운드 탭이나 숨겨진 iframe에서 멈추며, Page Visibility API의 visibilitychange 이벤트로 탭이 가려지는 것을 알 수 있다.","MDN Window.requestAnimationFrame(), MDN Page Visibility API"],
+["W4","CSS 미디어 쿼리 prefers-reduced-motion으로 사용자가 운영체제에서 '동작 줄이기'를 켰는지 알 수 있다.","MDN prefers-reduced-motion, Media Queries Level 5"]
+]
