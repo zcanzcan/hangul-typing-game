@@ -495,3 +495,34 @@ test('성인은 낱말 탑 60초 도전을 별도 기록으로 남긴다', async
   await page.getByRole('button', { name: '내 기록 보기' }).click()
   await expect(page.getByText('낱말 탑 · 표준어 · 60초').first()).toBeVisible()
 })
+
+test('컴퓨터와 끝말잇기를 하고 탈락 결과를 기록한다', async ({ page }) => {
+  await startProfile(page, '성인', '말꼬리')
+  await page.getByRole('button', { name: '끝말잇기 시작' }).click()
+  await expect(
+    page.getByRole('heading', { name: '끝말잇기 타자' }),
+  ).toBeVisible()
+  await expect(page.getByText('컴퓨터와 1:1')).toBeVisible()
+  await page.getByRole('button', { name: '끝말잇기 시작' }).click()
+
+  await expect(page.getByText('말꼬리님 차례')).toBeVisible()
+  await page.getByLabel('이을 낱말').fill('무지개')
+  await page.getByRole('button', { name: '잇기' }).click()
+  await expect(page.getByRole('status')).toContainText('무지개')
+
+  for (let failure = 1; failure <= 3; failure += 1) {
+    await expect(page.getByText('말꼬리님 차례')).toBeVisible()
+    await page.getByLabel('이을 낱말').fill('없는말')
+    await page.getByRole('button', { name: '잇기' }).click()
+    if (failure < 3) {
+      await expect(page.getByRole('status')).toContainText('목록에 없는 말')
+    }
+  }
+
+  await expect(
+    page.getByRole('heading', { name: '끝말잇기 결과' }),
+  ).toBeVisible()
+  await expect(page.getByText('한글봇님이 이겼어요!')).toBeVisible()
+  await page.getByRole('button', { name: '점수판 보기' }).click()
+  await expect(page.getByText('끝말잇기 타자').first()).toBeVisible()
+})

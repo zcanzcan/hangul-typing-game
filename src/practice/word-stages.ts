@@ -43,7 +43,7 @@ export function getWordStageItems(
   ageGroup: AgeGroup,
   stage: WordStage,
 ) {
-  return words.filter(
-    (word) => word.level === stage && word.audience.includes(ageGroup),
-  )
+  return words
+    .filter((word) => word.level === stage && word.audience.includes(ageGroup))
+    .slice(0, 5)
 }

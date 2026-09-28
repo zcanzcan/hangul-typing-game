@@ -10,6 +10,7 @@ type MenuDestination =
   | 'word-rain-setup'
   | 'tower-setup'
   | 'word-stages'
+  | 'word-chain-setup'
 
 interface MenuScreenProps {
   profile: Profile
@@ -216,6 +217,24 @@ export function MenuScreen({
           onClick={() => onNavigate('tower-setup')}
         >
           낱말 탑 시작
+        </button>
+      </section>
+
+      <section
+        className="minigame-menu-section word-chain-menu-section"
+        aria-labelledby="word-chain-menu-title"
+      >
+        <div>
+          <p className="eyebrow">말꼬리를 이어 봐요</p>
+          <h2 id="word-chain-menu-title">🔗 끝말잇기 타자</h2>
+          <p>컴퓨터 또는 가족과 번갈아 낱말을 입력해요.</p>
+        </div>
+        <button
+          className="button button--primary"
+          type="button"
+          onClick={() => onNavigate('word-chain-setup')}
+        >
+          끝말잇기 시작
         </button>
       </section>
     </main>

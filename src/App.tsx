@@ -44,6 +44,18 @@ import {
   type TowerResult,
 } from './screens/TowerResultScreen'
 import { TowerSetupScreen } from './screens/TowerSetupScreen'
+import {
+  WordChainGameScreen,
+  type WordChainSummary,
+} from './screens/WordChainGameScreen'
+import {
+  WordChainResultScreen,
+  type WordChainResult,
+} from './screens/WordChainResultScreen'
+import {
+  WordChainSetupScreen,
+  type WordChainPlayerSeed,
+} from './screens/WordChainSetupScreen'
 import { WordStageScreen } from './screens/WordStageScreen'
 import {
   WordRainGameScreen,
@@ -71,6 +83,7 @@ import {
   activateProfile,
   addProfile,
   createProfile,
+  getProfiles,
   loadProfile,
   saveProfile,
 } from './storage/profile'
@@ -109,6 +122,9 @@ type Screen =
   | 'tower'
   | 'tower-result'
   | 'word-stages'
+  | 'word-chain-setup'
+  | 'word-chain'
+  | 'word-chain-result'
 
 const POSITION_ITEMS: PracticeItem[] = [
   { id: 'position-1', text: 'ㅁ' },
@@ -153,6 +169,12 @@ export function App() {
     mode: TowerMode
   } | null>(null)
   const [towerResult, setTowerResult] = useState<TowerResult | null>(null)
+  const [wordChainSession, setWordChainSession] = useState<{
+    players: WordChainPlayerSeed[]
+    initialSoundRule: boolean
+  } | null>(null)
+  const [wordChainResult, setWordChainResult] =
+    useState<WordChainResult | null>(null)
   const [wordStage, setWordStage] = useState<WordStage>(1)
   const [practiceOverride, setPracticeOverride] = useState<
     PracticeItem[] | null
@@ -568,6 +590,54 @@ export function App() {
     setScreen('tower-result')
   }
 
+  function startWordChain(
+    players: WordChainPlayerSeed[],
+    initialSoundRule: boolean,
+  ) {
+    setWordChainSession({ players, initialSoundRule })
+    setScreen('word-chain')
+  }
+
+  async function finishWordChain(summary: WordChainSummary) {
+    if (!profile) {
+      return
+    }
+
+    let activeRecord: Awaited<ReturnType<typeof savePracticeRecord>> | null =
+      null
+
+    for (const player of summary.players.filter(({ computer }) => !computer)) {
+      const attempts = player.acceptedCount + player.failures
+      const result = await savePracticeRecord({
+        id: crypto.randomUUID(),
+        profileId: player.id,
+        mode: 'minigame',
+        stage: 1,
+        game: 'wordChain',
+        pack: 'standard',
+        cpm: (player.acceptedCount / summary.durationSec) * 60,
+        accuracy: attempts === 0 ? 0 : (player.acceptedCount / attempts) * 100,
+        score: player.score,
+        durationSec: summary.durationSec,
+        playedAt: new Date().toISOString(),
+        timeLimit: player.ageGroup !== 'senior',
+        completedCount: player.acceptedCount,
+      })
+
+      if (player.id === profile.id) {
+        activeRecord = result
+      }
+    }
+
+    await recordMistakes(profile.id, summary.wrongItemIds)
+    setWordChainResult({
+      summary,
+      record: activeRecord?.record ?? null,
+      difference: activeRecord?.difference ?? null,
+    })
+    setScreen('word-chain-result')
+  }
+
   if (screen === 'start' || !profile) {
     return <StartScreen onStart={startWithProfile} />
   }
@@ -761,6 +831,37 @@ export function App() {
           }
           onRecords={() => navigate('records')}
           onMistakes={() => navigate('mistakes')}
+        />
+      ) : null}
+
+      {screen === 'word-chain-setup' ? (
+        <WordChainSetupScreen
+          profile={profile}
+          profiles={getProfiles()}
+          onBack={() => navigate('menu')}
+          onStart={startWordChain}
+        />
+      ) : null}
+
+      {screen === 'word-chain' && wordChainSession ? (
+        <WordChainGameScreen
+          key={`${wordChainSession.players.map(({ id }) => id).join('-')}-${wordChainSession.initialSoundRule}`}
+          players={wordChainSession.players}
+          words={content.words.filter(({ audience }) =>
+            audience.includes(profile.ageGroup),
+          )}
+          initialSoundRule={wordChainSession.initialSoundRule}
+          onBack={() => navigate('word-chain-setup')}
+          onComplete={(summary) => void finishWordChain(summary)}
+        />
+      ) : null}
+
+      {screen === 'word-chain-result' && wordChainResult ? (
+        <WordChainResultScreen
+          result={wordChainResult}
+          onMain={() => navigate('menu')}
+          onReplay={() => setScreen('word-chain')}
+          onRecords={() => navigate('records')}
         />
       ) : null}
 

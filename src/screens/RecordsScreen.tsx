@@ -39,6 +39,10 @@ function getRecordLabel(record: StoredRecord) {
     return `낱말 탑 · ${PACK_LABELS[record.pack ?? 'standard']}${record.timeLimit ? ' · 60초' : ''}`
   }
 
+  if (record.mode === 'minigame' && record.game === 'wordChain') {
+    return '끝말잇기 타자'
+  }
+
   return MODE_LABELS[record.mode]
 }
 
