@@ -4,6 +4,7 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? (process.env.VITE_BASE_PATH ?? '/') : '/',
+  envPrefix: ['VITE_', 'PUBLIC_'],
   plugins: [
     react(),
     VitePWA({
