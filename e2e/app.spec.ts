@@ -5,7 +5,11 @@ async function clearBrowserData(page: Page) {
   await page.evaluate(async () => {
     localStorage.clear()
     await Promise.all(
-      ['hangul-typing-game-records', 'hangul-typing-game-mistakes'].map(
+      [
+        'hangul-typing-game-records',
+        'hangul-typing-game-mistakes',
+        'hangul-typing-game-custom-slang',
+      ].map(
         (databaseName) =>
           new Promise<void>((resolve) => {
             const request = indexedDB.deleteDatabase(databaseName)
@@ -44,7 +48,7 @@ test('시작 화면에서 만든 프로필과 설정이 새로고침 뒤에도 �
   ).toBeVisible()
   await startProfile(page, '어르신', '느긋한타자')
 
-  await page.getByRole('button', { name: /설정/ }).click()
+  await page.getByRole('button', { name: '⚙ 설정' }).click()
   await expect(page.getByRole('heading', { name: '설정' })).toBeVisible()
   await expect(page.getByText('사용 안 함')).toBeVisible()
   await page.getByRole('button', { name: '아주 크게' }).click()
@@ -149,4 +153,67 @@ test('열린 짧은 문장 연습에서 기기 입력과 화면 키보드를 사
   await page.getByLabel('입력').fill('')
   await page.getByRole('button', { name: /ㅁ 키/ }).click()
   await expect(page.getByLabel('입력')).toHaveValue('ㅁ')
+})
+
+test('유행어 모드를 켜고 검수된 사용자 카드를 게임에서 플레이한다', async ({
+  page,
+}) => {
+  await startProfile(page, '초등학생', '말빛')
+  await page.getByRole('button', { name: '⚙ 설정' }).click()
+
+  const slangMode = page.getByRole('checkbox', { name: '유행어 모드' })
+  await expect(slangMode).not.toBeChecked()
+  await slangMode.check()
+
+  await page.getByLabel('유행어', { exact: true }).fill('ㅅ.ㅂ')
+  await page.getByLabel('뜻', { exact: true }).fill('검사할 뜻')
+  await page.getByRole('button', { name: '유행어 추가' }).click()
+  await expect(page.getByRole('status')).toContainText(
+    '학생에게 알맞지 않은 말',
+  )
+
+  await page.getByLabel('유행어', { exact: true }).fill('말빛')
+  await page.getByLabel('뜻', { exact: true }).fill('말로 전하는 밝은 기운.')
+  await page.getByLabel('예문 (선택)').fill('친구에게 말빛을 전했어.')
+  await page.getByRole('button', { name: '유행어 추가' }).click()
+  await expect(page.getByRole('status')).toContainText('카드를 추가')
+
+  await page.getByRole('button', { name: '설정 저장' }).click()
+  await page.getByRole('button', { name: /메인으로/ }).click()
+  await page.reload()
+
+  await page.getByRole('button', { name: '게임 시작' }).click()
+  await expect(
+    page.getByRole('heading', { name: '유행어 카드게임' }),
+  ).toBeVisible()
+  await expect(page.getByRole('heading', { name: '말빛' })).toBeVisible()
+
+  await page.getByRole('button', { name: '말로 전하는 밝은 기운.' }).click()
+  await page.getByLabel('유행어 입력').fill('말빛')
+  await page.getByRole('button', { name: '입력 확인' }).click()
+  await expect(page.getByRole('status')).toContainText('+150점')
+  await page.getByRole('button', { name: '다음 문제' }).click()
+
+  for (let question = 2; question <= 10; question += 1) {
+    const word = await page.locator('#slang-word').innerText()
+    await page.locator('.slang-choices button').first().click()
+
+    const typingInput = page.getByLabel('유행어 입력')
+    if (await typingInput.isVisible()) {
+      await typingInput.fill(word)
+      await page.getByRole('button', { name: '입력 확인' }).click()
+    }
+
+    await page
+      .getByRole('button', {
+        name: question === 10 ? '결과 보기' : '다음 문제',
+      })
+      .click()
+  }
+
+  await expect(
+    page.getByRole('heading', { name: '유행어 게임 결과' }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: '점수판 보기' }).click()
+  await expect(page.getByText('유행어 카드게임').first()).toBeVisible()
 })

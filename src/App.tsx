@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { loadPracticeContent } from './data/practice-content'
-import type { PracticeContent, Profile, TypingMode } from './data/types'
+import type { PracticeContent, Profile, Slang, TypingMode } from './data/types'
 import { MenuScreen } from './screens/MenuScreen'
 import { MistakesScreen } from './screens/MistakesScreen'
 import {
@@ -12,7 +12,17 @@ import {
 import { RecordsScreen } from './screens/RecordsScreen'
 import { ResultScreen, type PracticeResult } from './screens/ResultScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
+import {
+  SlangGameScreen,
+  type SlangGameSummary,
+} from './screens/SlangGameScreen'
+import {
+  SlangResultScreen,
+  type SlangGameResult,
+} from './screens/SlangResultScreen'
 import { StartScreen } from './screens/StartScreen'
+import { validateSlangFields } from './slang/filter'
+import { addCustomSlang, getCustomSlang } from './storage/custom-slang'
 import {
   clearMistakes,
   recordCorrectReview,
@@ -33,6 +43,8 @@ type Screen =
   | 'position'
   | 'word'
   | 'sentence'
+  | 'slang'
+  | 'slang-result'
   | 'result'
   | 'records'
   | 'mistakes'
@@ -67,6 +79,7 @@ export function App() {
   const [content, setContent] = useState<PracticeContent | null>(null)
   const [contentError, setContentError] = useState('')
   const [result, setResult] = useState<PracticeResult | null>(null)
+  const [slangResult, setSlangResult] = useState<SlangGameResult | null>(null)
   const [practiceOverride, setPracticeOverride] = useState<
     PracticeItem[] | null
   >(null)
@@ -79,10 +92,13 @@ export function App() {
 
     let cancelled = false
 
-    void loadPracticeContent()
-      .then((loadedContent) => {
+    void Promise.all([loadPracticeContent(), getCustomSlang()])
+      .then(([loadedContent, customSlang]) => {
         if (!cancelled) {
-          setContent(loadedContent)
+          setContent({
+            ...loadedContent,
+            slang: [...customSlang, ...loadedContent.slang],
+          })
           setContentError('')
         }
       })
@@ -232,6 +248,74 @@ export function App() {
     setProfile(nextProfile)
   }
 
+  async function addSlang(fields: {
+    text: string
+    meaning: string
+    example: string
+  }) {
+    const text = fields.text.trim()
+    const meaning = fields.meaning.trim()
+    const example = fields.example.trim()
+
+    if (!content || text === '' || meaning === '') {
+      return { ok: false, message: '유행어와 뜻을 모두 입력해 주세요.' }
+    }
+
+    if (
+      !validateSlangFields([text, meaning, example], content.blockedPatterns)
+    ) {
+      return {
+        ok: false,
+        message: '학생에게 알맞지 않은 말이에요. 다른 표현을 사용해 주세요.',
+      }
+    }
+
+    const item: Slang = {
+      id: `custom-${crypto.randomUUID()}`,
+      text,
+      meaning,
+      ...(example ? { example } : {}),
+      addedAt: new Date().toISOString().slice(0, 10),
+      status: 'active',
+      kidSafe: true,
+      origin: 'custom',
+    }
+    await addCustomSlang(item)
+    setContent((current) =>
+      current ? { ...current, slang: [item, ...current.slang] } : current,
+    )
+
+    return { ok: true, message: `“${text}” 카드를 추가했어요.` }
+  }
+
+  async function finishSlangGame(summary: SlangGameSummary) {
+    if (!profile) {
+      return
+    }
+
+    const saveResult = await savePracticeRecord({
+      id: crypto.randomUUID(),
+      profileId: profile.id,
+      mode: 'slang',
+      stage: 1,
+      cpm: 0,
+      accuracy: (summary.correctMeaningCount / 10) * 100,
+      score: summary.score,
+      durationSec: summary.durationSec,
+      playedAt: new Date().toISOString(),
+      timeLimit: true,
+      completedCount: 10,
+    })
+
+    setSlangResult({
+      record: saveResult.record,
+      difference: saveResult.difference,
+      correctMeaningCount: summary.correctMeaningCount,
+      typingCorrectCount: summary.typingCorrectCount,
+    })
+    setScreen('slang-result')
+  }
+
   if (screen === 'start' || !profile) {
     return <StartScreen onStart={startWithProfile} />
   }
@@ -293,6 +377,24 @@ export function App() {
         />
       ) : null}
 
+      {screen === 'slang' ? (
+        <SlangGameScreen
+          key={`slang-${content.slang.length}`}
+          items={content.slang}
+          onBack={() => navigate('menu')}
+          onComplete={(summary) => void finishSlangGame(summary)}
+        />
+      ) : null}
+
+      {screen === 'slang-result' && slangResult ? (
+        <SlangResultScreen
+          result={slangResult}
+          onMain={() => navigate('menu')}
+          onReplay={() => navigate('slang')}
+          onRecords={() => navigate('records')}
+        />
+      ) : null}
+
       {screen === 'records' ? (
         <RecordsScreen
           profile={profile}
@@ -316,6 +418,7 @@ export function App() {
           onBack={() => navigate('menu')}
           onSave={updateProfile}
           onResetRecords={resetRecords}
+          onAddSlang={addSlang}
         />
       ) : null}
     </div>

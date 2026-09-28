@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 
 import { PageShell } from '../components/PageShell'
-import type { Profile, TypingMode } from '../data/types'
+import type { Profile, Record as PracticeRecord } from '../data/types'
 import { getRecords, type StoredRecord } from '../storage/records'
 
-const MODE_LABELS: Readonly<Record<TypingMode, string>> = {
+const MODE_LABELS: Readonly<Record<PracticeRecord['mode'], string>> = {
   position: '자리 연습',
   word: '낱말 연습',
   sentence: '짧은 문장',
+  minigame: '낱말 미니게임',
+  slang: '유행어 카드게임',
 }
 
 interface RecordsScreenProps {
@@ -50,8 +52,16 @@ export function RecordsScreen({
   }
 
   const bestRecords = records.filter(({ isBest }) => isBest)
-  const timedRecords = records.filter(({ timeLimit }) => timeLimit)
-  const untimedRecords = records.filter(({ timeLimit }) => !timeLimit)
+  const gameRecords = records.filter(({ mode }) =>
+    ['minigame', 'slang'].includes(mode),
+  )
+  const timedRecords = records.filter(
+    ({ mode, timeLimit }) => !['minigame', 'slang'].includes(mode) && timeLimit,
+  )
+  const untimedRecords = records.filter(
+    ({ mode, timeLimit }) =>
+      !['minigame', 'slang'].includes(mode) && !timeLimit,
+  )
 
   return (
     <PageShell
@@ -75,7 +85,7 @@ export function RecordsScreen({
               <div className="record-grid">
                 {bestRecords.map((record) => (
                   <article className="record-card" key={record.id}>
-                    <strong>{MODE_LABELS[record.mode as TypingMode]}</strong>
+                    <strong>{MODE_LABELS[record.mode]}</strong>
                     <span>{Math.round(record.accuracy)}% 정확도</span>
                     <b>
                       {record.timeLimit
@@ -95,6 +105,7 @@ export function RecordsScreen({
               title="최근 기록 · 시간 제한 없음"
               records={untimedRecords}
             />
+            <RecordList title="게임 점수" records={gameRecords} />
           </>
         )}
 
@@ -127,8 +138,12 @@ function RecordList({
       <ol className="record-list">
         {records.slice(0, 8).map((record) => (
           <li key={record.id}>
-            <span>{MODE_LABELS[record.mode as TypingMode]}</span>
-            <strong>{Math.round(record.accuracy)}%</strong>
+            <span>{MODE_LABELS[record.mode]}</span>
+            <strong>
+              {['minigame', 'slang'].includes(record.mode)
+                ? `${Math.round(record.score)}점`
+                : `${Math.round(record.accuracy)}%`}
+            </strong>
             <small>
               {new Date(record.playedAt).toLocaleDateString('ko-KR')}
             </small>

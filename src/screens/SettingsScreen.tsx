@@ -21,6 +21,11 @@ interface SettingsScreenProps {
   onBack: () => void
   onSave: (profile: Profile) => void
   onResetRecords: () => Promise<void>
+  onAddSlang: (fields: {
+    text: string
+    meaning: string
+    example: string
+  }) => Promise<{ ok: boolean; message: string }>
 }
 
 export function SettingsScreen({
@@ -28,9 +33,14 @@ export function SettingsScreen({
   onBack,
   onSave,
   onResetRecords,
+  onAddSlang,
 }: SettingsScreenProps) {
   const [draft, setDraft] = useState(profile)
   const [message, setMessage] = useState('')
+  const [slangText, setSlangText] = useState('')
+  const [slangMeaning, setSlangMeaning] = useState('')
+  const [slangExample, setSlangExample] = useState('')
+  const [isAddingSlang, setIsAddingSlang] = useState(false)
 
   function changeAgeGroup(ageGroup: AgeGroup) {
     setDraft((current) => applyAgePreset(current, ageGroup))
@@ -49,6 +59,23 @@ export function SettingsScreen({
 
     await onResetRecords()
     setMessage('기록을 초기화했어요.')
+  }
+
+  async function addSlang() {
+    setIsAddingSlang(true)
+    const result = await onAddSlang({
+      text: slangText,
+      meaning: slangMeaning,
+      example: slangExample,
+    })
+    setIsAddingSlang(false)
+    setMessage(result.message)
+
+    if (result.ok) {
+      setSlangText('')
+      setSlangMeaning('')
+      setSlangExample('')
+    }
   }
 
   return (
@@ -72,6 +99,78 @@ export function SettingsScreen({
             시간 제한:{' '}
             <strong>{draft.settings.timeLimit ? '사용' : '사용 안 함'}</strong>
           </p>
+        </fieldset>
+
+        <fieldset className="settings-card slang-settings-card">
+          <legend>유행어 모드</legend>
+          <label className="toggle-row">
+            <span>
+              <strong>유행어 카드게임</strong>
+              <small>뜻을 맞히고 유행어를 직접 입력해요.</small>
+            </span>
+            <input
+              aria-label="유행어 모드"
+              type="checkbox"
+              checked={draft.settings.slangMode}
+              onChange={(event) =>
+                setDraft((current) => ({
+                  ...current,
+                  settings: {
+                    ...current.settings,
+                    slangMode: event.target.checked,
+                  },
+                }))
+              }
+            />
+          </label>
+
+          {draft.settings.slangMode ? (
+            <div className="custom-slang-form">
+              <div>
+                <p className="eyebrow">나만의 카드 만들기</p>
+                <h2>유행어 직접 추가</h2>
+                <p>추가한 카드는 이 기기에만 저장돼요.</p>
+              </div>
+              <label className="field">
+                <span>유행어</span>
+                <input
+                  value={slangText}
+                  onChange={(event) => setSlangText(event.target.value)}
+                  maxLength={30}
+                  required
+                />
+              </label>
+              <label className="field">
+                <span>뜻</span>
+                <input
+                  value={slangMeaning}
+                  onChange={(event) => setSlangMeaning(event.target.value)}
+                  maxLength={100}
+                  required
+                />
+              </label>
+              <label className="field">
+                <span>예문 (선택)</span>
+                <input
+                  value={slangExample}
+                  onChange={(event) => setSlangExample(event.target.value)}
+                  maxLength={120}
+                />
+              </label>
+              <button
+                className="button button--secondary"
+                type="button"
+                disabled={
+                  isAddingSlang ||
+                  slangText.trim() === '' ||
+                  slangMeaning.trim() === ''
+                }
+                onClick={() => void addSlang()}
+              >
+                {isAddingSlang ? '검사 중…' : '유행어 추가'}
+              </button>
+            </div>
+          ) : null}
         </fieldset>
 
         <fieldset className="settings-card">

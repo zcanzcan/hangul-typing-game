@@ -1,6 +1,7 @@
 import type { Profile, TypingMode } from '../data/types'
 
-type MenuDestination = TypingMode | 'records' | 'mistakes' | 'settings'
+type MenuDestination =
+  TypingMode | 'slang' | 'records' | 'mistakes' | 'settings'
 
 interface MenuScreenProps {
   profile: Profile
@@ -128,9 +129,33 @@ export function MenuScreen({
         </div>
       </section>
 
+      <section
+        className="slang-menu-section"
+        data-theme="pixel"
+        aria-labelledby="slang-title"
+      >
+        <div>
+          <p className="eyebrow">PIXEL WORD QUEST</p>
+          <h2 id="slang-title">🔥 유행어 카드게임</h2>
+          <p>
+            {profile.settings.slangMode
+              ? '뜻을 맞히고 유행어를 정확히 입력해 최고 점수에 도전해요.'
+              : '설정에서 유행어 모드를 켜면 게임을 시작할 수 있어요.'}
+          </p>
+        </div>
+        <button
+          className="button button--pixel"
+          type="button"
+          onClick={() =>
+            onNavigate(profile.settings.slangMode ? 'slang' : 'settings')
+          }
+        >
+          {profile.settings.slangMode ? '게임 시작' : '설정에서 켜기'}
+        </button>
+      </section>
+
       <section className="coming-soon" aria-label="다음 단계 기능">
         <span>🎮 미니게임</span>
-        <span>🔥 유행어 카드게임</span>
         <small>다음 개발 단계에서 만나요!</small>
       </section>
     </main>

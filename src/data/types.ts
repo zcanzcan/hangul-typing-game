@@ -23,6 +23,20 @@ export interface Sentence {
   audience: AgeGroup[]
 }
 
+export interface Slang {
+  id: string
+  text: string
+  meaning: string
+  example?: string
+  standardForm?: string
+  addedAt: string
+  popularFrom?: string
+  source?: string
+  status: 'active' | 'archived'
+  kidSafe: boolean
+  origin: 'official' | 'custom'
+}
+
 export interface Profile {
   id: string
   nickname: string
@@ -69,7 +83,19 @@ export interface SentenceCollection {
   items: Sentence[]
 }
 
+export interface SlangCollection {
+  version: string
+  items: Slang[]
+}
+
+export interface BlocklistCollection {
+  version: string
+  patterns: string[]
+}
+
 export interface PracticeContent {
   words: Word[]
   sentences: Sentence[]
+  slang: Slang[]
+  blockedPatterns: string[]
 }

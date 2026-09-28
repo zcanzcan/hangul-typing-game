@@ -1,3 +1,4 @@
+export * from './custom-slang'
 export * from './mistakes'
 export * from './profile'
 export * from './progress'
