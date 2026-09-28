@@ -334,6 +334,29 @@ test('가족을 추가하고 별명별 기록 사용자로 전환한다', async 
   ).toBeVisible()
 })
 
+test('반 점수판에서 새 반 만들기와 코드 참여 화면을 제공한다', async ({
+  page,
+}) => {
+  await startProfile(page, '성인', '우리반타자')
+  await page.getByRole('button', { name: /가족 점수판/ }).click()
+  await page.getByRole('tab', { name: '반 점수판' }).click()
+
+  await expect(
+    page.getByRole('heading', { name: '반 점수판 연결' }),
+  ).toBeVisible()
+  await expect(page.getByRole('button', { name: '새 반 만들기' })).toBeVisible()
+  await expect(page.getByLabel('반 코드')).toHaveAttribute(
+    'placeholder',
+    'ABCD2345',
+  )
+
+  await page.getByLabel('반 코드').fill('짧음')
+  await page.getByRole('button', { name: '반 코드로 들어가기' }).click()
+  await expect(page.getByRole('alert')).toContainText(
+    '반 코드는 숫자와 영문 대문자 8자리',
+  )
+})
+
 test('낱말 입력 뒤 뜻을 보고 틀린 낱말을 복습할 수 있다', async ({ page }) => {
   await startProfile(page, '성인', '정확한손')
   await page.getByRole('button', { name: /낱말 연습/ }).click()

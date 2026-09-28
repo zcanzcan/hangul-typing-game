@@ -1,4 +1,5 @@
 export * from './MenuScreen'
+export * from './ClassScoreboardPanel'
 export * from './DailyGoalScreen'
 export * from './MeaningQuizScreen'
 export * from './MistakesScreen'

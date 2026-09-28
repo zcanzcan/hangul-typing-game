@@ -19,6 +19,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
     "es-hangul": "^2.4.0",
     "idb-keyval": "^6.3.0",
     "react": "^19.3.0",

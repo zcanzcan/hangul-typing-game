@@ -6,6 +6,7 @@ import { getWordStageDefinition, type WordStage } from '../practice/word-stages'
 import { buildFamilyStandings } from '../records/family-scoreboard'
 import { getProfiles } from '../storage/profile'
 import { getAllRecords, type StoredRecord } from '../storage/records'
+import { ClassScoreboardPanel } from './ClassScoreboardPanel'
 
 const MODE_LABELS: Readonly<Record<PracticeRecord['mode'], string>> = {
   position: '자리 연습',
@@ -83,7 +84,7 @@ export function RecordsScreen({
 }: RecordsScreenProps) {
   const [allRecords, setAllRecords] = useState<StoredRecord[] | null>(null)
   const [profiles, setProfiles] = useState(() => getProfiles())
-  const [tab, setTab] = useState<'mine' | 'family'>('mine')
+  const [tab, setTab] = useState<'mine' | 'family' | 'class'>('mine')
   const [nickname, setNickname] = useState('')
   const [ageGroup, setAgeGroup] = useState<AgeGroup>('kid')
   const [familyMessage, setFamilyMessage] = useState('')
@@ -185,6 +186,14 @@ export function RecordsScreen({
           >
             가족 점수판
           </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === 'class'}
+            onClick={() => setTab('class')}
+          >
+            반 점수판
+          </button>
         </div>
 
         {tab === 'mine' ? (
@@ -236,7 +245,7 @@ export function RecordsScreen({
               틀린 낱말 다시 연습
             </button>
           </section>
-        ) : (
+        ) : tab === 'family' ? (
           <section className="family-scoreboard" role="tabpanel">
             <div className="family-scoreboard__heading">
               <div>
@@ -329,6 +338,8 @@ export function RecordsScreen({
               {familyMessage ? <p role="status">{familyMessage}</p> : null}
             </form>
           </section>
+        ) : (
+          <ClassScoreboardPanel profile={profile} records={records} />
         )}
       </div>
     </PageShell>

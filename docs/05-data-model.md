@@ -9,6 +9,7 @@
 | 사용자가 추가한 유행어 | IndexedDB `customSlang` | 기기 안에만 저장 |
 | 프로필(닉네임, 연령대, 설정) | localStorage `profiles` | |
 | 기록, 틀린 낱말 | IndexedDB `records`, `mistakes` | |
+| 반 코드, 반 점수 | Supabase `typing_game_classes`, `typing_game_scores` | 반 점수판을 사용할 때만 서버 저장, 30일 뒤 접근 만료 |
 
 ## 낱말 (Word)
 
@@ -115,5 +116,20 @@ interface Mistake {
   mastered: boolean;     // 복습에서 3번 연속 맞히면 true
 }
 ```
+
+## 반 점수판
+
+반 점수판은 반 코드가 있는 사용자끼리만 공유한다. 서버에는 무작위 반 코드, 닉네임,
+점수, 모드, 단계, 기록 시각만 저장한다. 실명, 연락처, 로그인 계정, 기기 식별자는
+수집하지 않는다.
+
+- `typing_game_classes`: 8자리 반 코드, 생성 시각, 30일 접근 만료 시각
+- `typing_game_scores`: 반, 닉네임, 점수, 모드, 단계, 기록 시각
+- 점수 수정 권한용 임의 토큰은 브라우저에만 보관하고 서버에는 SHA-256 해시만 저장
+- RLS가 요청의 반 코드를 확인해 다른 반의 조회를 막음
+- 점수 수정과 삭제는 해당 기록의 임의 토큰을 가진 브라우저만 허용
+
+SQL 원본은
+[`supabase/migrations/20260928154029_create_typing_game_class_scoreboard.sql`](../supabase/migrations/20260928154029_create_typing_game_class_scoreboard.sql)에 있다.
 
 예시 데이터: [`data/samples/words.sample.json`](../data/samples/words.sample.json), [`data/samples/slang.sample.json`](../data/samples/slang.sample.json)
