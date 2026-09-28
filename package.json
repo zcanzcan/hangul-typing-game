@@ -16,6 +16,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "es-hangul": "^2.4.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
