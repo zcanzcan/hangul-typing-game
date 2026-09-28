@@ -93,7 +93,8 @@ interface Record {
   profileId: string;
   mode: "position" | "word" | "sentence" | "minigame" | "slang";
   stage: number;
-  pack?: "standard" | "slang" | "mixed"; // 낱말 비(minigame) 꾸러미. 최고 기록을 꾸러미별로 나눔
+  game?: "wordRain" | "wordChain" | "tower" | "slangQuiz"; // mode가 "minigame"일 때 어느 게임인지 (12, 13번 문서)
+  pack?: "standard" | "slang" | "mixed"; // 미니게임 꾸러미. 최고 기록을 게임 × 꾸러미별로 나눔
   cpm: number;           // 타수
   accuracy: number;      // 0~100
   score: number;
