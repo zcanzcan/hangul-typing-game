@@ -22,6 +22,10 @@ import { RecordsScreen } from './screens/RecordsScreen'
 import { ResultScreen, type PracticeResult } from './screens/ResultScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
 import {
+  SpellingLessonScreen,
+  type SpellingLessonSummary,
+} from './screens/SpellingLessonScreen'
+import {
   SlangGameScreen,
   type SlangGameSummary,
 } from './screens/SlangGameScreen'
@@ -126,6 +130,8 @@ type Screen =
   | 'word-chain-setup'
   | 'word-chain'
   | 'word-chain-result'
+  | 'long-sentence'
+  | 'spelling'
 
 const POSITION_ITEMS: PracticeItem[] = [
   { id: 'position-1', text: 'ㅁ' },
@@ -139,9 +145,9 @@ const POSITION_ITEMS: PracticeItem[] = [
 
 const ADULT_TARGET_CPM = 100
 
-function getScoreMode(mode: TypingMode): PracticeMode {
+function getScoreMode(mode: TypingMode, stage = 1): PracticeMode {
   if (mode === 'sentence') {
-    return 'shortSentence'
+    return stage === 1 ? 'shortSentence' : 'longSentence'
   }
 
   return mode
@@ -222,7 +228,10 @@ export function App() {
     setScreen(destination)
   }
 
-  function getPracticeItems(mode: TypingMode): PracticeItem[] {
+  function getPracticeItems(
+    mode: TypingMode,
+    sentenceKind: 'short' | 'long' = 'short',
+  ): PracticeItem[] {
     if (practiceOverride) {
       return practiceOverride
     }
@@ -251,7 +260,7 @@ export function App() {
     return content.sentences
       .filter(
         ({ audience, kind }) =>
-          kind === 'short' && audience.includes(profile.ageGroup),
+          kind === sentenceKind && audience.includes(profile.ageGroup),
       )
       .map(({ id, text, meaning }) => ({ id, text, meaning }))
   }
@@ -268,7 +277,7 @@ export function App() {
           durationSec: summary.durationSec,
           correctCharacters: summary.correctCharacters,
           presentedCharacters: summary.presentedCharacters,
-          mode: getScoreMode(summary.mode),
+          mode: getScoreMode(summary.mode, summary.stage),
         })
       : calculatePracticeMetrics({
           timeLimit: false,
@@ -639,6 +648,41 @@ export function App() {
     setScreen('word-chain-result')
   }
 
+  async function finishSpellingLesson(summary: SpellingLessonSummary) {
+    if (!profile) {
+      return
+    }
+
+    const accuracy =
+      summary.questionCount === 0
+        ? 0
+        : (summary.correctCount / summary.questionCount) * 100
+    const saveResult = await savePracticeRecord({
+      id: crypto.randomUUID(),
+      profileId: profile.id,
+      mode: 'sentence',
+      stage: 3,
+      cpm: 0,
+      accuracy,
+      score: summary.correctCount * 100,
+      durationSec: summary.durationSec,
+      playedAt: new Date().toISOString(),
+      timeLimit: false,
+      completedCount: summary.correctCount,
+    })
+
+    await recordMistakes(profile.id, summary.wrongItemIds)
+    setResult({
+      record: saveResult.record,
+      difference: saveResult.difference,
+      passed: accuracy >= 80,
+      wrongLabels: summary.wrongItemIds.map(
+        (itemId) => summary.itemLabels[itemId] ?? itemId,
+      ),
+    })
+    setScreen('result')
+  }
+
   if (screen === 'start' || !profile) {
     return <StartScreen onStart={startWithProfile} />
   }
@@ -720,6 +764,31 @@ export function App() {
           />
         ) : null,
       )}
+
+      {screen === 'long-sentence' ? (
+        <PracticeScreen
+          key="long-sentence"
+          title="긴 문장 연습"
+          eyebrow="성인 긴 글"
+          mode="sentence"
+          stage={2}
+          profile={profile}
+          items={getPracticeItems('sentence', 'long')}
+          onBack={() => navigate('menu')}
+          onComplete={(summary) => void finishPractice(summary)}
+        />
+      ) : null}
+
+      {screen === 'spelling' ? (
+        <SpellingLessonScreen
+          items={content.sentences.filter(
+            ({ kind, audience }) =>
+              kind === 'spelling' && audience.includes(profile.ageGroup),
+          )}
+          onBack={() => navigate('menu')}
+          onComplete={(summary) => void finishSpellingLesson(summary)}
+        />
+      ) : null}
 
       {screen === 'result' && result ? (
         <ResultScreen

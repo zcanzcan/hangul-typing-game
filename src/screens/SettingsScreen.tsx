@@ -17,6 +17,12 @@ const FONT_LABELS: Readonly<Record<FontSize, string>> = {
   xlarge: '아주 크게',
 }
 
+const SPEED_LABELS = {
+  slow: '느리게',
+  normal: '보통',
+  fast: '빠르게',
+} as const
+
 interface SettingsScreenProps {
   profile: Profile
   onBack: () => void
@@ -198,6 +204,53 @@ export function SettingsScreen({
 
         <fieldset className="settings-card">
           <legend>입력과 효과</legend>
+          <label className="toggle-row">
+            <span>
+              <strong>시간 제한</strong>
+              <small>끄면 타수 대신 정확도와 완료 개수만 기록해요.</small>
+            </span>
+            <input
+              aria-label="시간 제한"
+              type="checkbox"
+              checked={draft.settings.timeLimit}
+              onChange={(event) =>
+                setDraft((current) => ({
+                  ...current,
+                  settings: {
+                    ...current.settings,
+                    timeLimit: event.target.checked,
+                  },
+                }))
+              }
+            />
+          </label>
+          <div className="speed-setting">
+            <span>
+              <strong>미니게임 속도</strong>
+              <small>낱말이 움직이거나 답을 기다리는 속도를 조절해요.</small>
+            </span>
+            <div className="segmented-control">
+              {(
+                Object.keys(SPEED_LABELS) as Array<keyof typeof SPEED_LABELS>
+              ).map((speed) => (
+                <button
+                  type="button"
+                  key={speed}
+                  aria-pressed={
+                    (draft.settings.minigameSpeed ?? 'normal') === speed
+                  }
+                  onClick={() =>
+                    setDraft((current) => ({
+                      ...current,
+                      settings: { ...current.settings, minigameSpeed: speed },
+                    }))
+                  }
+                >
+                  {SPEED_LABELS[speed]}
+                </button>
+              ))}
+            </div>
+          </div>
           {speech.supported ? (
             <label className="toggle-row">
               <span>

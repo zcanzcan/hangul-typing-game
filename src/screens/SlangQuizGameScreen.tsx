@@ -58,7 +58,17 @@ export function SlangQuizGameScreen({
   const [questions] = useState(() =>
     buildSlangQuizQuestions(items, profile.ageGroup),
   )
-  const timeLimit = getSlangQuizTimeLimit(profile.ageGroup)
+  const baseTimeLimit = getSlangQuizTimeLimit(profile.ageGroup)
+  const speedMultiplier =
+    profile.settings.minigameSpeed === 'fast'
+      ? 0.8
+      : profile.settings.minigameSpeed === 'slow'
+        ? 1.25
+        : 1
+  const timeLimit =
+    profile.settings.timeLimit && baseTimeLimit !== null
+      ? Math.round(baseTimeLimit * speedMultiplier)
+      : null
   const [startedAt] = useState(() => performance.now())
   const [questionIndex, setQuestionIndex] = useState(0)
   const [input, setInput] = useState('')

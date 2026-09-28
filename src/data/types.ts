@@ -50,6 +50,7 @@ export interface Profile {
     sfx: boolean
     slangMode: boolean
     keyboard: 'app' | 'device'
+    minigameSpeed?: 'slow' | 'normal' | 'fast'
   }
   createdAt: string
 }

@@ -12,6 +12,8 @@ type MenuDestination =
   | 'tower-setup'
   | 'word-stages'
   | 'word-chain-setup'
+  | 'long-sentence'
+  | 'spelling'
 
 interface MenuScreenProps {
   profile: Profile
@@ -179,6 +181,34 @@ export function MenuScreen({
           </button>
         </div>
       </section>
+
+      {profile.ageGroup === 'adult' ? (
+        <section
+          className="menu-section adult-practice-section"
+          aria-labelledby="adult-practice-title"
+        >
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">성인 맞춤 연습</p>
+              <h2 id="adult-practice-title">긴 글과 바른 표현</h2>
+            </div>
+          </div>
+          <div className="menu-grid">
+            <PracticeCard
+              emoji="📖"
+              title="긴 문장 연습"
+              description="긴 글을 정확하고 자연스럽게 입력해요."
+              onClick={() => onNavigate('long-sentence')}
+            />
+            <PracticeCard
+              emoji="✍️"
+              title="헷갈리는 맞춤법"
+              description="되/돼, 안/않처럼 자주 헷갈리는 표현을 익혀요."
+              onClick={() => onNavigate('spelling')}
+            />
+          </div>
+        </section>
+      ) : null}
 
       <section
         className="slang-menu-section"

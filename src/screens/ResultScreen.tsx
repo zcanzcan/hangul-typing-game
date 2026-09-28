@@ -36,7 +36,11 @@ export function ResultScreen({
   const eyebrow =
     record.mode === 'word' && record.stage >= 1 && record.stage <= 3
       ? `낱말 연습 · ${record.stage}단계 ${getWordStageDefinition(record.stage as WordStage).title}`
-      : MODE_LABELS[record.mode as TypingMode]
+      : record.mode === 'sentence' && record.stage === 2
+        ? '긴 문장 연습'
+        : record.mode === 'sentence' && record.stage === 3
+          ? '헷갈리는 맞춤법'
+          : MODE_LABELS[record.mode as TypingMode]
 
   return (
     <PageShell title="연습 결과" eyebrow={eyebrow}>

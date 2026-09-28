@@ -27,6 +27,14 @@ function getRecordLabel(record: StoredRecord) {
     return `낱말 연습 · ${record.stage}단계 ${definition.title}`
   }
 
+  if (record.mode === 'sentence' && record.stage === 2) {
+    return '긴 문장 연습'
+  }
+
+  if (record.mode === 'sentence' && record.stage === 3) {
+    return '헷갈리는 맞춤법'
+  }
+
   if (record.mode === 'minigame' && record.game === 'wordRain') {
     return `낱말 비 · ${PACK_LABELS[record.pack ?? 'standard']}`
   }

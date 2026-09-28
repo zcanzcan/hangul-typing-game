@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { removeLastCharacter } from 'es-hangul'
 
 import { OnScreenKeyboard } from '../components/OnScreenKeyboard'
@@ -140,7 +140,20 @@ export function WordRainGameScreen({
   onBack,
   onComplete,
 }: WordRainGameScreenProps) {
-  const preset = getWordRainPreset(profile.ageGroup)
+  const basePreset = getWordRainPreset(profile.ageGroup)
+  const speedMultiplier =
+    profile.settings.minigameSpeed === 'fast'
+      ? 0.8
+      : profile.settings.minigameSpeed === 'slow'
+        ? 1.25
+        : 1
+  const preset = useMemo(
+    () => ({
+      ...basePreset,
+      fallDurationSec: basePreset.fallDurationSec * speedMultiplier,
+    }),
+    [basePreset, speedMultiplier],
+  )
   const spawnIntervalSec = preset.fallDurationSec / preset.maxVisibleWords
   const [game, setGame] = useState(() => createInitialState(pool))
   const gameRef = useRef(game)

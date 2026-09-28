@@ -122,7 +122,9 @@ test('메인에 오늘의 낱말을 보여주고 초등학생 연습에는 그�
   await startProfile(page, '초등학생', '그림새싹')
   const dailyWord = page.locator('.daily-word-card')
   await expect(dailyWord).toBeVisible()
-  await expect(dailyWord.getByText('오늘의 낱말', { exact: true })).toBeVisible()
+  await expect(
+    dailyWord.getByText('오늘의 낱말', { exact: true }),
+  ).toBeVisible()
   await expect(dailyWord.locator('.daily-word-card__emoji')).toBeVisible()
 
   await page.getByRole('button', { name: /자리 연습/ }).click()
@@ -139,6 +141,56 @@ test('메인에 오늘의 낱말을 보여주고 초등학생 연습에는 그�
   await page.getByRole('button', { name: /낱말 연습/ }).click()
   await page.getByRole('button', { name: '1단계 받침 없는 글자 시작' }).click()
   await expect(page.locator('.practice-card__emoji')).toContainText('🌳')
+})
+
+test('성인 긴 문장과 맞춤법 연습을 하고 속도 설정을 저장한다', async ({
+  page,
+}) => {
+  await startProfile(page, '성인', '바른글')
+
+  await page.getByRole('button', { name: /긴 문장 연습/ }).click()
+  await expect(
+    page.getByRole('heading', { name: '긴 문장 연습' }),
+  ).toBeVisible()
+  await expect(page.locator('#practice-target')).toHaveAttribute(
+    'aria-label',
+    /새로운 일을 배울 때에는/,
+  )
+  await page.getByRole('button', { name: /메인으로/ }).click()
+
+  await page.getByRole('button', { name: /헷갈리는 맞춤법/ }).click()
+  for (const answer of [
+    '이제 준비가 돼요.',
+    '오늘은 비가 안 와요.',
+    '학생으로서 책임을 다해요.',
+    '며칠 뒤에 다시 만나요.',
+    '웬일로 일찍 왔어요?',
+  ]) {
+    await page.getByRole('button', { name: answer, exact: true }).click()
+    await expect(page.getByRole('status')).toContainText('맞았어요')
+    await page
+      .getByRole('button', {
+        name: answer.startsWith('웬일') ? '결과 보기' : '다음 문제',
+      })
+      .click()
+  }
+  await expect(page.getByRole('heading', { name: '연습 결과' })).toBeVisible()
+  await expect(page.getByText('100%')).toBeVisible()
+  await page.getByRole('button', { name: '메인으로' }).click()
+
+  await page.getByRole('button', { name: '⚙ 설정' }).click()
+  await page.getByRole('checkbox', { name: '시간 제한' }).uncheck()
+  await page.getByRole('button', { name: '빠르게' }).click()
+  await page.getByRole('button', { name: '설정 저장' }).click()
+  await page.reload()
+  await page.getByRole('button', { name: '⚙ 설정' }).click()
+  await expect(
+    page.getByRole('checkbox', { name: '시간 제한' }),
+  ).not.toBeChecked()
+  await expect(page.getByRole('button', { name: '빠르게' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
 })
 
 test('자리 연습을 마치면 결과와 기록이 저장되고 다음 단계가 열린다', async ({

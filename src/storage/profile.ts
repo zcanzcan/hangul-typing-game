@@ -19,6 +19,7 @@ export interface AgePreset {
   timeLimit: boolean
   speech: boolean
   startMode: 'position' | 'word'
+  minigameSpeed: 'slow' | 'normal' | 'fast'
 }
 
 export const AGE_PRESETS: Readonly<Record<AgeGroup, AgePreset>> = {
@@ -27,18 +28,21 @@ export const AGE_PRESETS: Readonly<Record<AgeGroup, AgePreset>> = {
     timeLimit: true,
     speech: true,
     startMode: 'position',
+    minigameSpeed: 'slow',
   },
   adult: {
     fontSize: 'normal',
     timeLimit: true,
     speech: false,
     startMode: 'word',
+    minigameSpeed: 'normal',
   },
   senior: {
     fontSize: 'large',
     timeLimit: false,
     speech: true,
     startMode: 'position',
+    minigameSpeed: 'slow',
   },
 }
 
@@ -56,6 +60,7 @@ export function createProfile(nickname: string, ageGroup: AgeGroup): Profile {
       sfx: true,
       slangMode: false,
       keyboard: 'device',
+      minigameSpeed: preset.minigameSpeed,
     },
     createdAt: new Date().toISOString(),
   }
@@ -173,6 +178,7 @@ export function applyAgePreset(profile: Profile, ageGroup: AgeGroup): Profile {
       fontSize: preset.fontSize,
       timeLimit: preset.timeLimit,
       speech: preset.speech,
+      minigameSpeed: preset.minigameSpeed,
     },
   }
 }

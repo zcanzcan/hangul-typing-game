@@ -1686,6 +1686,69 @@
   color: #4f556f;
   background: #eef0f7;
 }
+.speed-setting {
+  display: grid;
+  gap: 12px;
+  padding: 16px 0;
+}
+.speed-setting > span,
+.speed-setting small {
+  display: block;
+}
+.speed-setting small {
+  margin-top: 4px;
+  color: var(--color-muted);
+}
+.spelling-lesson {
+  display: grid;
+  gap: 24px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+.spelling-card {
+  display: grid;
+  gap: 22px;
+  padding: clamp(24px, 5vw, 44px);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.spelling-card__icon {
+  font-size: 4rem;
+}
+.spelling-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.spelling-choices button {
+  min-height: 96px;
+  padding: 18px;
+  border: 3px solid #c4d7ec;
+  border-radius: 18px;
+  color: var(--color-text);
+  background: #fff;
+  font: inherit;
+  font-size: 1.08em;
+  font-weight: 800;
+  cursor: pointer;
+}
+.spelling-choices button.is-correct {
+  border-color: #217254;
+  background: #dff8ed;
+}
+.spelling-choices button.is-wrong {
+  border-color: #a72e44;
+  background: #ffe2e6;
+}
+.spelling-card .feedback {
+  text-align: left;
+}
+.spelling-card .feedback b {
+  display: block;
+  margin-top: 8px;
+}
 .word-chain-review button {
   cursor: pointer;
 }
@@ -2372,6 +2435,9 @@ body[data-virtual-keyboard='open'] .tower-input {
   }
   .daily-word-card .button {
     grid-column: 1 / -1;
+  }
+  .spelling-choices {
+    grid-template-columns: 1fr;
   }
   .slang-menu-section {
     grid-template-columns: 1fr;
