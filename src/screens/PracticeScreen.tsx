@@ -7,6 +7,7 @@ import { PageShell } from '../components/PageShell'
 import { ProgressBar } from '../components/ProgressBar'
 import { ScoreBadge } from '../components/ScoreBadge'
 import type { Profile, TypingMode } from '../data/types'
+import { buildSpeechText, useKoreanSpeech } from '../speech'
 import { appendJamo } from '../typing/layout'
 import { countKeystrokes } from '../typing/metrics'
 import { judgeTyping } from '../typing/judge'
@@ -71,6 +72,7 @@ export function PracticeScreen({
   const [presentedCharacters, setPresentedCharacters] = useState(0)
   const [wrongItemIds, setWrongItemIds] = useState<string[]>([])
   const [correctItemIds, setCorrectItemIds] = useState<string[]>([])
+  const speech = useKoreanSpeech()
 
   const currentItem = items[itemIndex]
   const judgements = judgeTyping({
@@ -207,6 +209,15 @@ export function PracticeScreen({
               )
             })}
           </div>
+          {profile.settings.speech && speech.supported ? (
+            <button
+              className="button button--ghost speech-button"
+              type="button"
+              onClick={() => speech.speak(currentItem.text)}
+            >
+              {speech.speaking ? '🔊 읽는 중' : '🔈 낱말 듣기'}
+            </button>
+          ) : null}
 
           <label className="typing-field">
             <span>입력</span>
@@ -263,6 +274,19 @@ export function PracticeScreen({
               meaning={currentItem.meaning}
               example={currentItem.example}
               visible={feedback !== null}
+              onSpeak={
+                profile.settings.speech && speech.supported
+                  ? () =>
+                      speech.speak(
+                        buildSpeechText(
+                          currentItem.text,
+                          currentItem.meaning,
+                          currentItem.example,
+                        ),
+                      )
+                  : undefined
+              }
+              speaking={speech.speaking}
             />
           ) : null}
 

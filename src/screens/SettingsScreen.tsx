@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { PageShell } from '../components/PageShell'
 import type { AgeGroup, FontSize, Profile } from '../data/types'
 import { applyAgePreset } from '../storage/profile'
+import { useKoreanSpeech } from '../speech'
 
 const AGE_LABELS: Readonly<Record<AgeGroup, string>> = {
   kid: '초등학생',
@@ -41,6 +42,7 @@ export function SettingsScreen({
   const [slangMeaning, setSlangMeaning] = useState('')
   const [slangExample, setSlangExample] = useState('')
   const [isAddingSlang, setIsAddingSlang] = useState(false)
+  const speech = useKoreanSpeech()
 
   function changeAgeGroup(ageGroup: AgeGroup) {
     setDraft((current) => applyAgePreset(current, ageGroup))
@@ -196,6 +198,32 @@ export function SettingsScreen({
 
         <fieldset className="settings-card">
           <legend>입력과 효과</legend>
+          {speech.supported ? (
+            <label className="toggle-row">
+              <span>
+                <strong>소리 읽어주기</strong>
+                <small>낱말과 뜻을 한국어 목소리로 읽어요.</small>
+              </span>
+              <input
+                aria-label="소리 읽어주기"
+                type="checkbox"
+                checked={draft.settings.speech}
+                onChange={(event) =>
+                  setDraft((current) => ({
+                    ...current,
+                    settings: {
+                      ...current.settings,
+                      speech: event.target.checked,
+                    },
+                  }))
+                }
+              />
+            </label>
+          ) : (
+            <p className="settings-support-note">
+              이 기기에는 한국어 읽기 목소리가 없어 듣기 버튼을 숨겼어요.
+            </p>
+          )}
           <label className="toggle-row">
             <span>
               <strong>효과음</strong>

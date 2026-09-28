@@ -63,6 +63,59 @@ test('시작 화면에서 만든 프로필과 설정이 새로고침 뒤에도 �
   await expect(page.locator('.app')).toHaveAttribute('data-font-size', 'xlarge')
 })
 
+test('한국어 목소리가 있는 기기에서 낱말과 뜻을 읽어 준다', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    class FakeUtterance {
+      text: string
+      voice: SpeechSynthesisVoice | null = null
+      lang = ''
+      rate = 1
+      onstart: (() => void) | null = null
+      onend: (() => void) | null = null
+      onerror: (() => void) | null = null
+
+      constructor(text: string) {
+        this.text = text
+      }
+    }
+
+    const koreanVoice = {
+      default: true,
+      lang: 'ko-KR',
+      localService: true,
+      name: '테스트 한국어',
+      voiceURI: 'test-ko',
+    }
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', {
+      configurable: true,
+      value: FakeUtterance,
+    })
+    Object.defineProperty(window, 'speechSynthesis', {
+      configurable: true,
+      value: {
+        addEventListener: () => undefined,
+        removeEventListener: () => undefined,
+        getVoices: () => [koreanVoice],
+        cancel: () => undefined,
+        speak: (utterance: FakeUtterance) => utterance.onstart?.(),
+      },
+    })
+  })
+  await page.reload()
+  await startProfile(page, '성인', '귀기울임')
+  await page.getByRole('button', { name: '⚙ 설정' }).click()
+  await page.getByRole('checkbox', { name: '소리 읽어주기' }).check()
+  await page.getByRole('button', { name: '설정 저장' }).click()
+  await page.getByRole('button', { name: /메인으로/ }).click()
+  await page.getByRole('button', { name: /낱말 연습/ }).click()
+  await page.getByRole('button', { name: '1단계 받침 없는 글자 시작' }).click()
+
+  await page.getByRole('button', { name: '🔈 낱말 듣기' }).click()
+  await expect(page.getByRole('button', { name: '🔊 읽는 중' })).toBeVisible()
+})
+
 test('자리 연습을 마치면 결과와 기록이 저장되고 다음 단계가 열린다', async ({
   page,
 }) => {

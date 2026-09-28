@@ -1636,6 +1636,17 @@
   color: var(--color-primary-strong);
   font-size: 1.4rem;
 }
+.speech-button {
+  justify-self: center;
+  min-height: 48px;
+}
+.settings-support-note {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  color: #4f556f;
+  background: #eef0f7;
+}
 .word-chain-review button {
   cursor: pointer;
 }
