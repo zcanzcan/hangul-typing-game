@@ -1,0 +1,11 @@
+{
+  "version": "sample",
+  "items": [
+    { "id": "s-sample-0001", "text": "갑분싸", "meaning": "갑자기 분위기가 싸해짐.", "example": "농담했는데 갑분싸가 됐어.", "standardForm": "갑자기 분위기가 어색해짐", "addedAt": "2026-09-28", "status": "archived", "kidSafe": true, "origin": "official" },
+    { "id": "s-sample-0002", "text": "소확행", "meaning": "작지만 확실한 행복.", "example": "따뜻한 코코아 한 잔이 나의 소확행이야.", "standardForm": "작고 확실한 행복", "addedAt": "2026-09-28", "status": "archived", "kidSafe": true, "origin": "official" },
+    { "id": "s-sample-0003", "text": "갓생", "meaning": "부지런하고 알차게 사는 삶.", "example": "방학 동안 갓생 살아 보자.", "standardForm": "부지런한 생활", "addedAt": "2026-09-28", "status": "active", "kidSafe": true, "origin": "official" },
+    { "id": "s-sample-0004", "text": "알잘딱깔센", "meaning": "알아서 잘, 딱 깔끔하고 센스 있게.", "example": "발표 자료 알잘딱깔센으로 부탁해.", "standardForm": "알아서 깔끔하게", "addedAt": "2026-09-28", "status": "active", "kidSafe": true, "origin": "official" },
+    { "id": "s-sample-0005", "text": "킹받다", "meaning": "몹시 화가 나다(열받다를 강조한 말).", "example": "숙제를 두고 와서 킹받아.", "standardForm": "몹시 화가 나다", "addedAt": "2026-09-28", "status": "active", "kidSafe": true, "origin": "official" }
+  ],
+  "_note": "형식 예시입니다. 실제 목록은 docs/06-slang-operations.md 절차에 따라 검증 후 채웁니다."
+}
