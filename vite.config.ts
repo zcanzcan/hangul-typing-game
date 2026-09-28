@@ -3,7 +3,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig(({ command }) => ({
-  base: command === 'build' ? '/hangul-typing-game/' : '/',
+  base: command === 'build' ? (process.env.VITE_BASE_PATH ?? '/') : '/',
   plugins: [
     react(),
     VitePWA({
