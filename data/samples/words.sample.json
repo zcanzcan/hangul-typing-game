@@ -1,11 +1,134 @@
 {
-  "version": "sample",
+  "version": "2026-10-09-krdict-verified-sample",
   "items": [
-    { "id": "w-0001", "text": "나무", "meaning": "줄기와 가지가 단단한 여러해살이 식물.", "example": "마당에 나무를 심었다.", "emoji": "🌳", "level": 1, "tags": ["자연"], "audience": ["kid", "adult", "senior"] },
-    { "id": "w-0002", "text": "사과", "meaning": "사과나무의 열매.", "example": "빨간 사과를 먹었다.", "emoji": "🍎", "level": 2, "tags": ["과일"], "audience": ["kid", "adult", "senior"] },
-    { "id": "w-0003", "text": "학교", "meaning": "학생을 가르치는 곳.", "example": "아침마다 학교에 간다.", "emoji": "🏫", "level": 2, "tags": ["생활"], "audience": ["kid", "adult", "senior"] },
-    { "id": "w-0004", "text": "까치", "meaning": "검은색과 흰색 깃털을 가진 새. 반가운 소식을 전한다는 말이 있다.", "example": "아침에 까치가 울었다.", "emoji": "🐦", "level": 3, "tags": ["동물"], "audience": ["kid", "adult", "senior"] },
-    { "id": "w-0005", "text": "닭", "meaning": "알을 낳고 고기로도 먹는 집에서 기르는 새.", "example": "닭이 새벽에 운다.", "emoji": "🐔", "level": 3, "tags": ["동물"], "audience": ["kid", "adult", "senior"] }
+    {
+      "id": "w-0001",
+      "text": "나무",
+      "meaning": "단단한 줄기에 가지와 잎이 달린, 여러 해 동안 자라는 식물.",
+      "emoji": "🌳",
+      "level": 1,
+      "tags": [
+        "자연"
+      ],
+      "audience": [
+        "kid",
+        "adult",
+        "senior"
+      ],
+      "source": "국립국어원 한국어기초사전",
+      "provenance": {
+        "entryId": "32750",
+        "sense": 1,
+        "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=32750",
+        "verifiedAt": "2026-10-09",
+        "processing": "뜻풀이 원문 유지. 의미 번호 선택, 웹 표시 공백 정리, 게임 분류·이모지 결합.",
+        "license": "CC-BY-SA-2.0-KR"
+      }
+    },
+    {
+      "id": "w-0002",
+      "text": "사과",
+      "meaning": "모양이 둥글고 붉으며 새콤하고 단맛이 나는 과일.",
+      "emoji": "🍎",
+      "level": 1,
+      "tags": [
+        "과일"
+      ],
+      "audience": [
+        "kid",
+        "adult",
+        "senior"
+      ],
+      "source": "국립국어원 한국어기초사전",
+      "provenance": {
+        "entryId": "66371",
+        "sense": 1,
+        "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=66371",
+        "verifiedAt": "2026-10-09",
+        "processing": "뜻풀이 원문 유지. 의미 번호 선택, 웹 표시 공백 정리, 게임 분류·이모지 결합.",
+        "license": "CC-BY-SA-2.0-KR"
+      }
+    },
+    {
+      "id": "w-0003",
+      "text": "학교",
+      "meaning": "일정한 목적, 교과 과정, 제도 등에 따라 학생을 교육하는 기관.",
+      "emoji": "🏫",
+      "level": 2,
+      "tags": [
+        "생활"
+      ],
+      "audience": [
+        "kid",
+        "adult",
+        "senior"
+      ],
+      "source": "국립국어원 한국어기초사전",
+      "provenance": {
+        "entryId": "73276",
+        "sense": 1,
+        "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=73276",
+        "verifiedAt": "2026-10-09",
+        "processing": "뜻풀이 원문 유지. 의미 번호 선택, 웹 표시 공백 정리, 게임 분류·이모지 결합.",
+        "license": "CC-BY-SA-2.0-KR"
+      }
+    },
+    {
+      "id": "w-0004",
+      "text": "까치",
+      "meaning": "머리에서 등까지는 검고 윤이 나며 어깨와 배는 흰, 사람의 집 근처에 사는 새.",
+      "emoji": "🐦",
+      "level": 3,
+      "tags": [
+        "동물"
+      ],
+      "audience": [
+        "kid",
+        "adult",
+        "senior"
+      ],
+      "source": "국립국어원 한국어기초사전",
+      "provenance": {
+        "entryId": "32550",
+        "sense": 1,
+        "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=32550",
+        "verifiedAt": "2026-10-09",
+        "processing": "뜻풀이 원문 유지. 의미 번호 선택, 웹 표시 공백 정리, 게임 분류·이모지 결합.",
+        "license": "CC-BY-SA-2.0-KR"
+      }
+    },
+    {
+      "id": "w-0005",
+      "text": "닭",
+      "meaning": "날지 못하고 알을 잘 낳으며 고기 맛이 좋아 집에서 기르는 큰 새.",
+      "emoji": "🐔",
+      "level": 3,
+      "tags": [
+        "동물"
+      ],
+      "audience": [
+        "kid",
+        "adult",
+        "senior"
+      ],
+      "source": "국립국어원 한국어기초사전",
+      "provenance": {
+        "entryId": "30202",
+        "sense": 1,
+        "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=30202",
+        "verifiedAt": "2026-10-09",
+        "processing": "뜻풀이 원문 유지. 의미 번호 선택, 웹 표시 공백 정리, 게임 분류·이모지 결합.",
+        "license": "CC-BY-SA-2.0-KR"
+      }
+    }
   ],
-  "_note": "뜻 풀이는 예시로 직접 쓴 쉬운 문장입니다. 실제 데이터 출처는 docs/09-open-questions.md 참고."
+  "attribution": {
+    "creator": "국립국어원",
+    "title": "한국어기초사전",
+    "license": "CC-BY-SA-2.0-KR",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/kr/",
+    "policyUrl": "https://krdict.korean.go.kr/kor/kboardPolicy/copyRightTermsInfo",
+    "notice": "선별한 사전 뜻풀이와 그 가공 데이터는 CC BY-SA 2.0 KR. 사전 예문·멀티미디어 미포함. 원 자료는 보증 없이 제공됩니다."
+  },
+  "_note": "실제 공식 원문을 확인한 배포 데이터의 첫 5개 항목. 전체는 public/data/words.json. 과거 직접 작성했다는 표시는 근거가 없어 제거했습니다."
 }

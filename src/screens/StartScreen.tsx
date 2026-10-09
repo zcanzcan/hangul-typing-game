@@ -94,7 +94,11 @@ export function StartScreen({ onStart }: StartScreenProps) {
         <button className="button button--primary button--large" type="submit">
           연습 시작하기
         </button>
-        <p className="privacy-note">로그인 없이 이 기기에만 기록을 저장해요.</p>
+        <p className="privacy-note">
+          로그인 없이 연습 기록을 이 기기에 저장해요. 반 점수판에서 직접 기록
+          올리기를 선택하면 별명, 점수, 모드, 단계와 기록 시각이 서버로
+          전송돼요. 실명이나 연락처는 별명에 적지 마세요.
+        </p>
       </form>
     </main>
   )

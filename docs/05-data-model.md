@@ -23,7 +23,11 @@ interface Word {
   level: 1 | 2 | 3 | 4;  // 1: 받침 없음, 2: 받침, 3: 쌍자음·겹받침, 4: 어려운 낱말
   tags?: string[];       // ["과일", "음식"]
   audience: ("kid" | "adult" | "senior")[];
-  source?: string;       // 뜻 출처 (예: "한국어기초사전"). 국어원 뜻풀이를 쓰면 필수, 파일은 CC BY-SA 2.0 KR
+  source?: string;       // 뜻 출처. 배포 사전 데이터에는 필수
+  provenance?: {         // 배포 사전 데이터에는 필수, 테스트용 Word에서는 생략 가능
+    entryId: string; sense: number; url: string; verifiedAt: string;
+    processing: string; license: 'CC-BY-SA-2.0-KR';
+  };
 }
 ```
 
@@ -133,3 +137,5 @@ SQL 원본은
 [`supabase/migrations/20260928161038_create_typing_game_class_scoreboard.sql`](../supabase/migrations/20260928161038_create_typing_game_class_scoreboard.sql)에 있다.
 
 예시 데이터: [`data/samples/words.sample.json`](../data/samples/words.sample.json), [`data/samples/slang.sample.json`](../data/samples/slang.sample.json)
+
+2026-10-09 배포 낱말은 공식 공개 원문에서 확인한 51개 의미입니다. 예문은 포함하지 않으며 게임 분류는 사전 교육 등급이 아닙니다. [출처와 검증 범위](../data/README.md)를 참고하세요.

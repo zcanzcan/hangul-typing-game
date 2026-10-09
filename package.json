@@ -16,7 +16,9 @@
     "test:e2e": "playwright test",
     "test:pwa": "playwright test --config playwright.pwa.config.ts",
     "assets:pwa": "node scripts/generate-pwa-icons.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "licenses:generate": "node scripts/generate-notices.mjs",
+    "prebuild": "npm run licenses:generate"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2",

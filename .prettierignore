@@ -7,3 +7,6 @@ LICENSE
 README.md
 data
 docs
+
+# 고지 생성 스크립트가 만드는 정적 출처 페이지
+public/licenses.html

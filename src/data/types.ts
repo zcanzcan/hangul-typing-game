@@ -14,6 +14,14 @@ export interface Word {
   tags?: string[]
   audience: AgeGroup[]
   source?: string
+  provenance?: {
+    entryId: string
+    sense: number
+    url: string
+    verifiedAt: string
+    processing: string
+    license: 'CC-BY-SA-2.0-KR'
+  }
 }
 
 export interface Sentence {
