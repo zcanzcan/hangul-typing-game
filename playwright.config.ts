@@ -14,8 +14,22 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      testIgnore: [/tablet\.spec\.ts/, /pwa\.spec\.ts/],
+      testIgnore: [/tablet\.spec\.ts/, /pwa\.spec\.ts/, /mobile\.spec\.ts/],
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: '휴대폰 390px Chromium',
+      testMatch: /mobile\.spec\.ts/,
+      use: { ...devices['iPhone 13'], browserName: 'chromium' },
+    },
+    {
+      name: '휴대폰 360px Chromium',
+      testMatch: /mobile\.spec\.ts/,
+      use: {
+        ...devices['Pixel 7'],
+        viewport: { width: 360, height: 800 },
+        browserName: 'chromium',
+      },
     },
     {
       name: 'iPad 세로',

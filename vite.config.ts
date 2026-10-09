@@ -43,7 +43,7 @@ export default defineConfig(({ command }) => ({
       },
       workbox: {
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,json,png,svg}'],
+        globPatterns: ['**/*.{js,css,html,json,png,svg,txt}'],
         navigateFallback: 'index.html',
       },
     }),

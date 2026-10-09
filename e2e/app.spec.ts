@@ -40,6 +40,38 @@ test.beforeEach(async ({ page }) => {
   await clearBrowserData(page)
 })
 
+test('시작 화면의 서버 전송 안내와 출처 링크에서 사전·코드 라이선스를 구분한다', async ({
+  page,
+}, testInfo) => {
+  await expect(page.getByText(/직접 기록 올리기를 선택하면/)).toBeVisible()
+  await expect(page.locator('.license-footer')).toContainText(
+    '국립국어원 한국어기초사전',
+  )
+  await page.screenshot({
+    path: testInfo.outputPath('start-attribution.png'),
+    fullPage: true,
+  })
+  const popupPromise = page.waitForEvent('popup')
+  await page.getByRole('link', { name: '출처·라이선스 (새 창)' }).click()
+  const sourcePage = await popupPromise
+  await expect(
+    sourcePage.getByRole('heading', { name: '출처·라이선스', exact: true }),
+  ).toBeVisible()
+  await expect(
+    sourcePage.getByRole('link', { name: /CC BY-SA 2.0 KR/ }),
+  ).toHaveAttribute(
+    'href',
+    'https://creativecommons.org/licenses/by-sa/2.0/kr/',
+  )
+  await expect(
+    sourcePage.getByRole('link', { name: 'MIT 라이선스', exact: true }),
+  ).toHaveAttribute('href', 'CODE_LICENSE.txt')
+  await expect(sourcePage.locator('tbody tr')).toHaveCount(51)
+  await sourcePage.screenshot({ path: testInfo.outputPath('licenses.png') })
+  await sourcePage.close()
+  await expect(page.getByLabel('별명')).toBeVisible()
+})
+
 test('시작 화면에서 만든 프로필과 설정이 새로고침 뒤에도 남는다', async ({
   page,
 }) => {
@@ -371,7 +403,9 @@ test('낱말 입력 뒤 뜻을 보고 틀린 낱말을 복습할 수 있다', as
     await page.getByLabel('입력').fill(answer)
     await page.getByRole('button', { name: '입력 확인' }).click()
     await expect(page.locator('.meaning-card')).toContainText(
-      index === 1 ? '사과나무의 열매' : '뜻 카드',
+      index === 1
+        ? '모양이 둥글고 붉으며 새콤하고 단맛이 나는 과일.'
+        : '뜻 카드',
     )
     await page
       .getByRole('button', {

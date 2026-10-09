@@ -32,4 +32,27 @@ test('설치 manifest와 서비스 워커로 오프라인 연습 데이터를 �
   })
   expect(cachedWords.ok).toBe(true)
   expect(cachedWords.count).toBeGreaterThan(0)
+  for (const path of [
+    'licenses.html',
+    'data/DATA_LICENSE.txt',
+    'CODE_LICENSE.txt',
+    'THIRD_PARTY_NOTICES.txt',
+  ]) {
+    const cached = await page.evaluate(async (path) => {
+      const response = await fetch(path)
+      return { ok: response.ok, text: await response.text() }
+    }, path)
+    expect(cached.ok).toBe(true)
+    expect(cached.text.length).toBeGreaterThan(100)
+    if (path === 'THIRD_PARTY_NOTICES.txt') {
+      expect(cached.text).toContain('Apache License')
+      expect(cached.text).toContain('Permission is hereby granted')
+    }
+  }
+  await page.getByRole('link', { name: '출처·라이선스 (새 창)' }).focus()
+  expect(
+    await page
+      .getByRole('link', { name: '출처·라이선스 (새 창)' })
+      .getAttribute('href'),
+  ).toBe(`${basePath}licenses.html`)
 })

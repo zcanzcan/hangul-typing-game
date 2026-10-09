@@ -75,3 +75,26 @@ h1,
 h2 {
   font-family: 'Arial Rounded MT Bold', Pretendard, 'Noto Sans KR', sans-serif;
 }
+
+.license-footer {
+  padding: 1rem;
+  color: var(--color-muted);
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.license-footer p {
+  margin-bottom: 0.25rem;
+}
+
+.license-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  color: var(--color-text);
+}
+
+.license-footer a:focus-visible {
+  outline: 4px solid #2b6f9f;
+  outline-offset: 3px;
+}
