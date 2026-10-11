@@ -11,6 +11,8 @@ import type {
 } from './data/types'
 import { createTowerPool, type TowerMode, type TowerPool } from './games/tower'
 import { createWordRainPool, type WordRainPool } from './games/wordRain'
+import { LiteratureScreen } from './screens/LiteratureScreen'
+import { clearLiteratureRecords } from './literature/storage'
 import { MenuScreen } from './screens/MenuScreen'
 import {
   MeaningQuizScreen,
@@ -148,6 +150,7 @@ type Screen =
   | 'daily-goal'
   | 'spelling-correction'
   | 'meaning-quiz'
+  | 'literature'
 
 const POSITION_ITEMS: PracticeItem[] = [
   { id: 'position-1', text: 'ㅁ' },
@@ -377,6 +380,7 @@ export function App() {
 
   async function resetRecords() {
     await Promise.all([clearRecords(), clearMistakes()])
+    clearLiteratureRecords()
     clearProgress()
   }
 
@@ -851,6 +855,10 @@ export function App() {
           dailyPracticeSec={getPracticeTime(profile.id)}
           onNavigate={navigate}
         />
+      ) : null}
+
+      {screen === 'literature' ? (
+        <LiteratureScreen profile={profile} onBack={() => navigate('menu')} />
       ) : null}
 
       {screen === 'word-stages' ? (

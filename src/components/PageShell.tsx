@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 interface PageShellProps {
   title: string
@@ -6,6 +6,8 @@ interface PageShellProps {
   onBack?: () => void
   children: ReactNode
   theme?: 'candy' | 'pixel'
+  className?: string
+  style?: CSSProperties
 }
 
 export function PageShell({
@@ -14,9 +16,15 @@ export function PageShell({
   onBack,
   children,
   theme = 'candy',
+  className = '',
+  style,
 }: PageShellProps) {
   return (
-    <main className="page-shell" data-theme={theme}>
+    <main
+      className={`page-shell ${className}`}
+      data-theme={theme}
+      style={style}
+    >
       <header className="page-header">
         {onBack ? (
           <button
