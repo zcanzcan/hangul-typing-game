@@ -1,0 +1,2 @@
+# 취득 원문은 CRLF·공백을 포함한 다운로드 바이트와 해시를 보존합니다.
+data/literature/sources/*.txt -text -whitespace

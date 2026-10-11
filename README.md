@@ -33,6 +33,7 @@ React, TypeScript, Vite로 개발하며 PC와 태블릿에서 설치 가능한 P
 | [11. 단계별 개발 지시서](docs/11-dev-steps.md) | AI 코딩 도구에 한 단계씩 개발을 맡기는 방법과 단계별 완료 기준 |
 | [12. 낱말 비](docs/12-word-rain.md) | 떨어지는 낱말 막기 미니게임 규칙, 요즘 말 꾸러미, 점수, 구현 메모 |
 | [13. 미니게임 더하기](docs/13-more-minigames.md) | 끝말잇기 타자, 낱말 탑 쌓기, 요즘 말 스피드 퀴즈 |
+| [14. 고전문학 타자 연습](docs/14-classic-literature.md) | 읽기 중심 연습·IME·확인 정확도·로컬 기록·작품 출처 정책 |
 
 데이터별 출처와 검증 범위는 [`data/README.md`](data/README.md)에 있습니다. 낱말 샘플도 공식 원문을 확인한 배포 데이터의 일부입니다.
 AI 코딩 도구로 개발할 때 참고할 규칙은 [`CLAUDE.md`](CLAUDE.md)에 정리했어요 (Codex는 [`AGENTS.md`](AGENTS.md)에서 시작).
@@ -56,6 +57,8 @@ npm test
 npm run test:e2e
 npm run test:pwa
 ```
+
+문학 모드는 공유마당 제공 「진달래꽃」·「서시」의 대조한 판본으로 한 행씩 연습합니다. 근대문학 분류와 작품별 출처·가공 내역을 표시하고, 문학 글자 크기를 100~200%로 조절·저장할 수 있습니다. 작품 데이터의 이용조건은 코드 MIT와 별개입니다. [개발 검증과 미리보기](docs/evidence/classic-literature/README.md)를 확인하세요.
 
 ## 기획 원본
 

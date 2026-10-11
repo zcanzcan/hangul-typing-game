@@ -18,6 +18,7 @@ type MenuDestination =
   | 'daily-goal'
   | 'spelling-correction'
   | 'meaning-quiz'
+  | 'literature'
 
 interface MenuScreenProps {
   profile: Profile
@@ -193,6 +194,23 @@ export function MenuScreen({
             description="쉬운 문장을 또박또박 입력해요."
             locked={!unlockedModes.sentence}
             onClick={() => onNavigate('sentence')}
+          />
+        </div>
+      </section>
+
+      <section className="menu-section" aria-labelledby="literature-title">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">글을 읽는 시간</p>
+            <h2 id="literature-title">고전문학 타자 연습</h2>
+          </div>
+        </div>
+        <div className="menu-grid">
+          <PracticeCard
+            emoji="📚"
+            title="고전문학 읽으며 연습"
+            description="한 구절씩 읽고 따라 적어요. 시간 제한 없이, 나의 속도로."
+            onClick={() => onNavigate('literature')}
           />
         </div>
       </section>

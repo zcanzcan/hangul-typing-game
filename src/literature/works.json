@@ -1,0 +1,61 @@
+[
+  {
+    "id": "gongu-9000320",
+    "version": "2026-10-10.1",
+    "title": "진달래꽃",
+    "author": "김소월 (김정식)",
+    "category": "근대문학",
+    "description": "한 행씩 천천히 읽으며 따라 치는 시 연습.",
+    "edition": "공유마당 제공 전사본 · 김정식-진달래꽃-개벽_25호.txt (동봉 PDF 대조)",
+    "sourceName": "한국저작권위원회 공유마당",
+    "sourceUrl": "https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=9000320&menuNo=200019",
+    "licenseName": "만료저작물 · 자유이용",
+    "licenseUrl": "https://gongu.copyright.or.kr/gongu/main/contents.do?menuNo=200091",
+    "usage": "공유마당에서 저작재산권 만료·자유이용으로 제공한 작품입니다. 코드의 MIT와 별개이며 작가·출처·제공 판본을 함께 표시합니다.",
+    "processing": "제공 TXT를 동봉 PDF와 대조했습니다. 제목과 빈 행을 제외하고 시의 한 행을 한 구절로 나눴습니다. 행 끝 공백 정리·NFC 정규화 외에 철자·띄어쓰기·문장부호·한자 병기를 바꾸지 않았습니다. 원본 지면 사진이나 초기 발표본 그대로라는 뜻은 아닙니다.",
+    "verifiedAt": "2026-10-10",
+    "verification": "verified",
+    "passages": [
+      "나 보기가 역겨워",
+      "가실 때에는",
+      "말없이 고이 보내드리우리다",
+      "영변(寧邊)에 약산(藥山)",
+      "진달래꽃",
+      "아름 따다 가실 길에 뿌리우리다",
+      "가시는 걸음 걸음",
+      "놓인 그 꽃을",
+      "사뿐히 즈려밟고 가시옵소서",
+      "나 보기가 역겨워",
+      "가실 때에는",
+      "죽어도 아니 눈물 흘리우리다"
+    ]
+  },
+  {
+    "id": "gongu-9000779",
+    "version": "2026-10-10.1",
+    "title": "서시",
+    "author": "윤동주",
+    "category": "근대문학",
+    "description": "한 행씩 천천히 읽으며 따라 치는 시 연습.",
+    "edition": "공유마당 제공 전사본 · 윤동주-서시(序詩)-하늘과_바람과_별과_시.txt (동봉 PDF 대조)",
+    "sourceName": "한국저작권위원회 공유마당",
+    "sourceUrl": "https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=9000779&menuNo=200019",
+    "licenseName": "만료저작물 · 자유이용",
+    "licenseUrl": "https://gongu.copyright.or.kr/gongu/main/contents.do?menuNo=200091",
+    "usage": "공유마당에서 저작재산권 만료·자유이용으로 제공한 작품입니다. 코드의 MIT와 별개이며 작가·출처·제공 판본을 함께 표시합니다.",
+    "processing": "제공 TXT를 동봉 PDF와 대조했습니다. 제목·작가 표제와 빈 행을 제외하고 시의 한 행을 한 구절로 나눴습니다. 행 끝 공백 정리·NFC 정규화 외에 철자·띄어쓰기·문장부호·한자 병기를 바꾸지 않았습니다. 원본 지면 사진이나 초기 발표본 그대로라는 뜻은 아닙니다.",
+    "verifiedAt": "2026-10-10",
+    "verification": "verified",
+    "passages": [
+      "죽는 날까지 하늘을 우러러",
+      "한 점 부끄럼이 없기를,",
+      "잎새에 이는 바람에도",
+      "나는 괴로워했다.",
+      "별을 노래하는 마음으로",
+      "모든 죽어가는 것을 사랑해야지.",
+      "그리고 나한테 주어진 길을",
+      "걸어가야겠다.",
+      "오늘 밤에도 별이 바람에 스치운다."
+    ]
+  }
+]
